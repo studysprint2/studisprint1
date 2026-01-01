@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Chapter Portal | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #2c5aa0;
+            --secondary-blue: #4a7bc8;
+            --light-blue: #eef3fd;
+            --light-gray: #f5f7fa;
+            --medium-gray: #e6e9ef;
+            --dark-gray: #6c757d;
+            --text-dark: #333333;
+            --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 100px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.15);
+            margin-bottom: 40px;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--medium-gray);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 80px;
+            height: 2px;
+            background-color: var(--secondary-blue);
+        }
+
+        /* Grid & Card Styles */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .chapter-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 25px;
+            transition: var(--transition);
+            border: 1px solid var(--medium-gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--secondary-blue);
+        }
+
+        .chapter-number {
+            display: inline-block;
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+            padding: 6px 15px;
+            border-radius: 50px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .chapter-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            min-height: 60px;
+        }
+
+        .chapter-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--medium-gray);
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .chapter-card:hover .chapter-icon {
+            color: var(--secondary-blue);
+        }
+
+        /* Button Styles */
+        .enter-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-blue);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .enter-btn:hover {
+            background-color: var(--secondary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(44, 90, 160, 0.2);
+        }
+
+        .enter-btn i {
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--light-gray);
+            padding: 40px 0 20px;
+            margin-top: 60px;
+            border-top: 1px solid var(--medium-gray);
+            position: relative;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .contact-info h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .contact-item i {
+            color: var(--primary-blue);
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .whatsapp-link {
+            color: #25D366;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .whatsapp-link:hover {
+            text-decoration: underline;
+        }
+
+        .disclaimer {
+            flex: 2;
+            min-width: 300px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer p {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            line-height: 1.7;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-blue);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background-color: var(--secondary-blue);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--medium-gray);
+            color: var(--dark-gray);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-item {
+                justify-content: center;
+            }
+            
+            .disclaimer {
+                padding: 0;
+            }
+            
+            .scroll-top {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content h1 {
+                font-size: 1.7rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chapter-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Educational Chapter Portal</h1>
+                <p>Access all textbook chapters in a clean, organized dashboard interface. Click "Enter" to open any chapter.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Section 1: Flamingo Prose -->
+        <section class="section" id="flamingo-prose">
+            <h2 class="section-title">📘 Flamingo (Prose)</h2>
+            <div class="card-grid">
+                <!-- Chapters will be added here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Section 2: Flamingo Poetry -->
+        <section class="section" id="flamingo-poetry">
+            <h2 class="section-title">📜 Flamingo (Poetry)</h2>
+            <div class="card-grid">
+                <!-- Chapters will be added here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Section 3: Vistas -->
+        <section class="section" id="vistas">
+            <h2 class="section-title">📗 Vistas</h2>
+            <div class="card-grid">
+                <!-- Chapters will be added here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email: alaxrad60@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <a href="https://wa.me/6391744080" class="whatsapp-link" target="_blank">WhatsApp: 63917 44080</a>
+                    </div>
+                </div>
+                
+                <div class="disclaimer">
+                    <p><strong>Disclaimer:</strong> This website is created for educational purposes only. All content belongs to respective authors. The materials provided here are for reference and learning assistance.</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Educational Portal. All rights reserved.</p>
+            </div>
+        </div>
+        
+        <!-- Scroll to Top Button -->
+        <a href="#" class="scroll-top" id="scrollTop">
+            <i class="fas fa-arrow-up"></i>
+        </a>
+    </footer>
+
+    <script>
+        // Chapter data for each section
+        const chapters = {
+            "flamingo-prose": [
+                { number: 1, title: "The Last Lesson", link: "flam1.html" },
+                { number: 2, title: "Lost Spring", link: "flam2.html" },
+                { number: 3, title: "Deep Water", link: "flam3.html" },
+                { number: 4, title: "The Rattrap", link: "flam4.html" },
+                { number: 5, title: "Indigo", link: "flam5.html" },
+                { number: 6, title: "Poets and Pancakes", link: "flam6.html" },
+                { number: 7, title: "The Interview", link: "flamingo7.html" },
+                { number: 8, title: "Going Places", link: "flam8.html" }
+            ],
+            "flamingo-poetry": [
+                { number: 1, title: "My Mother at Sixty-Six", link: "poet1.html" },
+                { number: 2, title: "Keeping Quiet", link: "poet2.html" },
+                { number: 3, title: "A Thing of Beauty", link: "poet3.html" },
+                { number: 4, title: "A Roadside Stand", link: "poet4.html" },
+                { number: 5, title: "Aunt Jennifer's Tigers", link: "poet5.html" }
+            ],
+            "vistas": [
+                { number: 1, title: "The Third Level", link: "vist1.html" },
+                { number: 2, title: "The Tiger King", link: "vist2.html" },
+                { number: 3, title: "Journey to the End of the Earth", link: "vist3.html" },
+                { number: 4, title: "The Enemy", link: "vist4.html" },
+                { number: 5, title: "On the Face of It", link: "vist5.html" },
+                { number: 6, title: "Memories of Childhood", link: "vist6.html" }
+            ]
+        };
+
+        // Icons for each section
+        const sectionIcons = {
+            "flamingo-prose": "fa-book-open",
+            "flamingo-poetry": "fa-feather-alt",
+            "vistas": "fa-glasses"
+        };
+
+        // Function to create chapter cards
+        function createChapterCards() {
+            for (const sectionId in chapters) {
+                const sectionElement = document.getElementById(sectionId);
+                if (!sectionElement) continue;
+                
+                const cardGrid = sectionElement.querySelector('.card-grid');
+                cardGrid.innerHTML = '';
+                
+                chapters[sectionId].forEach(chapter => {
+                    const card = document.createElement('div');
+                    card.className = 'chapter-card';
+                    
+                    // Get icon for this section
+                    const iconClass = sectionIcons[sectionId] || 'fa-book';
+                    
+                    card.innerHTML = `
+                        <span class="chapter-number">Chapter ${chapter.number}</span>
+                        <h3 class="chapter-title">${chapter.title}</h3>
+                        <i class="fas ${iconClass} chapter-icon"></i>
+                        <a href="${chapter.link}" class="enter-btn" target="_blank">
+                            Enter Chapter <i class="fas fa-arrow-right"></i>
+                        </a>
+                    `;
+                    
+                    cardGrid.appendChild(card);
+                });
+            }
+        }
+
+        // Initialize the page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create chapter cards
+            createChapterCards();
+            
+            // Scroll to top button functionality
+            const scrollTopBtn = document.getElementById('scrollTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('active');
+                } else {
+                    scrollTopBtn.classList.remove('active');
+                }
+            });
+            
+            scrollTopBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Add hover effect to all cards
+            const cards = document.querySelectorAll('.chapter-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add animation to cards when they come into view
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Initially set cards to be invisible and slightly lowered
+            const chapterCards = document.querySelectorAll('.chapter-card');
+            chapterCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Add a slight delay to make the animation more noticeable
+            setTimeout(() => {
+                chapterCards.forEach(card => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rattrap - Interactive Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f3ef;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 40px;
+            background-image: linear-gradient(to bottom, #f5f3ef, #e8e6e1);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #795548, #a1887f);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
+            opacity: 0.1;
+            background-size: 120px;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .subtitle {
+            color: #d7ccc8;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .quiz-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #795548;
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .quiz-section:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            color: #5d4037;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d7ccc8;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+        
+        .mcq-question {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 0.5s ease;
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .mcq-question::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #795548, #a1887f);
+            opacity: 0.5;
+        }
+        
+        .mcq-question:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #4e342e;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid #d7ccc8;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(121, 85, 72, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option:hover {
+            border-color: #795548;
+            background-color: #fafafa;
+        }
+        
+        .option.selected {
+            border-color: #5d4037;
+            background-color: #efebe9;
+        }
+        
+        .option.correct {
+            border-color: #388e3c;
+            background-color: #e8f5e9;
+            animation: correctPulse 0.6s ease;
+        }
+        
+        @keyframes correctPulse {
+            0% { box-shadow: 0 0 0 0 rgba(56, 142, 60, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(56, 142, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(56, 142, 60, 0); }
+        }
+        
+        .option.wrong {
+            border-color: #d32f2f;
+            background-color: #ffebee;
+            animation: wrongFlash 0.5s ease;
+        }
+        
+        @keyframes wrongFlash {
+            0%, 100% { background-color: #ffebee; }
+            50% { background-color: #ffcdd2; }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #d7ccc8;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .option.selected .option-letter {
+            background-color: #5d4037;
+            color: white;
+            transform: rotate(360deg);
+        }
+        
+        .option.correct .option-letter {
+            background-color: #388e3c;
+            color: white;
+            animation: spin 0.5s ease;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .option.wrong .option-letter {
+            background-color: #d32f2f;
+            color: white;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            display: none;
+            animation: fadeInDown 0.5s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feedback.correct-feedback {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+            border-left: 4px solid #388e3c;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback.wrong-feedback {
+            background-color: #ffebee;
+            color: #b71c1c;
+            border-left: 4px solid #d32f2f;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .case-question, .vsq-question, .short-answer, .long-answer {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .case-text, .question-content {
+            font-style: italic;
+            color: #5d4037;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 3px solid #795548;
+        }
+        
+        .case-subquestion, .answer-item {
+            margin-bottom: 15px;
+        }
+        
+        .case-subquestion p, .answer-item p {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #5d4037;
+        }
+        
+        .show-answer-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 22px;
+            background-color: #795548;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .show-answer-btn::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .show-answer-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0, 0); opacity: 0.5; }
+            100% { transform: scale(20, 20); opacity: 0; }
+        }
+        
+        .show-answer-btn:hover {
+            background-color: #5d4037;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .answer-content {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid #795548;
+            display: none;
+            animation: expandReveal 0.5s ease;
+        }
+        
+        @keyframes expandReveal {
+            from { opacity: 0; max-height: 0; padding: 0 15px; }
+            to { opacity: 1; max-height: 500px; padding: 15px; }
+        }
+        
+        .answer-content.show {
+            display: block;
+        }
+        
+        .short-answer h3, .long-answer h3 {
+            color: #5d4037;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .short-answer h3 i, .long-answer h3 i {
+            margin-right: 10px;
+        }
+        
+        .score-summary {
+            text-align: center;
+            padding: 25px;
+            background-color: white;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #795548;
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); }
+            to { box-shadow: 0 3px 20px rgba(121, 85, 72, 0.3); }
+        }
+        
+        .score-summary h3 {
+            color: #5d4037;
+            margin-bottom: 15px;
+        }
+        
+        .score-value {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #795548;
+            margin: 10px 0;
+            animation: scoreFloat 3s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes scoreFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.05); }
+        }
+        
+        .reset-btn {
+            padding: 12px 30px;
+            background-color: #795548;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .reset-btn:hover {
+            background-color: #5d4037;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            color: #666;
+            border-top: 1px solid #d7ccc8;
+            font-size: 0.9rem;
+        }
+        
+        .instructions {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #795548;
+            animation: slideInRight 0.5s ease;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .instructions h3 {
+            color: #5d4037;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions h3 i {
+            margin-right: 8px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #d7ccc8;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #795548, #a1887f);
+            width: 0%;
+            transition: width 0.7s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: progressShimmer 1.5s infinite;
+        }
+        
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .correct-counter {
+            display: inline-block;
+            background: linear-gradient(135deg, #388e3c, #43a047);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            animation: popIn 0.3s ease;
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .question-counter {
+            float: right;
+            background-color: #795548;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-all-btn {
+            background-color: #5d4037;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        
+        .toggle-all-btn:hover {
+            background-color: #3e2723;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .section-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #795548, #a1887f);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .trap-decoration {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(121, 85, 72, 0.2);
+            border-radius: 50%;
+            animation: moveTrap 20s linear infinite;
+        }
+        
+        @keyframes moveTrap {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, 50px) rotate(90deg); }
+            50% { transform: translate(50px, 100px) rotate(180deg); }
+            75% { transform: translate(-50px, 50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        .trap-decoration:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+        
+        .trap-decoration:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-delay: -5s;
+            animation-duration: 30s;
+        }
+        
+        .trap-decoration:nth-child(3) {
+            bottom: 15%;
+            left: 15%;
+            animation-delay: -10s;
+            animation-duration: 35s;
+        }
+        
+        .trap-decoration:nth-child(4) {
+            bottom: 25%;
+            right: 20%;
+            animation-delay: -15s;
+            animation-duration: 40s;
+        }
+        
+        .floating-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.3);
+            animation: floatIcon 15s linear infinite;
+        }
+        
+        @keyframes floatIcon {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(200px, 100px) rotate(360deg); }
+        }
+        
+        .floating-icon:nth-child(1) {
+            top: 30%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-icon:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: -7s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>The Rattrap - Interactive Quiz</h1>
+            <p>Test your understanding of Selma Lagerlöf's chapter "The Rattrap" from Class 12 English Flamingo</p>
+            <p class="subtitle">Chapter 4: Redemption and Transformation</p>
+            <div class="trap-decoration"></div>
+            <div class="trap-decoration"></div>
+            <div class="trap-decoration"></div>
+            <div class="trap-decoration"></div>
+            <div class="floating-icon"><i class="fas fa-gift"></i></div>
+            <div class="floating-icon"><i class="fas fa-heart"></i></div>
+        </header>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Instructions</h3>
+            <ul>
+                <li>For MCQs: Click on an option to select it. Immediate feedback will show if your answer is correct or incorrect.</li>
+                <li>For Case-Based, Very Short, Short and Long Questions: Click "Show Answer" buttons to reveal the answers.</li>
+                <li>Use "Show All Answers" and "Hide All Answers" buttons to toggle all answers at once.</li>
+                <li>Your MCQ score will update automatically as you answer questions.</li>
+            </ul>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+        </div>
+        
+        <!-- Part A: MCQs -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h2>PART A: MCQs (20 Questions) <span id="mcq-counter" class="correct-counter">0/20</span></h2>
+            </div>
+            
+            <div id="mcq-container">
+                <!-- MCQs will be inserted here by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Part B: Case-Based Questions -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h2>PART B: Case-Based Questions (2)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-case-answers">Show All Case Answers</button>
+                <button class="toggle-all-btn" id="hide-case-answers">Hide All Case Answers</button>
+            </div>
+            
+            <div id="case-container">
+                <div class="case-question">
+                    <div class="case-text">Case-Based Question 1: The peddler believes that the world is like a giant rattrap where people are tempted by material pleasures and get trapped.</div>
+                    <div class="case-subquestion">
+                        <p>How does the peddler's philosophy reflect human nature?</p>
+                        <button class="show-answer-btn" data-target="case1-answer">Show Answer</button>
+                        <div class="answer-content" id="case1-answer">
+                            <p><strong>Answer:</strong> The philosophy reflects that human beings often fall prey to greed and material temptations. Just like a rat is trapped by bait, people are trapped by money and power. The peddler himself becomes a victim when he steals money.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-question">
+                    <div class="case-text">Case-Based Question 2: Edla treats the peddler kindly even after knowing he is not the captain.</div>
+                    <div class="case-subquestion">
+                        <p>Why is Edla's behaviour important in the story?</p>
+                        <button class="show-answer-btn" data-target="case2-answer">Show Answer</button>
+                        <div class="answer-content" id="case2-answer">
+                            <p><strong>Answer:</strong> Edla's kindness and compassion help reform the peddler. She treats him with dignity, which awakens his conscience. Her behaviour shows that love and understanding can change even hardened individuals.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part C: Very Short Answer Questions -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h2>PART C: Very Short Answer Questions (5)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-vsq-answers">Show All VSQ Answers</button>
+                <button class="toggle-all-btn" id="hide-vsq-answers">Hide All VSQ Answers</button>
+            </div>
+            
+            <div id="vsq-container">
+                <div class="vsq-question">
+                    <div class="question-content">Author of The Rattrap?</div>
+                    <button class="show-answer-btn" data-target="vsq1-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq1-answer">
+                        <p><strong>Answer:</strong> Selma Lagerlöf</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">What did the peddler sell?</div>
+                    <button class="show-answer-btn" data-target="vsq2-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq2-answer">
+                        <p><strong>Answer:</strong> Rattraps</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Amount stolen by peddler?</div>
+                    <button class="show-answer-btn" data-target="vsq3-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq3-answer">
+                        <p><strong>Answer:</strong> Thirty kronor</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Who showed kindness?</div>
+                    <button class="show-answer-btn" data-target="vsq4-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq4-answer">
+                        <p><strong>Answer:</strong> Edla Willmansson</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Meaning of rattrap?</div>
+                    <button class="show-answer-btn" data-target="vsq5-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq5-answer">
+                        <p><strong>Answer:</strong> World's temptations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part D: Short Answer Questions -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-align-left"></i>
+                </div>
+                <h2>PART D: Short Answer Questions (5)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-short-answers">Show All Short Answers</button>
+                <button class="toggle-all-btn" id="hide-short-answers">Hide All Short Answers</button>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-1"></i> Why did the peddler think the world was a rattrap?</h3>
+                <button class="show-answer-btn" data-target="short1-answer">Show Answer</button>
+                <div class="answer-content" id="short1-answer">
+                    <p><strong>Answer:</strong> The peddler believed the world offered temptations like wealth and comfort that trap people. Once trapped, escape becomes difficult. His belief reflects his bitter experiences and cynical outlook on life.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-2"></i> Why did the peddler steal the crofter's money?</h3>
+                <button class="show-answer-btn" data-target="short2-answer">Show Answer</button>
+                <div class="answer-content" id="short2-answer">
+                    <p><strong>Answer:</strong> The peddler was tempted by the thirty kronor shown by the crofter. Poverty and greed led him to steal the money, proving his own theory of the world as a rattrap.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-3"></i> How did Edla treat the peddler?</h3>
+                <button class="show-answer-btn" data-target="short3-answer">Show Answer</button>
+                <div class="answer-content" id="short3-answer">
+                    <p><strong>Answer:</strong> Edla treated the peddler with warmth and respect. She invited him to celebrate Christmas, gave him food and clothes, and treated him as a guest, not as a criminal.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-4"></i> What change occurred in the peddler?</h3>
+                <button class="show-answer-btn" data-target="short4-answer">Show Answer</button>
+                <div class="answer-content" id="short4-answer">
+                    <p><strong>Answer:</strong> The peddler transformed from a thief into a reformed man. Edla's kindness awakened his conscience, and he returned the stolen money with an apology.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-5"></i> What is the message of The Rattrap?</h3>
+                <button class="show-answer-btn" data-target="short5-answer">Show Answer</button>
+                <div class="answer-content" id="short5-answer">
+                    <p><strong>Answer:</strong> The story teaches that kindness and compassion have the power to change people. Forgiveness and love can redeem even those who have fallen into wrongdoing.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part E: Long Answer Questions -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2>PART E: Long Answer Questions (3)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-long-answers">Show All Long Answers</button>
+                <button class="toggle-all-btn" id="hide-long-answers">Hide All Long Answers</button>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-1"></i> Describe the peddler's philosophy of life.</h3>
+                <button class="show-answer-btn" data-target="long1-answer">Show Answer</button>
+                <div class="answer-content" id="long1-answer">
+                    <p><strong>Answer:</strong> The peddler believes that the world is like a giant rattrap set with temptations such as money and comfort. People are lured by these attractions and become trapped, unable to escape. His philosophy is shaped by his poverty and hardships. Ironically, he himself becomes trapped when he steals the crofter's money. The philosophy highlights human weakness and moral failure. However, the story also shows that compassion can free people from these traps.</p>
+                </div>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-2"></i> Discuss Edla Willmansson's role in transforming the peddler.</h3>
+                <button class="show-answer-btn" data-target="long2-answer">Show Answer</button>
+                <div class="answer-content" id="long2-answer">
+                    <p><strong>Answer:</strong> Edla plays a crucial role in the peddler's transformation. Unlike others, she treats him with kindness and dignity. Even after learning the truth about his identity, she allows him to stay for Christmas. Her compassion awakens his conscience, leading him to return the stolen money and apologise. Edla represents goodness and humanity, proving that empathy can reform even the most hardened individuals.</p>
+                </div>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-3"></i> Explain the theme of The Rattrap.</h3>
+                <button class="show-answer-btn" data-target="long3-answer">Show Answer</button>
+                <div class="answer-content" id="long3-answer">
+                    <p><strong>Answer:</strong> The Rattrap explores themes of temptation, guilt, redemption, and human kindness. It shows how material temptations trap people into wrongdoing. At the same time, the story highlights the redemptive power of compassion. Through Edla's kindness, the peddler realises his mistake and reforms himself. The story teaches that understanding and forgiveness can bring positive change in human lives.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Score Summary -->
+        <div class="score-summary">
+            <h3>Your MCQ Score</h3>
+            <p>Based on your answers for Multiple Choice Questions only</p>
+            <div class="score-value" id="score-value">0/20</div>
+            <p id="score-message">Start answering MCQs to see your score!</p>
+            <button class="reset-btn" id="reset-btn"><i class="fas fa-redo"></i> Reset MCQ Answers</button>
+        </div>
+        
+        <footer>
+            <p>Interactive Quiz based on "The Rattrap" by Selma Lagerlöf from Class 12 English Flamingo</p>
+            <p>Educational Resource for Literature Students</p>
+        </footer>
+    </div>
+
+    <script>
+        // Quiz data for The Rattrap
+        const mcqData = [
+            {
+                question: "Who is the author of The Rattrap?",
+                options: ["A. Selma Lagerlöf", "B. Pearl S. Buck", "C. Anees Jung", "D. John Steinbeck"],
+                correct: 0,
+                answerText: "A. Selma Lagerlöf"
+            },
+            {
+                question: "Who is the central character of the story?",
+                options: ["A. Edla Willmansson", "B. Captain von Stahle", "C. A peddler", "D. Ironmaster"],
+                correct: 2,
+                answerText: "C. A peddler"
+            },
+            {
+                question: "What did the peddler sell?",
+                options: ["A. Toys", "B. Rattraps", "C. Iron tools", "D. Baskets"],
+                correct: 1,
+                answerText: "B. Rattraps"
+            },
+            {
+                question: "Why was the peddler poor?",
+                options: ["A. He was lazy", "B. He had no home", "C. He had no permanent work", "D. He was sick"],
+                correct: 2,
+                answerText: "C. He had no permanent work"
+            },
+            {
+                question: "What theory does the peddler believe in?",
+                options: ["A. Karma", "B. Fate", "C. World is a rattrap", "D. Destiny"],
+                correct: 2,
+                answerText: "C. World is a rattrap"
+            },
+            {
+                question: "Why did the peddler steal money?",
+                options: ["A. Hunger", "B. Greed", "C. Temptation", "D. Anger"],
+                correct: 2,
+                answerText: "C. Temptation"
+            },
+            {
+                question: "How much money did the peddler steal?",
+                options: ["A. 10 kronor", "B. 20 kronor", "C. 30 kronor", "D. 40 kronor"],
+                correct: 2,
+                answerText: "C. 30 kronor"
+            },
+            {
+                question: "Where did the peddler hide the stolen money?",
+                options: ["A. Pocket", "B. Under a tree", "C. In the forest", "D. In the rattrap"],
+                correct: 3,
+                answerText: "D. In the rattrap"
+            },
+            {
+                question: "Who invited the peddler to the manor house?",
+                options: ["A. Edla", "B. Ironmaster", "C. Crofter", "D. Blacksmith"],
+                correct: 1,
+                answerText: "B. Ironmaster"
+            },
+            {
+                question: "Why did the Ironmaster invite him?",
+                options: ["A. Charity", "B. Mistook him for an old acquaintance", "C. To help him", "D. To punish him"],
+                correct: 1,
+                answerText: "B. Mistook him for an old acquaintance"
+            },
+            {
+                question: "Who showed kindness to the peddler?",
+                options: ["A. Ironmaster", "B. Crofter", "C. Edla Willmansson", "D. Blacksmith"],
+                correct: 2,
+                answerText: "C. Edla Willmansson"
+            },
+            {
+                question: "What gift did the peddler leave for Edla?",
+                options: ["A. A ring", "B. A letter and money", "C. A book", "D. A rattrap only"],
+                correct: 1,
+                answerText: "B. A letter and money"
+            },
+            {
+                question: "What was written in the letter?",
+                options: ["A. Apology", "B. Confession", "C. Gratitude", "D. All of these"],
+                correct: 3,
+                answerText: "D. All of these"
+            },
+            {
+                question: "What changed the peddler's heart?",
+                options: ["A. Fear", "B. Hunger", "C. Edla's kindness", "D. Threat"],
+                correct: 2,
+                answerText: "C. Edla's kindness"
+            },
+            {
+                question: "What did Edla call the peddler?",
+                options: ["A. Criminal", "B. Tramp", "C. Captain", "D. Guest"],
+                correct: 3,
+                answerText: "D. Guest"
+            },
+            {
+                question: "Why did Edla insist he stay for Christmas?",
+                options: ["A. Pity", "B. Loneliness", "C. Compassion", "D. Curiosity"],
+                correct: 2,
+                answerText: "C. Compassion"
+            },
+            {
+                question: "What symbolises the 'rattrap'?",
+                options: ["A. Poverty", "B. World full of temptations", "C. Crime", "D. Forest"],
+                correct: 1,
+                answerText: "B. World full of temptations"
+            },
+            {
+                question: "The peddler's transformation shows the power of",
+                options: ["A. Money", "B. Fear", "C. Love and kindness", "D. Education"],
+                correct: 2,
+                answerText: "C. Love and kindness"
+            },
+            {
+                question: "What kind of story is The Rattrap?",
+                options: ["A. Detective", "B. Autobiographical", "C. Moral story", "D. Tragedy"],
+                correct: 2,
+                answerText: "C. Moral story"
+            },
+            {
+                question: "The theme of the story is",
+                options: ["A. Poverty", "B. Forgiveness and redemption", "C. Crime", "D. Adventure"],
+                correct: 1,
+                answerText: "B. Forgiveness and redemption"
+            }
+        ];
+
+        // Track user answers for MCQs only
+        let userAnswers = {
+            mcq: Array(mcqData.length).fill(null)
+        };
+
+        // DOM Elements
+        const mcqContainer = document.getElementById('mcq-container');
+        const scoreValue = document.getElementById('score-value');
+        const scoreMessage = document.getElementById('score-message');
+        const resetBtn = document.getElementById('reset-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const mcqCounter = document.getElementById('mcq-counter');
+
+        // Initialize the quiz
+        function initQuiz() {
+            renderMCQs();
+            updateScore();
+            updateProgress();
+            
+            // Add event listener to reset button
+            resetBtn.addEventListener('click', resetMCQAnswers);
+            
+            // Add event listeners to show/hide answer buttons
+            setupAnswerButtons();
+        }
+
+        // Render MCQs
+        function renderMCQs() {
+            mcqContainer.innerHTML = '';
+            
+            mcqData.forEach((mcq, index) => {
+                const mcqElement = document.createElement('div');
+                mcqElement.className = 'mcq-question';
+                mcqElement.id = `mcq-${index}`;
+                
+                let optionsHTML = '';
+                mcq.options.forEach((option, optIndex) => {
+                    const letter = String.fromCharCode(65 + optIndex);
+                    let optionClass = 'option';
+                    if (userAnswers.mcq[index] === optIndex) {
+                        optionClass += ' selected';
+                        if (optIndex === mcq.correct) {
+                            optionClass += ' correct';
+                        } else {
+                            optionClass += ' wrong';
+                        }
+                    }
+                    
+                    optionsHTML += `
+                        <div class="${optionClass}" data-index="${optIndex}" data-question="${index}">
+                            <span class="option-letter">${letter}</span>
+                            <span class="option-text">${option}</span>
+                        </div>
+                    `;
+                });
+                
+                mcqElement.innerHTML = `
+                    <div class="question-text">${mcq.question} <span class="question-counter">${index + 1}/20</span></div>
+                    <div class="options">${optionsHTML}</div>
+                    ${userAnswers.mcq[index] !== null ? 
+                        `<div class="feedback ${userAnswers.mcq[index] === mcq.correct ? 'correct-feedback' : 'wrong-feedback'}">
+                            <i class="fas ${userAnswers.mcq[index] === mcq.correct ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                            ${userAnswers.mcq[index] === mcq.correct ? 
+                                'Correct!' : 
+                                `Incorrect. The correct answer is: ${mcq.answerText}`
+                            }
+                        </div>` : ''
+                    }
+                `;
+                
+                mcqContainer.appendChild(mcqElement);
+            });
+            
+            // Add event listeners to MCQ options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleMCQSelection);
+            });
+            
+            // Update MCQ counter
+            updateMCQCounter();
+        }
+
+        // Handle MCQ selection
+        function handleMCQSelection(event) {
+            const optionElement = event.currentTarget;
+            const questionIndex = parseInt(optionElement.getAttribute('data-question'));
+            const selectedIndex = parseInt(optionElement.getAttribute('data-index'));
+            
+            // Update user answer
+            userAnswers.mcq[questionIndex] = selectedIndex;
+            
+            // Re-render the MCQ section to show feedback
+            renderMCQs();
+            updateScore();
+            updateProgress();
+        }
+
+        // Setup show/hide answer buttons
+        function setupAnswerButtons() {
+            // Individual show answer buttons
+            document.querySelectorAll('.show-answer-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const answerContent = document.getElementById(targetId);
+                    
+                    if (answerContent.classList.contains('show')) {
+                        answerContent.classList.remove('show');
+                        this.textContent = 'Show Answer';
+                    } else {
+                        answerContent.classList.add('show');
+                        this.textContent = 'Hide Answer';
+                    }
+                });
+            });
+            
+            // Show all case answers
+            document.getElementById('toggle-case-answers').addEventListener('click', function() {
+                document.querySelectorAll('#case-container .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('#case-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all case answers
+            document.getElementById('hide-case-answers').addEventListener('click', function() {
+                document.querySelectorAll('#case-container .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('#case-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all VSQ answers
+            document.getElementById('toggle-vsq-answers').addEventListener('click', function() {
+                document.querySelectorAll('#vsq-container .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('#vsq-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all VSQ answers
+            document.getElementById('hide-vsq-answers').addEventListener('click', function() {
+                document.querySelectorAll('#vsq-container .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('#vsq-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all short answers
+            document.getElementById('toggle-short-answers').addEventListener('click', function() {
+                document.querySelectorAll('.short-answer .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('.short-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all short answers
+            document.getElementById('hide-short-answers').addEventListener('click', function() {
+                document.querySelectorAll('.short-answer .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.short-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all long answers
+            document.getElementById('toggle-long-answers').addEventListener('click', function() {
+                document.querySelectorAll('.long-answer .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('.long-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all long answers
+            document.getElementById('hide-long-answers').addEventListener('click', function() {
+                document.querySelectorAll('.long-answer .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.long-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+        }
+
+        // Update score display
+        function updateScore() {
+            let totalQuestions = mcqData.length;
+            let correctAnswers = 0;
+            
+            // Count MCQ answers
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    if (userAnswers.mcq[index] === mcq.correct) {
+                        correctAnswers++;
+                    }
+                }
+            });
+            
+            // Update score display
+            scoreValue.textContent = `${correctAnswers}/${totalQuestions}`;
+            
+            // Update message based on score
+            if (correctAnswers === 0) {
+                scoreMessage.textContent = "Start answering MCQs to see your score!";
+                scoreValue.style.color = "#795548";
+            } else if (correctAnswers === totalQuestions) {
+                scoreMessage.textContent = "Perfect! You've mastered all MCQs about The Rattrap!";
+                scoreValue.style.color = "#388e3c";
+            } else if (correctAnswers >= totalQuestions * 0.8) {
+                scoreMessage.textContent = "Excellent! You understand the story very well!";
+                scoreValue.style.color = "#795548";
+            } else if (correctAnswers >= totalQuestions * 0.6) {
+                scoreMessage.textContent = "Good job! You have a solid understanding of the chapter.";
+                scoreValue.style.color = "#795548";
+            } else if (correctAnswers >= totalQuestions * 0.4) {
+                scoreMessage.textContent = "Not bad, but you might want to review the chapter.";
+                scoreValue.style.color = "#8d6e63";
+            } else {
+                scoreMessage.textContent = "Keep trying! Review the story and try again.";
+                scoreValue.style.color = "#d32f2f";
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            let totalQuestions = mcqData.length;
+            let answeredQuestions = 0;
+            
+            // Count answered MCQs
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    answeredQuestions++;
+                }
+            });
+            
+            // Update progress bar width
+            const percentage = (answeredQuestions / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        // Update MCQ counter
+        function updateMCQCounter() {
+            let correctMCQs = 0;
+            let answeredMCQs = 0;
+            
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    answeredMCQs++;
+                    if (userAnswers.mcq[index] === mcq.correct) {
+                        correctMCQs++;
+                    }
+                }
+            });
+            
+            mcqCounter.textContent = `${correctMCQs}/${answeredMCQs}`;
+        }
+
+        // Reset MCQ answers only
+        function resetMCQAnswers() {
+            if (confirm("Are you sure you want to reset all MCQ answers? This cannot be undone.")) {
+                // Reset user answers
+                userAnswers.mcq = Array(mcqData.length).fill(null);
+                
+                // Re-render the MCQ section
+                renderMCQs();
+                updateScore();
+                updateProgress();
+                
+                // Reset score color
+                scoreValue.style.color = "#795548";
+            }
+        }
+
+        // Initialize the quiz when the page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

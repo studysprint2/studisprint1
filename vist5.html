@@ -1,0 +1,1014 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 English - The Enemy Chapter Worksheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .container {
+            flex: 1;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .page-navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .nav-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .nav-btn.active {
+            background-color: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(44, 62, 80, 0.4);
+        }
+        
+        .page {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .question-counter {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        /* MCQ Styling */
+        .mcq-container {
+            margin-bottom: 30px;
+        }
+        
+        .mcq-question {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .mcq-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .option {
+            background-color: #f1f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #d1e7ff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .option:hover {
+            background-color: #e3f2fd;
+            border-color: #3498db;
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .option.wrong {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .option.locked {
+            pointer-events: none;
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .correct-result {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        
+        .wrong-result {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        
+        /* Case-based, Short, Long Answer Styling */
+        .answer-container {
+            margin-bottom: 30px;
+        }
+        
+        .question-text {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #e67e22;
+        }
+        
+        .toggle-btn {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-btn:hover {
+            background-color: #d35400;
+        }
+        
+        .answer {
+            background-color: #fff8e1;
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            margin-top: 5px;
+            display: none;
+            border-left: 5px solid #f1c40f;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+        
+        .answer.visible {
+            display: block;
+        }
+        
+        .short-answer .question-text {
+            border-left-color: #9b59b6;
+        }
+        
+        .short-answer .toggle-btn {
+            background-color: #9b59b6;
+        }
+        
+        .short-answer .toggle-btn:hover {
+            background-color: #8e44ad;
+        }
+        
+        .short-answer .answer {
+            border-left-color: #8e44ad;
+        }
+        
+        .long-answer .question-text {
+            border-left-color: #1abc9c;
+        }
+        
+        .long-answer .toggle-btn {
+            background-color: #1abc9c;
+        }
+        
+        .long-answer .toggle-btn:hover {
+            background-color: #16a085;
+        }
+        
+        .long-answer .answer {
+            border-left-color: #16a085;
+        }
+        
+        /* Footer Styling */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            color: white;
+            padding: 30px 0 20px;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        .contact-info p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #3498db;
+        }
+        
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #25D366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(37, 211, 102, 0.3);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .page {
+                padding: 20px;
+            }
+            
+            .mcq-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-section {
+                width: 100%;
+            }
+        }
+        
+        .note {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-book-open"></i> Class 12 English - Flamingo</h1>
+            <p class="subtitle">Chapter 4: The Enemy by Pearl S. Buck - Interactive Worksheet</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="page-navigation">
+            <button class="nav-btn active" data-page="page1">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-page="page2">Case-Based & Very Short Answers</button>
+            <button class="nav-btn" data-page="page3">Short & Long Answer Questions</button>
+        </div>
+        
+        <!-- Page 1: MCQs -->
+        <div id="page1" class="page active">
+            <h2>Multiple Choice Questions <span class="question-counter">20 Questions</span></h2>
+            <p>Click on an option to select your answer. The correct answer will be shown immediately.</p>
+            
+            <!-- MCQ 1 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>1. Who is the author of The Enemy?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. John Steinbeck</div>
+                    <div class="option" data-correct="true">B. Pearl S. Buck</div>
+                    <div class="option" data-correct="false">C. Ernest Hemingway</div>
+                    <div class="option" data-correct="false">D. Katherine Mansfield</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 2 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>2. Who is the protagonist of the story?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Hana</div>
+                    <div class="option" data-correct="true">B. Sadao</div>
+                    <div class="option" data-correct="false">C. Yumi</div>
+                    <div class="option" data-correct="false">D. Tom</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 3 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>3. Dr. Sadao was a</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Teacher</div>
+                    <div class="option" data-correct="false">B. Soldier</div>
+                    <div class="option" data-correct="true">C. Surgeon</div>
+                    <div class="option" data-correct="false">D. Farmer</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 4 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>4. The story is set during</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. World War I</div>
+                    <div class="option" data-correct="true">B. World War II</div>
+                    <div class="option" data-correct="false">C. Civil War</div>
+                    <div class="option" data-correct="false">D. Cold War</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 5 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>5. Who finds the wounded soldier?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Hana alone</div>
+                    <div class="option" data-correct="false">B. Servants</div>
+                    <div class="option" data-correct="true">C. Sadao and Hana</div>
+                    <div class="option" data-correct="false">D. Neighbors</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 6 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>6. The wounded man belonged to which country?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Japan</div>
+                    <div class="option" data-correct="false">B. Germany</div>
+                    <div class="option" data-correct="true">C. America</div>
+                    <div class="option" data-correct="false">D. China</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 7 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>7. Why was Sadao conflicted?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Fear of arrest</div>
+                    <div class="option" data-correct="true">B. Moral duty vs patriotism</div>
+                    <div class="option" data-correct="false">C. Lack of skill</div>
+                    <div class="option" data-correct="false">D. Family pressure</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 8 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>8. What profession did Hana have?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Doctor</div>
+                    <div class="option" data-correct="false">B. Nurse</div>
+                    <div class="option" data-correct="true">C. Homemaker</div>
+                    <div class="option" data-correct="false">D. Teacher</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 9 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>9. The servants left Sadao's house because</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Fear of war</div>
+                    <div class="option" data-correct="false">B. Hunger</div>
+                    <div class="option" data-correct="true">C. Helping enemy</div>
+                    <div class="option" data-correct="false">D. Low wages</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 10 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>10. Sadao reported the prisoner to</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Police</div>
+                    <div class="option" data-correct="false">B. Army</div>
+                    <div class="option" data-correct="true">C. General</div>
+                    <div class="option" data-correct="false">D. Emperor</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 11 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>11. What decision did the General take?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Arrest Sadao</div>
+                    <div class="option" data-correct="false">B. Kill the prisoner</div>
+                    <div class="option" data-correct="false">C. Send soldiers</div>
+                    <div class="option" data-correct="true">D. Do nothing</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 12 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>12. Why didn't the General send assassins?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="true">A. Forgot</div>
+                    <div class="option" data-correct="false">B. Illness</div>
+                    <div class="option" data-correct="false">C. Changed mind</div>
+                    <div class="option" data-correct="false">D. Fear</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 13 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>13. How did Sadao help the soldier escape?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="true">A. Boat</div>
+                    <div class="option" data-correct="false">B. Horse</div>
+                    <div class="option" data-correct="false">C. Tunnel</div>
+                    <div class="option" data-correct="false">D. Ship</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 14 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>14. What did Sadao give the soldier?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Money</div>
+                    <div class="option" data-correct="true">B. Map and food</div>
+                    <div class="option" data-correct="false">C. Clothes only</div>
+                    <div class="option" data-correct="false">D. Weapon</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 15 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>15. The story highlights the theme of</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Love</div>
+                    <div class="option" data-correct="false">B. Patriotism</div>
+                    <div class="option" data-correct="true">C. Humanity vs war</div>
+                    <div class="option" data-correct="false">D. Adventure</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 16 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>16. Hana supported Sadao by</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Calling police</div>
+                    <div class="option" data-correct="false">B. Cooking</div>
+                    <div class="option" data-correct="true">C. Nursing the soldier</div>
+                    <div class="option" data-correct="false">D. Hiding money</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 17 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>17. The General was</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Cruel</div>
+                    <div class="option" data-correct="false">B. Kind</div>
+                    <div class="option" data-correct="true">C. Selfish</div>
+                    <div class="option" data-correct="false">D. Honest</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 18 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>18. Sadao studied medicine in</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Japan</div>
+                    <div class="option" data-correct="true">B. America</div>
+                    <div class="option" data-correct="false">C. England</div>
+                    <div class="option" data-correct="false">D. China</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 19 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>19. The enemy soldier finally</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Died</div>
+                    <div class="option" data-correct="false">B. Was arrested</div>
+                    <div class="option" data-correct="true">C. Escaped</div>
+                    <div class="option" data-correct="false">D. Stayed</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 20 -->
+            <div class="mcq-container">
+                <div class="mcq-question">
+                    <strong>20. The message of the story is</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. War is glory</div>
+                    <div class="option" data-correct="true">B. Humanity above hatred</div>
+                    <div class="option" data-correct="false">C. Obey authority</div>
+                    <div class="option" data-correct="false">D. Fear enemies</div>
+                </div>
+                <div class="result"></div>
+            </div>
+        </div>
+        
+        <!-- Page 2: Case-Based & Very Short Answers -->
+        <div id="page2" class="page">
+            <h2>Case-Based Questions <span class="question-counter">2 Questions</span></h2>
+            
+            <!-- Case-Based Question 1 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>Case-Based Question 1:</strong> Dr. Sadao finds a wounded enemy soldier on the beach. Why does Sadao decide to save him despite the risk?
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Sadao saves the soldier because his duty as a doctor comes before patriotism. Humanity and medical ethics compel him to help a dying person regardless of nationality.
+                </div>
+            </div>
+            
+            <!-- Case-Based Question 2 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>Case-Based Question 2:</strong> The General promises to send assassins but fails to do so. What does this reveal about the General's character?
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> The General is selfish and unreliable. He prioritizes his own comfort over duty, exposing hypocrisy within authority figures during war.
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 40px;">Very Short Answer Questions <span class="question-counter">5 Questions</span></h2>
+            
+            <!-- Very Short Answer 1 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>1. Author of the story?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Pearl S. Buck
+                </div>
+            </div>
+            
+            <!-- Very Short Answer 2 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>2. Dr. Sadao's profession?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Surgeon
+                </div>
+            </div>
+            
+            <!-- Very Short Answer 3 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>3. Enemy soldier's nationality?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> American
+                </div>
+            </div>
+            
+            <!-- Very Short Answer 4 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>4. Theme of the story?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Humanity vs war
+                </div>
+            </div>
+            
+            <!-- Very Short Answer 5 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>5. Hana is Sadao's</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Wife
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 3: Short & Long Answer Questions -->
+        <div id="page3" class="page">
+            <h2>Short Answer Questions <span class="question-counter">5 Questions</span></h2>
+            
+            <!-- Short Answer 1 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>1. Why was Sadao in danger for helping the soldier?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Helping an enemy soldier was considered treason during wartime. Sadao risked arrest, loss of reputation, and even death for choosing humanity over national loyalty.
+                </div>
+            </div>
+            
+            <!-- Short Answer 2 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>2. How did Hana contribute to saving the soldier?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Hana overcame fear and disgust to nurse the wounded soldier. She helped clean wounds and assisted Sadao, showing compassion and courage.
+                </div>
+            </div>
+            
+            <!-- Short Answer 3 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>3. Why did the servants leave the house?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> The servants believed helping an enemy was wrong and dishonorable. Their loyalty to the nation overpowered their loyalty to Sadao.
+                </div>
+            </div>
+            
+            <!-- Short Answer 4 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>4. What inner conflict does Sadao face?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Sadao struggles between his role as a loyal Japanese citizen and his ethical duty as a doctor. This conflict forms the core of the story.
+                </div>
+            </div>
+            
+            <!-- Short Answer 5 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>5. How does the story criticize war?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> The story shows war creates hatred and moral confusion. It highlights how humanity suffers when national pride overrides compassion.
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 40px;">Long Answer Questions <span class="question-counter">3 Questions</span></h2>
+            
+            <!-- Long Answer 1 -->
+            <div class="answer-container long-answer">
+                <div class="question-text">
+                    <strong>1. Discuss the theme of humanity in The Enemy.</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> The story emphasizes that humanity transcends national boundaries. Dr. Sadao risks his life to save an enemy soldier, proving that compassion is universal. Despite social pressure and legal danger, he follows his conscience. The narrative suggests that war dehumanizes people, but moral courage restores dignity and hope.
+                </div>
+            </div>
+            
+            <!-- Long Answer 2 -->
+            <div class="answer-container long-answer">
+                <div class="question-text">
+                    <strong>2. Analyze Dr. Sadao's character.</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Dr. Sadao is intelligent, ethical, and courageous. As a doctor, he values life above politics. Though loyal to his country, he cannot abandon a dying man. His actions reveal strength of character and deep humanity.
+                </div>
+            </div>
+            
+            <!-- Long Answer 3 -->
+            <div class="answer-container long-answer">
+                <div class="question-text">
+                    <strong>3. How does the story present the conflict between duty and conscience?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> The story portrays a powerful struggle between national duty and moral conscience. While the law demands loyalty to the nation, Sadao's conscience urges him to save a life. His choice highlights the supremacy of human values over blind patriotism.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section contact-info">
+                <h3>Contact Information</h3>
+                <p><i class="fas fa-envelope"></i> Email: alaxrad60@gmail.com</p>
+                <p><i class="fas fa-phone-alt"></i> Phone: 63917 44080</p>
+                <a href="https://wa.me/6391744080" class="whatsapp-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Connect on WhatsApp
+                </a>
+            </div>
+            
+            <div class="footer-section footer-links">
+                <h3>Quick Links</h3>
+                <a href="#page1" class="page-link"><i class="fas fa-list-ol"></i> MCQ Questions</a>
+                <a href="#page2" class="page-link"><i class="fas fa-file-alt"></i> Case-Based & Very Short</a>
+                <a href="#page3" class="page-link"><i class="fas fa-pen-fancy"></i> Short & Long Answers</a>
+                <a href="#" id="homepage-link"><i class="fas fa-home"></i> Homepage</a>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 Class 12 English - The Enemy Worksheet. For educational purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show selected page
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+                
+                // Scroll to top when changing pages
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            });
+        });
+        
+        // MCQ Functionality
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const container = this.closest('.mcq-container');
+                const resultDiv = container.querySelector('.result');
+                
+                // Remove all previous selections
+                container.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'wrong', 'locked');
+                });
+                
+                // Lock all options
+                container.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('locked');
+                });
+                
+                // Check if correct
+                if (this.getAttribute('data-correct') === 'true') {
+                    this.classList.add('correct');
+                    resultDiv.textContent = "✓ Correct! Well done.";
+                    resultDiv.className = "result correct-result";
+                    resultDiv.style.display = 'block';
+                } else {
+                    this.classList.add('wrong');
+                    
+                    // Find correct answer
+                    const correctOption = container.querySelector('.option[data-correct="true"]');
+                    correctOption.classList.add('correct');
+                    
+                    resultDiv.innerHTML = `✗ Incorrect. The correct answer is: <strong>${correctOption.textContent}</strong>`;
+                    resultDiv.className = "result wrong-result";
+                    resultDiv.style.display = 'block';
+                }
+            });
+        });
+        
+        // Show/Hide Answer Buttons
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                if (answer.classList.contains('visible')) {
+                    answer.classList.remove('visible');
+                    icon.className = 'fas fa-eye';
+                    this.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                } else {
+                    answer.classList.add('visible');
+                    icon.className = 'fas fa-eye-slash';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                }
+            });
+        });
+        
+        // Footer links for page navigation
+        document.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('href').substring(1);
+                
+                // Update navigation buttons
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-page') === pageId) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // Show selected page
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(pageId).classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            });
+        });
+        
+        // Homepage link
+        document.getElementById('homepage-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('This would navigate to the homepage in a real application.');
+        });
+    </script>
+</body>
+</html>
+```

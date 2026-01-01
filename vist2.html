@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 English - The Tiger King Q&A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #fffaf0 0%, #ffe8cc 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(to right, #c45100, #e67e22);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-info {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn:hover {
+            background: #c45100;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-btn.active {
+            background: #2c3e50;
+        }
+        
+        .nav-buttons-bottom {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0 30px 0;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #c45100;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: #2c3e50;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #c45100;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background: #f8f9fa;
+            border-color: #a0aec0;
+        }
+        
+        .option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+            animation: pulse 0.5s;
+        }
+        
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #fde8e8;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #e67e22;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background: #d5f4e6;
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background: #fde8e8;
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            display: block;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .answer-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .answer-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn i {
+            margin-right: 8px;
+        }
+        
+        .answer-content {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+        
+        .answer-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        footer {
+            background: #c45100;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            padding: 10px 15px;
+        }
+        
+        .contact-link {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .contact-link:hover {
+            color: #f1c40f;
+            text-decoration: underline;
+        }
+        
+        .whatsapp-link {
+            background: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-link:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .whatsapp-link i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons, .nav-buttons-bottom {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 90%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+            
+            .footer-section {
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px 15px;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Class 12 English – Flamingo</h1>
+            <div class="chapter-info">Chapter 2: The Tiger King (Kalki) - Interactive Q&A</div>
+        </header>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+        
+        <!-- MCQ Section -->
+        <section id="mcq-section" class="section active">
+            <h2><i class="fas fa-question-circle"></i> Multiple Choice Questions (20 MCQs)</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-container">
+                <div class="question">1. Who is the author of The Tiger King?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> R.K. Narayan
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Kalki
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Mulk Raj Anand
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Khushwant Singh
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-container">
+                <div class="question">2. The story is a</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Tragedy
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Satire
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Biography
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Myth
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            <!-- Question 3 -->
+<div class="question-container">
+    <div class="question">3. The Maharaja was known as</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> King of Pratibandapuram
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Tiger King
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Lion King
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Forest King
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 4 -->
+<div class="question-container">
+    <div class="question">4. What prophecy was made about the king?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> He would rule long
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> He would die by a tiger
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> He would lose his kingdom
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> He would be rich
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 5 -->
+<div class="question-container">
+    <div class="question">5. How old was the Maharaja when he killed his first tiger?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Ten
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Fifteen
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Twenty
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Thirty
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 6 -->
+<div class="question-container">
+    <div class="question">6. What obsession did the king develop?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Collecting jewels
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Hunting tigers
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Building palaces
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Reading books
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 7 -->
+<div class="question-container">
+    <div class="question">7. How many tigers did the king vow to kill?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> 50
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> 70
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> 99
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> 100
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 8 -->
+<div class="question-container">
+    <div class="question">8. Who supported the king in tiger hunting?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> British officer
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Diwan
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Queen
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Army
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 9 -->
+<div class="question-container">
+    <div class="question">9. Why did the king marry?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Love
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Politics
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Tigers in another state
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Wealth
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 10 -->
+<div class="question-container">
+    <div class="question">10. Which animal actually caused the king's death?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Real tiger
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Lion
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Wooden tiger
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Leopard
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 11 -->
+<div class="question-container">
+    <div class="question">11. The wooden tiger injured the king's</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Leg
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Finger
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Arm
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Chest
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 12 -->
+<div class="question-container">
+    <div class="question">12. Who performed the surgery?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Famous doctor
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Royal physician
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> British surgeon
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">D</span> Inexperienced doctors
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+            <!-- Question 13 -->
+            <div class="question-container">
+                <div class="question">13. The story criticizes</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Wildlife
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> British rule
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Autocracy and pride
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Nature
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 14 -->
+            <div class="question-container">
+                <div class="question">14. Why were tigers relocated to the state?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Conservation
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Tourism
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> King's obsession
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Trade
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 15 -->
+            <div class="question-container">
+                <div class="question">15. The king killed tigers to prove</div>
+                <div class="options">
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">A</span> Courage
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Wealth
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Intelligence
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Fate wrong
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 16 -->
+            <div class="question-container">
+                <div class="question">16. The story highlights the theme of</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Destiny
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Power and pride
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Greed
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Freedom
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 17 -->
+            <div class="question-container">
+                <div class="question">17. Who was punished for the missing tiger?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Diwan
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Hunter
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Forest officer
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">D</span> Soldier
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 18 -->
+            <div class="question-container">
+                <div class="question">18. The tone of the story is</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Serious
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Humorous and ironic
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Tragic
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Romantic
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 19 -->
+            <div class="question-container">
+                <div class="question">19. The king's death proves</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Human weakness
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Power of doctors
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Prophecy false
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">D</span> Fate unavoidable
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 20 -->
+            <div class="question-container">
+                <div class="question">20. The moral of the story is</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Respect nature
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Pride leads to fall
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Power brings happiness
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Tigers are dangerous
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </section>
+        
+        <!-- Case-Based Questions Section -->
+        <section id="case-based-section" class="section">
+            <h2><i class="fas fa-clipboard-list"></i> Case-Based Questions</h2>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 1:</strong> The astrologer predicted that the king would die by a tiger.</div>
+                <div class="question">How did the king react to this prediction?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The king became obsessed with killing tigers to disprove the prophecy. His arrogance and belief in power led him to challenge destiny instead of understanding its deeper meaning.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 2:</strong> The king was injured by a wooden tiger while playing with his son.</div>
+                <div class="question">What irony does this situation highlight?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The irony is that after killing 99 real tigers, the king dies because of a wooden tiger. This shows the inevitability of fate and mocks human pride.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Very Short Questions Section -->
+        <section id="very-short-section" class="section">
+            <h2><i class="fas fa-ellipsis-h"></i> Very Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Author of the story?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Kalki</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. King's title?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Tiger King</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Number of tigers killed?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Ninety-nine</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Cause of death?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Wooden tiger</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. Story type?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Satire</div>
+            </div>
+        </section>
+        
+        <!-- Short Answer Questions Section -->
+        <section id="short-answer-section" class="section">
+            <h2><i class="fas fa-align-left"></i> Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Why did the king start killing tigers?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The king killed tigers to challenge the astrologer's prophecy. His pride and belief in power made him think he could control fate by eliminating the danger.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How does the story satirize autocratic rulers?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The story mocks rulers who misuse power for personal obsession. The king's foolish decisions and cruelty highlight the dangers of unchecked authority.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. What role does the Diwan play?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The Diwan supports the king blindly and helps him continue tiger hunting. He represents loyal officials who enable a ruler's irrational behavior.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. How is irony used in the story?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Irony is central as the king, who feared death by a tiger, is killed by a wooden one. This underlines the unpredictability of fate.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. What message does the author convey?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The author warns against arrogance and misuse of power. Destiny cannot be avoided, and pride often leads to downfall.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Long Answer Questions Section -->
+        <section id="long-answer-section" class="section">
+            <h2><i class="fas fa-align-justify"></i> Long Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Discuss the theme of fate versus free will in The Tiger King.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The story highlights the conflict between fate and human pride. The king believes he can alter destiny by killing tigers. However, his efforts only confirm the prophecy. The wooden tiger ultimately causes his death, proving that fate is unavoidable. Kalki suggests that arrogance blinds humans and leads them to self-destruction.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. Explain how satire is used to criticize authority.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Kalki uses humor and exaggeration to expose the foolishness of absolute power. The king's obsession, senseless killings, and blind advisors reflect how authority can become dangerous when unchecked. The satirical tone makes the criticism effective and memorable.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Describe the significance of the ending.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The ending reinforces the central message that destiny cannot be defeated. The king's death by a wooden tiger is ironic and symbolic. It shows that arrogance, cruelty, and misuse of power ultimately lead to downfall.
+                </div>
+            </div>
+        </section>
+        
+        <div class="nav-buttons-bottom">
+            <button class="nav-btn" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <i class="fas fa-envelope"></i> Contact: 
+                <a href="mailto:alaxrad60@gmail.com" class="contact-link">alaxrad60@gmail.com</a>
+            </div>
+            <div class="footer-section">
+                <i class="fas fa-home"></i> 
+                <a href="#" class="contact-link">Homepage</a>
+            </div>
+            <div class="footer-section">
+                <a href="https://wa.me/6391744080" target="_blank" class="whatsapp-link">
+                    <i class="fab fa-whatsapp"></i> WhatsApp: 63917 44080
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation between sections
+        function navigateToSection(targetId) {
+            // Remove active class from all buttons and sections
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            
+            // Find and activate the correct button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-target') === targetId) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show corresponding section
+            document.getElementById(targetId).classList.add('active');
+            
+            // Reset all MCQ selections when switching sections
+            if (targetId !== 'mcq-section') {
+                resetMCQSelections();
+            }
+            
+            // Scroll to top for better UX
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Setup navigation buttons
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                navigateToSection(targetId);
+            });
+        });
+        
+        // MCQ answer selection logic
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionContainer = this.closest('.question-container');
+                const options = questionContainer.querySelectorAll('.option');
+                const feedback = questionContainer.querySelector('.feedback');
+                
+                // Remove selected class from all options in this question
+                options.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    this.classList.add('incorrect');
+                    
+                    // Find and highlight correct answer
+                    const correctOption = questionContainer.querySelector('.option[data-correct="true"]');
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                    }
+                    
+                    feedback.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect. The right answer is highlighted.';
+                    feedback.className = 'feedback incorrect';
+                }
+               // Disable all options after selection
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                });
+            });
+        });
+        
+        // Show/Hide answer buttons for non-MCQ sections
+        document.querySelectorAll('.answer-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answerContent = this.nextElementSibling;
+                answerContent.classList.toggle('show');
+                
+                // Change button text and icon
+                const icon = this.querySelector('i');
+                if (answerContent.classList.contains('show')) {
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                } else {
+                    this.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                }
+            });
+        });
+        
+        // Function to reset MCQ selections
+        function resetMCQSelections() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.className = 'feedback';
+                feedback.innerHTML = '';
+            });
+        }
+        
+        // Initialize with MCQ section active
+        document.getElementById('mcq-section').classList.add('active');
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add page load animation
+        window.addEventListener('load', function() {
+            document.querySelector('header').style.animation = 'fadeIn 0.8s ease';
+        });
+    </script>
+</body>
+</html>

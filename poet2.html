@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 English - Keeping Quiet Q&A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(to right, #1a5f7a, #2c7da0);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-info {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: #2c7da0;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn:hover {
+            background: #1a5f7a;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-btn.active {
+            background: #e74c3c;
+        }
+        
+        .nav-buttons-bottom {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0 30px 0;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #1a5f7a;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: #e74c3c;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #1a5f7a;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background: #f8f9fa;
+            border-color: #a0aec0;
+        }
+        
+        .option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+            animation: pulse 0.5s;
+        }
+        
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #fde8e8;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #2c7da0;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background: #d5f4e6;
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background: #fde8e8;
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            display: block;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .answer-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .answer-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn i {
+            margin-right: 8px;
+        }
+        
+        .answer-content {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+        
+        .answer-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        footer {
+            background: #1a5f7a;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            padding: 10px 15px;
+        }
+        
+        .contact-link {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .contact-link:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+        }
+        
+        .whatsapp-link {
+            background: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-link:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .whatsapp-link i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons, .nav-buttons-bottom {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 90%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+            
+            .footer-section {
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px 15px;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Class 12 English – Flamingo</h1>
+            <div class="chapter-info">Chapter 2: Keeping Quiet - Interactive Q&A</div>
+        </header>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+        
+        <!-- MCQ Section -->
+        <section id="mcq-section" class="section active">
+            <h2><i class="fas fa-question-circle"></i> Multiple Choice Questions (20 MCQs)</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-container">
+                <div class="question">1. Who is the poet of Keeping Quiet?</div>
+                <div class="options">
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">A</span> Pablo Neruda
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Octavio Paz
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Kamala Das
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Robert Frost
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-container">
+                <div class="question">2. The poem urges people to</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Speak loudly
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Fight wars
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Be silent and introspective
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Travel
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-container">
+                <div class="question">3. What should people count up to?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Ten
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Twelve
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Five
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Twenty
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            <!-- Question 4 -->
+<div class="question-container">
+    <div class="question">4. What does 'keeping quiet' symbolize?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Laziness
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Death
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Reflection and peace
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Fear
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 5 -->
+<div class="question-container">
+    <div class="question">5. The poet advises people to stop</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Breathing
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Thinking
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Speaking and working
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Walking
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 6 -->
+<div class="question-container">
+    <div class="question">6. What kind of silence does the poet want?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Total and permanent
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Momentary and meaningful
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Forced
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Fearful
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 7 -->
+<div class="question-container">
+    <div class="question">7. What does the poet oppose?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Nature
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Communication
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Violence and war
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Education
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 8 -->
+<div class="question-container">
+    <div class="question">8. Which activity symbolizes violence?</div>
+    <div class="options">
+        <div class="option" data-correct="true">
+            <span class="option-letter">A</span> Fishing
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Writing
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Driving
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Teaching
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 9 -->
+<div class="question-container">
+    <div class="question">9. What happens to fishermen in the poem?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> They sing
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> They rest
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> They stop fishing
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> They celebrate
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 10 -->
+<div class="question-container">
+    <div class="question">10. The poet talks about harming</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Mountains
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Animals
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Nature and humans
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Rivers
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 11 -->
+<div class="question-container">
+    <div class="question">11. 'Exotic moment' refers to</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Strange event
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Foreign culture
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Unique moment of peace
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Celebration
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 12 -->
+<div class="question-container">
+    <div class="question">12. The poem promotes</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> War
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Stillness
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Competition
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Speed
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 13 -->
+<div class="question-container">
+    <div class="question">13. Who are 'those who prepare green wars'?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Farmers
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Environmentalists
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Warmongers
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Soldiers
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 14 -->
+<div class="question-container">
+    <div class="question">14. The poet believes silence can bring</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Fear
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Death
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Understanding
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Confusion
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+            <!-- Question 15 -->
+            <div class="question-container">
+                <div class="question">15. The tone of the poem is</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Aggressive
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Peaceful and reflective
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Angry
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Humorous
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 16 -->
+            <div class="question-container">
+                <div class="question">16. 'No truck with death' means</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> No fear of death
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> No relation with death
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Accepting death
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Fighting death
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 17 -->
+            <div class="question-container">
+                <div class="question">17. The poet compares silence to</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Darkness
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Death
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Life and renewal
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Sleep
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 18 -->
+            <div class="question-container">
+                <div class="question">18. What does the poet want humans to stop temporarily?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Living
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Breathing
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Harming
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Loving
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 19 -->
+            <div class="question-container">
+                <div class="question">19. The poem highlights the importance of</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Speed
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Progress
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Self-introspection
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Technology
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 20 -->
+            <div class="question-container">
+                <div class="question">20. The central message of the poem is</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Silence is death
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Silence leads to peace
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Silence is fear
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Silence is weakness
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </section>
+        
+        <!-- Case-Based Questions Section -->
+        <section id="case-based-section" class="section">
+            <h2><i class="fas fa-clipboard-list"></i> Case-Based Questions</h2>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 1:</strong> The poet asks people to count to twelve and remain silent.</div>
+                <div class="question">Why does the poet suggest counting to twelve?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Counting to twelve symbolizes completeness and universality. It represents a brief pause for self-reflection where people can stop harmful actions and realize the importance of peace and unity.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 2:</strong> The poet says he has "no truck with death."</div>
+                <div class="question">What does the poet mean by this statement?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The poet clarifies that silence does not mean death or inactivity. He wants meaningful silence that leads to understanding, self-realization, and renewal, not permanent stillness.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Very Short Questions Section -->
+        <section id="very-short-section" class="section">
+            <h2><i class="fas fa-ellipsis-h"></i> Very Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Poet of the poem?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Pablo Neruda</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. Count till?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Twelve</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Poetic form?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Free verse</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Theme of poem?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Peace and introspection</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. 'Exotic moment' means</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Unique peaceful moment</div>
+            </div>
+        </section>
+        
+        <!-- Short Answer Questions Section -->
+        <section id="short-answer-section" class="section">
+            <h2><i class="fas fa-align-left"></i> Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. What does the poet mean by 'keeping quiet'?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Keeping quiet means stopping all destructive activities and observing silence for self-reflection. It is a pause to understand ourselves and others better, leading to peace and harmony.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How does silence benefit human beings?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Silence allows humans to introspect and realize their mistakes. It promotes understanding, reduces conflict, and helps people reconnect with nature and humanity.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Why does the poet ask fishermen not to harm whales?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The poet highlights environmental destruction. By asking fishermen to stop, he emphasizes the need to protect nature and realize the consequences of human greed.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Explain the significance of 'no truck with death.'</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The phrase means the poet does not associate silence with death. He wants active silence that leads to growth and awareness, not lifelessness.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. What message does the poem convey to humanity?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The poem urges humanity to pause, reflect, and abandon violence. It emphasizes peace, unity, and coexistence with nature.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Long Answer Questions Section -->
+        <section id="long-answer-section" class="section">
+            <h2><i class="fas fa-align-justify"></i> Long Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Discuss the central idea of Keeping Quiet.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The poem emphasizes the importance of silence and introspection in a violent world. Pablo Neruda urges people to pause their destructive actions and reflect on their behavior. This silence can lead to understanding, peace, and unity. The poet clarifies that silence does not mean death but renewal. By stopping momentarily, humans can reconnect with nature and each other, making the world a better place.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How does the poet use imagery to convey his message?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Neruda uses powerful imagery like fishermen harming whales and soldiers preparing wars to show human violence. He contrasts these images with silence and stillness, symbolizing peace and harmony. The imagery strengthens the poem's appeal for non-violence.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Why is silence important according to the poet?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Silence allows humans to introspect and realize their mistakes. It promotes understanding, peace, and mutual respect. According to the poet, silence can heal emotional wounds and encourage a harmonious relationship between humans and nature.
+                </div>
+            </div>
+        </section>
+        
+        <div class="nav-buttons-bottom">
+            <button class="nav-btn" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <i class="fas fa-envelope"></i> Contact: 
+                <a href="mailto:alaxrad60@gmail.co" class="contact-link">alaxrad60@gmail.co</a>
+            </div>
+            <div class="footer-section">
+                <i class="fas fa-home"></i> 
+                <a href="#" class="contact-link">Homepage</a>
+            </div>
+            <div class="footer-section">
+                <a href="https://wa.me/6391744080" target="_blank" class="whatsapp-link">
+                    <i class="fab fa-whatsapp"></i> WhatsApp: 63917 44080
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation between sections
+        function navigateToSection(targetId) {
+            // Remove active class from all buttons and sections
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            
+            // Find and activate the correct button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-target') === targetId) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show corresponding section
+            document.getElementById(targetId).classList.add('active');
+            
+            // Reset all MCQ selections when switching sections
+            if (targetId !== 'mcq-section') {
+                resetMCQSelections();
+            }
+            
+            // Scroll to top for better UX
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Setup navigation buttons
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                navigateToSection(targetId);
+            });
+        });
+        
+        // MCQ answer selection logic
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionContainer = this.closest('.question-container');
+                const options = questionContainer.querySelectorAll('.option');
+                const feedback = questionContainer.querySelector('.feedback');
+                
+                // Remove selected class from all options in this question
+                options.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    this.classList.add('incorrect');
+                    
+                    // Find and highlight correct answer
+                    const correctOption = questionContainer.querySelector('.option[data-correct="true"]');
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                    }
+                    
+                    feedback.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect. The right answer is highlighted.';
+                    feedback.className = 'feedback incorrect';
+                }
+                
+                // Disable all options after selection
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                });
+            });
+        });
+        
+        // Show/Hide answer buttons for non-MCQ sections
+        document.querySelectorAll('.answer-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answerContent = this.nextElementSibling;
+                answerContent.classList.toggle('show');
+                
+                // Change button text and icon
+                const icon = this.querySelector('i');
+                if (answerContent.classList.contains('show')) {
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                } else {
+                    this.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                }
+            });
+        });
+        
+        // Function to reset MCQ selections
+        function resetMCQSelections() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.className = 'feedback';
+                feedback.innerHTML = '';
+            });
+        }
+        
+        // Initialize with MCQ section active
+        document.getElementById('mcq-section').classList.add('active');
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```

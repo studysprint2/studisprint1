@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 English - Journey to the End of the Earth Q&A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e6f7ff 0%, #d6ecff 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(to right, #0056b3, #0077cc);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-info {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: #0077cc;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn:hover {
+            background: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-btn.active {
+            background: #2c3e50;
+        }
+        
+        .nav-buttons-bottom {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0 30px 0;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #0056b3;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: #2c3e50;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #0056b3;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background: #f8f9fa;
+            border-color: #a0aec0;
+        }
+        
+        .option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+            animation: pulse 0.5s;
+        }
+        
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #fde8e8;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #0077cc;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background: #d5f4e6;
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background: #fde8e8;
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            display: block;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .answer-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .answer-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn i {
+            margin-right: 8px;
+        }
+        
+        .answer-content {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+        
+        .answer-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        footer {
+            background: #0056b3;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            padding: 10px 15px;
+        }
+        
+        .contact-link {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .contact-link:hover {
+            color: #f1c40f;
+            text-decoration: underline;
+        }
+        
+        .whatsapp-link {
+            background: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-link:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .whatsapp-link i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons, .nav-buttons-bottom {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 90%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+            
+            .footer-section {
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px 15px;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Class 12 English – Flamingo</h1>
+            <div class="chapter-info">Chapter 3: Journey to the End of the Earth - Interactive Q&A</div>
+        </header>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+        
+        <!-- MCQ Section -->
+        <section id="mcq-section" class="section active">
+            <h2><i class="fas fa-question-circle"></i> Multiple Choice Questions (20 MCQs)</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-container">
+                <div class="question">1. Who is the author of Journey to the End of the Earth?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Amitav Ghosh
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Tishani Doshi
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Vikram Seth
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Arundhati Roy
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-container">
+                <div class="question">2. The author visited Antarctica as part of</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Research mission
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Adventure tour
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Student programme
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Media project
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-container">
+                <div class="question">3. The programme was called</div>
+                <div class="options">
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">A</span> Students on Ice
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Save Earth
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Antarctic Mission
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Climate Watch
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question-container">
+                <div class="question">4. Antarctica is described as</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Crowded
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Warm
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Pristine and isolated
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Polluted
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            <!-- Question 5 -->
+<div class="question-container">
+    <div class="question">5. What does Antarctica help us understand?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Ancient civilization
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Earth's past and future
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Wildlife only
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Ocean life
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 6 -->
+<div class="question-container">
+    <div class="question">6. Gondwana was</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> A city
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> A country
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> A supercontinent
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> A river
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 7 -->
+<div class="question-container">
+    <div class="question">7. The coldest continent on Earth is</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Europe
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Asia
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Antarctica
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Australia
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 8 -->
+<div class="question-container">
+    <div class="question">8. The author stresses the importance of</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Tourism
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Climate awareness
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Adventure
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Business
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 9 -->
+<div class="question-container">
+    <div class="question">9. Which phenomenon is discussed in the chapter?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Industrialization
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Global warming
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Urbanization
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Colonization
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 10 -->
+<div class="question-container">
+    <div class="question">10. The Southern Ocean surrounds</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Africa
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Australia
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Antarctica
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> South America
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 11 -->
+<div class="question-container">
+    <div class="question">11. Antarctica is called a place of</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> History
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Mystery
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Extremes
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Civilization
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 12 -->
+<div class="question-container">
+    <div class="question">12. Human impact on Antarctica is</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Beneficial
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Neutral
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Harmful
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Necessary
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 13 -->
+<div class="question-container">
+    <div class="question">13. The chapter connects Antarctica with</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Politics
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Climate change
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Sports
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Trade
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 14 -->
+<div class="question-container">
+    <div class="question">14. What threatens Antarctica the most?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Earthquakes
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Volcanic eruptions
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Human activities
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Storms
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+            <!-- Question 15 -->
+            <div class="question-container">
+                <div class="question">15. The ice in Antarctica contains clues of</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Future cities
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Earth's history
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Wildlife
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Oceans
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 16 -->
+            <div class="question-container">
+                <div class="question">16. The author calls Antarctica</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> A classroom
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> A laboratory
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> A mirror to Earth
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> A desert
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 17 -->
+            <div class="question-container">
+                <div class="question">17. What emotion dominates the chapter?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Fear
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Wonder
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Sadness
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Anger
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 18 -->
+            <div class="question-container">
+                <div class="question">18. The journey helped students learn about</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Adventure sports
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Climate responsibility
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> History only
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Geography maps
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 19 -->
+            <div class="question-container">
+                <div class="question">19. The chapter ends with a message of</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Hope and warning
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Celebration
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Victory
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Despair
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 20 -->
+            <div class="question-container">
+                <div class="question">20. Main theme of the chapter is</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Travel
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Environmental conservation
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Tourism
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Exploration
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </section>
+        
+        <!-- Case-Based Questions Section -->
+        <section id="case-based-section" class="section">
+            <h2><i class="fas fa-clipboard-list"></i> Case-Based Questions</h2>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 1:</strong> Antarctica remains untouched and preserved compared to other continents.</div>
+                <div class="question">Why is Antarctica considered crucial for understanding climate change?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Antarctica preserves Earth's ancient history in its ice layers. Studying it helps scientists understand climate patterns and predict future environmental changes caused by global warming.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 2:</strong> The author calls Antarctica a mirror to the world.</div>
+                <div class="question">Explain the meaning of this statement.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Antarctica reflects the consequences of human actions. Damage to this pristine land warns humanity about the impact of environmental neglect on the entire planet.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Very Short Questions Section -->
+        <section id="very-short-section" class="section">
+            <h2><i class="fas fa-ellipsis-h"></i> Very Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Author's name?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Tishani Doshi</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. Programme joined?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Students on Ice</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Coldest continent?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Antarctica</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Supercontinent name?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Gondwana</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. Main issue discussed?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Climate change</div>
+            </div>
+        </section>
+        
+        <!-- Short Answer Questions Section -->
+        <section id="short-answer-section" class="section">
+            <h2><i class="fas fa-align-left"></i> Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Why was the Students on Ice programme started?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The programme was started to educate young people about climate change. It aims to create environmental awareness by allowing students to experience Antarctica firsthand.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How does Antarctica help understand Earth's past?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Antarctica's ice layers store information about Earth's climate history. Scientists study them to understand how environmental changes occurred over millions of years.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. What dangers does Antarctica face today?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Antarctica faces threats from global warming, melting ice, and increasing human activities. These changes can disturb the fragile ecosystem.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Why does the author call Antarctica a place of extremes?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Antarctica has extreme cold, strong winds, and long periods of darkness and light. These conditions make it one of the harshest environments on Earth.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. What message does the chapter convey?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The chapter emphasizes environmental responsibility. It warns humans to protect nature before irreversible damage occurs.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Long Answer Questions Section -->
+        <section id="long-answer-section" class="section">
+            <h2><i class="fas fa-align-justify"></i> Long Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Describe the significance of Antarctica in understanding climate change.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Antarctica plays a vital role in understanding climate change because it preserves Earth's climatic history in its ice sheets. These ice layers provide evidence of temperature changes over millions of years. The continent acts as an early warning system, showing how human activities affect the environment. The author urges people to learn from Antarctica and adopt sustainable practices to protect the planet.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How does the author combine travel writing with environmental concern?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Tishani Doshi blends personal travel experiences with scientific facts. She describes the beauty of Antarctica while highlighting environmental threats. This combination makes the narrative engaging and informative, encouraging readers to care for nature.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. What lessons does the journey to Antarctica offer humanity?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The journey teaches that Earth is fragile and interconnected. Damage to remote regions like Antarctica affects the entire planet. The chapter urges humans to act responsibly and preserve the environment for future generations.
+                </div>
+            </div>
+        </section>
+        
+        <div class="nav-buttons-bottom">
+            <button class="nav-btn" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <i class="fas fa-envelope"></i> Contact: 
+                <a href="mailto:alaxrad60@gmail.com" class="contact-link">alaxrad60@gmail.com</a>
+            </div>
+            <div class="footer-section">
+                <i class="fas fa-home"></i> 
+                <a href="#" class="contact-link">Homepage</a>
+            </div>
+            <div class="footer-section">
+                <a href="https://wa.me/6391744080" target="_blank" class="whatsapp-link">
+                    <i class="fab fa-whatsapp"></i> WhatsApp: 63917 44080
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation between sections
+        function navigateToSection(targetId) {
+            // Remove active class from all buttons and sections
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            
+            // Find and activate the correct button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-target') === targetId) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show corresponding section
+            document.getElementById(targetId).classList.add('active');
+            
+            // Reset all MCQ selections when switching sections
+            if (targetId !== 'mcq-section') {
+                resetMCQSelections();
+            }
+            
+            // Scroll to top for better UX
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Setup navigation buttons
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                navigateToSection(targetId);
+            });
+        });
+        
+        // MCQ answer selection logic
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionContainer = this.closest('.question-container');
+                const options = questionContainer.querySelectorAll('.option');
+                const feedback = questionContainer.querySelector('.feedback');
+                
+                // Remove selected class from all options in this question
+                options.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    this.classList.add('incorrect');
+                    
+                    // Find and highlight correct answer
+                    const correctOption = questionContainer.querySelector('.option[data-correct="true"]');
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                    }
+                    
+                    feedback.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect. The right answer is highlighted.';
+                    feedback.className = 'feedback incorrect';
+                }
+                
+                // Disable all options after selection
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                });
+            });
+        });
+        
+        // Show/Hide answer buttons for non-MCQ sections
+        document.querySelectorAll('.answer-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answerContent = this.nextElementSibling;
+                answerContent.classList.toggle('show');
+                
+                // Change button text and icon
+                const icon = this.querySelector('i');
+                if (answerContent.classList.contains('show')) {
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                } else {
+                    this.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                }
+            });
+        });
+        
+        // Function to reset MCQ selections
+        function resetMCQSelections() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.className = 'feedback';
+                feedback.innerHTML = '';
+            });
+        }
+        
+        // Initialize with MCQ section active
+        document.getElementById('mcq-section').classList.add('active');
+         
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add page load animation
+        window.addEventListener('load', function() {
+            document.querySelector('header').style.animation = 'fadeIn 0.8s ease';
+        });
+    </script>
+</body>
+</html>

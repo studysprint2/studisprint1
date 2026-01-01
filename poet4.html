@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 English - A Roadside Stand Q&A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f0ff 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(to right, #2c5f2d, #4a8c4e);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-info {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: #4a8c4e;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn:hover {
+            background: #2c5f2d;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-btn.active {
+            background: #e74c3c;
+        }
+        
+        .nav-buttons-bottom {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0 30px 0;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #2c5f2d;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: #e74c3c;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c5f2d;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background: #f8f9fa;
+            border-color: #a0aec0;
+        }
+        
+        .option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+            animation: pulse 0.5s;
+        }
+        
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #fde8e8;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #4a8c4e;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background: #d5f4e6;
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background: #fde8e8;
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            display: block;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .answer-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .answer-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn i {
+            margin-right: 8px;
+        }
+        
+        .answer-content {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+        
+        .answer-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        footer {
+            background: #2c5f2d;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            padding: 10px 15px;
+        }
+        
+        .contact-link {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .contact-link:hover {
+            color: #f1c40f;
+            text-decoration: underline;
+        }
+        
+        .whatsapp-link {
+            background: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-link:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .whatsapp-link i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons, .nav-buttons-bottom {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 90%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+            
+            .footer-section {
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px 15px;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Class 12 English – Flamingo</h1>
+            <div class="chapter-info">Chapter 4: A Roadside Stand - Interactive Q&A</div>
+        </header>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+        
+        <!-- MCQ Section -->
+        <section id="mcq-section" class="section active">
+            <h2><i class="fas fa-question-circle"></i> Multiple Choice Questions (20 MCQs)</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-container">
+                <div class="question">1. Who is the poet of A Roadside Stand?</div>
+                <div class="options">
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">A</span> Robert Frost
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> John Keats
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Pablo Neruda
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Carl Sandburg
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-container">
+                <div class="question">2. The poem highlights the condition of</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> City people
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Rich farmers
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Poor rural people
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Industrial workers
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-container">
+                <div class="question">3. Where is the roadside stand located?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> In a city
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> On a highway
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Near a village road
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> In a market
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            <!-- Question 4 -->
+<div class="question-container">
+    <div class="question">4. Who are expected to stop at the stand?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Farmers
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Villagers
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Passing motorists
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Children
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 5 -->
+<div class="question-container">
+    <div class="question">5. What do the rural people hope for?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Fame
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Money
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Help from city people
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">D</span> Education
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 6 -->
+<div class="question-container">
+    <div class="question">6. The stand sells</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Clothes
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Fruits and vegetables
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Handicrafts
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Milk
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 7 -->
+<div class="question-container">
+    <div class="question">7. Why do motorists stop at the stand?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> To buy goods
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> To rest
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> To ask for directions
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> To criticize
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 8 -->
+<div class="question-container">
+    <div class="question">8. What do city people complain about?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Noise
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Dirt
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Poor service
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Bad roads
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 9 -->
+<div class="question-container">
+    <div class="question">9. What does the poet criticize?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Nature
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Urban greed
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Rural poverty
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Government
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 10 -->
+<div class="question-container">
+    <div class="question">10. The phrase 'greedy good-doers' refers to</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Villagers
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Politicians
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> City benefactors
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Shopkeepers
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 11 -->
+<div class="question-container">
+    <div class="question">11. What do 'greedy good-doers' do?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Help villagers
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Exploit villagers
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Ignore villagers
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Educate villagers
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 12 -->
+<div class="question-container">
+    <div class="question">12. What disturbs the poet the most?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Noise of cars
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Sorrow of villagers
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Poor roads
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Darkness
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 13 -->
+<div class="question-container">
+    <div class="question">13. The poet wants to</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Ignore villagers
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Help villagers genuinely
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Close the stand
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Scold motorists
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+            <!-- Question 14 -->
+            <div class="question-container">
+                <div class="question">14. What do villagers long for?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Luxury
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> City life
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> A share in city prosperity
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Fame
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 15 -->
+            <div class="question-container">
+                <div class="question">15. The tone of the poem is</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Humorous
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Angry
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Sympathetic
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Romantic
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 16 -->
+            <div class="question-container">
+                <div class="question">16. What does the stand symbolize?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Business
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Hope and desperation
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Wealth
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Joy
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 17 -->
+            <div class="question-container">
+                <div class="question">17. 'Polished traffic' refers to</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Smooth roads
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Fast cars
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Educated people
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Busy highways
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 18 -->
+            <div class="question-container">
+                <div class="question">18. Who suffers due to inequality?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Urban people
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Rural people
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Tourists
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Drivers
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 19 -->
+            <div class="question-container">
+                <div class="question">19. What does the poet feel at the end?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Anger
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Indifference
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Pain and helplessness
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Joy
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 20 -->
+            <div class="question-container">
+                <div class="question">20. The poem mainly focuses on</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Travel
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Nature
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Social injustice
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Technology
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </section>
+        
+        <!-- Case-Based Questions Section -->
+        <section id="case-based-section" class="section">
+            <h2><i class="fas fa-clipboard-list"></i> Case-Based Questions</h2>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 1:</strong> The roadside stand is ignored by passing motorists who complain about its appearance.</div>
+                <div class="question">What does this reveal about city people's attitude?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    It reveals the indifference and selfishness of city people. They focus on comfort and cleanliness while ignoring the poverty and struggles of rural people who depend on the stand for survival.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 2:</strong> The poet criticizes 'greedy good-doers' who claim to help villagers.</div>
+                <div class="question">Why does the poet oppose such people?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The poet opposes them because their help is selfish and harmful. Instead of improving villagers' lives, they exploit them and force unwanted changes, increasing rural suffering.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Very Short Questions Section -->
+        <section id="very-short-section" class="section">
+            <h2><i class="fas fa-ellipsis-h"></i> Very Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Poet of the poem?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Robert Frost</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. Stand located on?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Highway</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Main sufferers?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Rural poor</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Tone of poem?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Sympathetic</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. Theme of poem?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Rural poverty</div>
+            </div>
+        </section>
+        
+        <!-- Short Answer Questions Section -->
+        <section id="short-answer-section" class="section">
+            <h2><i class="fas fa-align-left"></i> Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Why was the roadside stand set up?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The roadside stand was set up by poor villagers to earn money. They hoped passing motorists would buy their goods and help improve their financial condition.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How do motorists react to the roadside stand?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Most motorists ignore the stand. Some stop only to ask for directions or complain about dirt, showing lack of empathy for villagers' hardships.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. What is the poet's attitude toward rural people?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The poet shows deep sympathy toward rural people. He understands their pain and criticizes social inequality that keeps them poor and ignored.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Explain the phrase 'greedy good-doers'.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The phrase refers to people who pretend to help the poor but actually exploit them. Their actions worsen rural conditions instead of improving them.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. What message does the poem convey?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The poem highlights social injustice and the gap between urban and rural life. It urges genuine compassion and fair economic opportunities for rural people.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Long Answer Questions Section -->
+        <section id="long-answer-section" class="section">
+            <h2><i class="fas fa-align-justify"></i> Long Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Discuss the theme of social inequality in A Roadside Stand.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The poem exposes the economic gap between urban and rural people. Rural villagers struggle for basic needs while city people enjoy comfort and wealth. The roadside stand symbolizes rural hope and desperation. The poet criticizes the indifference of urban society and false helpers. The poem urges genuine concern for rural development.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How does Robert Frost portray rural suffering?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Frost portrays rural suffering through simple yet powerful images of poor villagers waiting for customers. Their hopes are crushed by careless motorists. The poet's sympathetic tone emphasizes emotional and economic pain caused by social inequality.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Explain the significance of the roadside stand.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The roadside stand represents the villagers' hope for survival and dignity. It highlights their desire for fair opportunities. Ignored by city people, it becomes a symbol of rural neglect and economic injustice.
+                </div>
+            </div>
+        </section>
+        
+        <div class="nav-buttons-bottom">
+            <button class="nav-btn" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <i class="fas fa-envelope"></i> Contact: 
+                <a href="mailto:alaxrad60@gmail.com" class="contact-link">alaxrad60@gmail.com</a>
+            </div>
+            <div class="footer-section">
+                <i class="fas fa-home"></i> 
+                <a href="#" class="contact-link">Homepage</a>
+            </div>
+            <div class="footer-section">
+                <a href="https://wa.me/6391744080" target="_blank" class="whatsapp-link">
+                    <i class="fab fa-whatsapp"></i> WhatsApp: 63917 44080
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation between sections
+        function navigateToSection(targetId) {
+            // Remove active class from all buttons and sections
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            
+            // Find and activate the correct button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-target') === targetId) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show corresponding section
+            document.getElementById(targetId).classList.add('active');
+            
+            // Reset all MCQ selections when switching sections
+            if (targetId !== 'mcq-section') {
+                resetMCQSelections();
+            }
+            
+            // Scroll to top for better UX
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Setup navigation buttons
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                navigateToSection(targetId);
+            });
+        });
+        
+        // MCQ answer selection logic
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionContainer = this.closest('.question-container');
+                const options = questionContainer.querySelectorAll('.option');
+                const feedback = questionContainer.querySelector('.feedback');
+                
+                // Remove selected class from all options in this question
+                options.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    this.classList.add('incorrect');
+                    
+                    // Find and highlight correct answer
+                    const correctOption = questionContainer.querySelector('.option[data-correct="true"]');
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                    }
+                    
+                    feedback.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect. The right answer is highlighted.';
+                    feedback.className = 'feedback incorrect';
+                }
+                
+                // Disable all options after selection
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                });
+            });
+        });
+        
+        // Show/Hide answer buttons for non-MCQ sections
+        document.querySelectorAll('.answer-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answerContent = this.nextElementSibling;
+                answerContent.classList.toggle('show');
+                
+                // Change button text and icon
+                const icon = this.querySelector('i');
+                if (answerContent.classList.contains('show')) {
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                } else {
+                    this.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                }
+            });
+        });
+        
+        // Function to reset MCQ selections
+        function resetMCQSelections() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.className = 'feedback';
+                feedback.innerHTML = '';
+            });
+        }
+        
+        // Initialize with MCQ section active
+        document.getElementById('mcq-section').classList.add('active');
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add page load animation
+        window.addEventListener('load', function() {
+            document.querySelector('header').style.animation = 'fadeIn 0.8s ease';
+        });
+    </script>
+</body>
+</html>

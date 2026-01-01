@@ -1,0 +1,1181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 English - Memories of Childhood</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .container {
+            flex: 1;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .page-navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(155, 89, 182, 0.3);
+        }
+        
+        .nav-btn:hover {
+            background-color: #8e44ad;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(155, 89, 182, 0.4);
+        }
+        
+        .nav-btn.active {
+            background-color: #6c3483;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(108, 52, 131, 0.4);
+        }
+        
+        .page {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #6c3483;
+            border-bottom: 3px solid #9b59b6;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .question-counter {
+            display: inline-block;
+            background-color: #9b59b6;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        /* MCQ Styling */
+        .mcq-container {
+            margin-bottom: 30px;
+            animation: slideIn 0.4s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .mcq-question {
+            background-color: #f9f0ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #9b59b6;
+            font-size: 1.1rem;
+        }
+        
+        .mcq-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .option {
+            background-color: #f4ecf7;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e8daef;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option:hover {
+            background-color: #ebdef0;
+            border-color: #9b59b6;
+            transform: translateY(-2px);
+        }
+        
+        .option.correct {
+            background-color: #d4efdf;
+            border-color: #27ae60;
+            color: #196f3d;
+            animation: pulseCorrect 0.5s ease;
+        }
+        
+        @keyframes pulseCorrect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .option.wrong {
+            background-color: #fadbd8;
+            border-color: #e74c3c;
+            color: #78281f;
+            animation: shakeWrong 0.5s ease;
+        }
+        
+        @keyframes shakeWrong {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .option.locked {
+            pointer-events: none;
+        }
+        
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1;
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 600;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .correct-result {
+            background-color: #d4efdf;
+            color: #196f3d;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .wrong-result {
+            background-color: #fadbd8;
+            color: #78281f;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        /* Case-based, Short, Long Answer Styling */
+        .answer-container {
+            margin-bottom: 30px;
+            animation: slideIn 0.4s ease;
+        }
+        
+        .question-text {
+            background-color: #f9f0ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #e67e22;
+            font-size: 1.1rem;
+        }
+        
+        .toggle-btn {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-btn:hover {
+            background-color: #d35400;
+            transform: translateY(-2px);
+        }
+        
+        .answer {
+            background-color: #fff8e1;
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            margin-top: 5px;
+            display: none;
+            border-left: 5px solid #f1c40f;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+        
+        .answer.visible {
+            display: block;
+        }
+        
+        .short-answer .question-text {
+            border-left-color: #1abc9c;
+        }
+        
+        .short-answer .toggle-btn {
+            background-color: #1abc9c;
+        }
+        
+        .short-answer .toggle-btn:hover {
+            background-color: #16a085;
+        }
+        
+        .short-answer .answer {
+            border-left-color: #16a085;
+        }
+        
+        .long-answer .question-text {
+            border-left-color: #3498db;
+        }
+        
+        .long-answer .toggle-btn {
+            background-color: #3498db;
+        }
+        
+        .long-answer .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .long-answer .answer {
+            border-left-color: #2980b9;
+        }
+        
+        /* Footer Styling */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            color: white;
+            padding: 30px 0 20px;
+            margin-top: auto;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #9b59b6;
+        }
+        
+        .contact-info p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #9b59b6;
+            transform: translateX(5px);
+        }
+        
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #25D366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(37, 211, 102, 0.3);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Question Shortcuts */
+        .question-shortcuts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f0ff;
+            border-radius: 10px;
+            border-left: 5px solid #9b59b6;
+        }
+        
+        .shortcut-btn {
+            padding: 8px 16px;
+            background-color: #d7bde2;
+            color: #6c3483;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .shortcut-btn:hover {
+            background-color: #9b59b6;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .page {
+                padding: 20px;
+            }
+            
+            .mcq-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-section {
+                width: 100%;
+            }
+            
+            .footer-links a {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-book-open"></i> Class 12 English - Flamingo</h1>
+            <p class="subtitle">Chapter 6: Memories of Childhood - Interactive Worksheet</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="page-navigation">
+            <button class="nav-btn active" data-page="page1">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-page="page2">Case-Based & Very Short Answers</button>
+            <button class="nav-btn" data-page="page3">Short & Long Answer Questions</button>
+        </div>
+        
+        <!-- Page 1: MCQs -->
+        <div id="page1" class="page active">
+            <h2>Multiple Choice Questions <span class="question-counter">20 Questions</span></h2>
+            <p>Click on an option to select your answer. The correct answer will be shown immediately.</p>
+            
+            <div class="question-shortcuts">
+                <span>Jump to Question:</span>
+                <button class="shortcut-btn" onclick="scrollToQuestion(1)">1</button>
+                <button class="shortcut-btn" onclick="scrollToQuestion(5)">5</button>
+                <button class="shortcut-btn" onclick="scrollToQuestion(10)">10</button>
+                <button class="shortcut-btn" onclick="scrollToQuestion(15)">15</button>
+                <button class="shortcut-btn" onclick="scrollToQuestion(20)">20</button>
+            </div>
+            
+            <!-- MCQ 1 -->
+            <div class="mcq-container" id="q1">
+                <div class="mcq-question">
+                    <strong>1. Who wrote "The Cutting of My Long Hair"?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Bama</div>
+                    <div class="option" data-correct="true">B. Zitkala-Ša</div>
+                    <div class="option" data-correct="false">C. Pearl S. Buck</div>
+                    <div class="option" data-correct="false">D. Susan Hill</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 2 -->
+            <div class="mcq-container" id="q2">
+                <div class="mcq-question">
+                    <strong>2. "We Too Are Human Beings" is written by</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Zitkala-Ša</div>
+                    <div class="option" data-correct="false">B. Kamala Das</div>
+                    <div class="option" data-correct="true">C. Bama</div>
+                    <div class="option" data-correct="false">D. Adrienne Rich</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 3 -->
+            <div class="mcq-container" id="q3">
+                <div class="mcq-question">
+                    <strong>3. Both accounts highlight</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Adventure</div>
+                    <div class="option" data-correct="false">B. Childhood games</div>
+                    <div class="option" data-correct="true">C. Racial and social discrimination</div>
+                    <div class="option" data-correct="false">D. Fantasy</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 4 -->
+            <div class="mcq-container" id="q4">
+                <div class="mcq-question">
+                    <strong>4. Zitkala-Ša belonged to which tribe?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Apache</div>
+                    <div class="option" data-correct="false">B. Red Indian</div>
+                    <div class="option" data-correct="true">C. Sioux</div>
+                    <div class="option" data-correct="false">D. Cherokee</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 5 -->
+            <div class="mcq-container" id="q5">
+                <div class="mcq-question">
+                    <strong>5. Why was Zitkala-Ša's hair cut?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Illness</div>
+                    <div class="option" data-correct="false">B. Punishment</div>
+                    <div class="option" data-correct="true">C. School rules</div>
+                    <div class="option" data-correct="false">D. Fashion</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 6 -->
+            <div class="mcq-container" id="q6">
+                <div class="mcq-question">
+                    <strong>6. Long hair in Zitkala-Ša's culture symbolized</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Beauty</div>
+                    <div class="option" data-correct="true">B. Freedom and identity</div>
+                    <div class="option" data-correct="false">C. Age</div>
+                    <div class="option" data-correct="false">D. Wealth</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 7 -->
+            <div class="mcq-container" id="q7">
+                <div class="mcq-question">
+                    <strong>7. Bama belonged to which community?</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Brahmin</div>
+                    <div class="option" data-correct="true">B. Dalit</div>
+                    <div class="option" data-correct="false">C. Tribal</div>
+                    <div class="option" data-correct="false">D. Muslim</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 8 -->
+            <div class="mcq-container" id="q8">
+                <div class="mcq-question">
+                    <strong>8. Bama faced discrimination because of</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Gender</div>
+                    <div class="option" data-correct="false">B. Language</div>
+                    <div class="option" data-correct="true">C. Caste</div>
+                    <div class="option" data-correct="false">D. Religion</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 9 -->
+            <div class="mcq-container" id="q9">
+                <div class="mcq-question">
+                    <strong>9. The 'upper caste' man carried food carefully because</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. It was hot</div>
+                    <div class="option" data-correct="false">B. It was sacred</div>
+                    <div class="option" data-correct="true">C. He feared pollution</div>
+                    <div class="option" data-correct="false">D. He was lazy</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 10 -->
+            <div class="mcq-container" id="q10">
+                <div class="mcq-question">
+                    <strong>10. Bama's brother explained discrimination as</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Fate</div>
+                    <div class="option" data-correct="false">B. Tradition</div>
+                    <div class="option" data-correct="true">C. Social injustice</div>
+                    <div class="option" data-correct="false">D. God's will</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 11 -->
+            <div class="mcq-container" id="q11">
+                <div class="mcq-question">
+                    <strong>11. Zitkala-Ša resisted by</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Running away</div>
+                    <div class="option" data-correct="false">B. Crying</div>
+                    <div class="option" data-correct="true">C. Hiding under a bed</div>
+                    <div class="option" data-correct="false">D. Fighting</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 12 -->
+            <div class="mcq-container" id="q12">
+                <div class="mcq-question">
+                    <strong>12. The boarding school aimed to</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Educate</div>
+                    <div class="option" data-correct="true">B. Convert and control</div>
+                    <div class="option" data-correct="false">C. Entertain</div>
+                    <div class="option" data-correct="false">D. Help tribes</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 13 -->
+            <div class="mcq-container" id="q13">
+                <div class="mcq-question">
+                    <strong>13. Bama's realization comes through</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Her teacher</div>
+                    <div class="option" data-correct="false">B. Her friend</div>
+                    <div class="option" data-correct="true">C. Her brother</div>
+                    <div class="option" data-correct="false">D. Her parents</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 14 -->
+            <div class="mcq-container" id="q14">
+                <div class="mcq-question">
+                    <strong>14. The tone of both narratives is</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Comic</div>
+                    <div class="option" data-correct="false">B. Angry</div>
+                    <div class="option" data-correct="true">C. Critical and reflective</div>
+                    <div class="option" data-correct="false">D. Romantic</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 15 -->
+            <div class="mcq-container" id="q15">
+                <div class="mcq-question">
+                    <strong>15. The stories emphasize the importance of</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Obedience</div>
+                    <div class="option" data-correct="false">B. Education</div>
+                    <div class="option" data-correct="true">C. Resistance and dignity</div>
+                    <div class="option" data-correct="false">D. Silence</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 16 -->
+            <div class="mcq-container" id="q16">
+                <div class="mcq-question">
+                    <strong>16. Zitkala-Ša's hair cutting symbolized</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Discipline</div>
+                    <div class="option" data-correct="true">B. Loss of identity</div>
+                    <div class="option" data-correct="false">C. Growth</div>
+                    <div class="option" data-correct="false">D. Cleanliness</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 17 -->
+            <div class="mcq-container" id="q17">
+                <div class="mcq-question">
+                    <strong>17. Bama was advised to fight discrimination by</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Protesting</div>
+                    <div class="option" data-correct="true">B. Studying hard</div>
+                    <div class="option" data-correct="false">C. Running away</div>
+                    <div class="option" data-correct="false">D. Complaining</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 18 -->
+            <div class="mcq-container" id="q18">
+                <div class="mcq-question">
+                    <strong>18. Both writers narrate experiences of</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Joy</div>
+                    <div class="option" data-correct="false">B. Freedom</div>
+                    <div class="option" data-correct="true">C. Suppression</div>
+                    <div class="option" data-correct="false">D. Adventure</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 19 -->
+            <div class="mcq-container" id="q19">
+                <div class="mcq-question">
+                    <strong>19. The chapter deals mainly with</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Travel</div>
+                    <div class="option" data-correct="false">B. Childhood memories</div>
+                    <div class="option" data-correct="true">C. Social injustice</div>
+                    <div class="option" data-correct="false">D. Education system</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <!-- MCQ 20 -->
+            <div class="mcq-container" id="q20">
+                <div class="mcq-question">
+                    <strong>20. The message of the chapter is</strong>
+                </div>
+                <div class="mcq-options">
+                    <div class="option" data-correct="false">A. Accept fate</div>
+                    <div class="option" data-correct="false">B. Obey authority</div>
+                    <div class="option" data-correct="true">C. Fight injustice</div>
+                    <div class="option" data-correct="false">D. Avoid society</div>
+                </div>
+                <div class="result"></div>
+            </div>
+            
+            <div class="question-shortcuts">
+                <span>Jump to Question:</span>
+                <button class="shortcut-btn" onclick="scrollToQuestion(1)">1</button>
+                <button class="shortcut-btn" onclick="scrollToQuestion(5)">5</button>
+                <button class="shortcut-btn" onclick="scrollToQuestion(10)">10</button>
+                <button class="shortcut-btn" onclick="scrollToQuestion(15)">15</button>
+                <button class="shortcut-btn" onclick="scrollToQuestion(20)">20</button>
+                <button class="shortcut-btn" onclick="scrollToTop()">Back to Top ↑</button>
+            </div>
+        </div>
+        
+        <!-- Page 2: Case-Based & Very Short Answers -->
+        <div id="page2" class="page">
+            <h2>Case-Based Questions <span class="question-counter">2 Questions</span></h2>
+            
+            <div class="question-shortcuts">
+                <span>Jump to:</span>
+                <button class="shortcut-btn" onclick="scrollToCaseBased()">Case-Based Questions</button>
+                <button class="shortcut-btn" onclick="scrollToVeryShort()">Very Short Answers</button>
+            </div>
+            
+            <!-- Case-Based Question 1 -->
+            <div class="answer-container" id="case1">
+                <div class="question-text">
+                    <strong>Case-Based Question 1:</strong> Zitkala-Ša's long hair was cut against her will at the boarding school.
+                    <br><br>
+                    <strong>Question:</strong> What does this incident reveal about the treatment of Native Americans?
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> The incident shows how Native Americans were forced to abandon their cultural identity. It highlights racial oppression and lack of respect for indigenous traditions.
+                </div>
+            </div>
+            
+            <!-- Case-Based Question 2 -->
+            <div class="answer-container" id="case2">
+                <div class="question-text">
+                    <strong>Case-Based Question 2:</strong> Bama notices an elder carrying food with a string without touching it.
+                    <br><br>
+                    <strong>Question:</strong> What social practice does this reflect?
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> It reflects caste-based discrimination where Dalits were considered 'polluting' and treated as inferior, revealing deep-rooted social injustice.
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 40px;" id="veryShort">Very Short Answer Questions <span class="question-counter">5 Questions</span></h2>
+            
+            <!-- Very Short Answer 1 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>1. Author of "The Cutting of My Long Hair"?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Zitkala-Ša
+                </div>
+            </div>
+            
+            <!-- Very Short Answer 2 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>2. Author of Bama's account?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Bama
+                </div>
+            </div>
+            
+            <!-- Very Short Answer 3 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>3. Bama faced discrimination due to</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Caste
+                </div>
+            </div>
+            
+            <!-- Very Short Answer 4 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>4. Zitkala-Ša's tribe</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Sioux
+                </div>
+            </div>
+            
+            <!-- Very Short Answer 5 -->
+            <div class="answer-container short-answer">
+                <div class="question-text">
+                    <strong>5. Central theme</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Social discrimination
+                </div>
+            </div>
+            
+            <div class="question-shortcuts">
+                <span>Jump to:</span>
+                <button class="shortcut-btn" onclick="scrollToCaseBased()">Case-Based Questions</button>
+                <button class="shortcut-btn" onclick="scrollToVeryShort()">Very Short Answers</button>
+                <button class="shortcut-btn" onclick="scrollToTop()">Back to Top ↑</button>
+            </div>
+        </div>
+        
+        <!-- Page 3: Short & Long Answer Questions -->
+        <div id="page3" class="page">
+            <h2>Short Answer Questions <span class="question-counter">5 Questions</span></h2>
+            
+            <div class="question-shortcuts">
+                <span>Jump to:</span>
+                <button class="shortcut-btn" onclick="scrollToShort()">Short Answers</button>
+                <button class="shortcut-btn" onclick="scrollToLong()">Long Answers</button>
+            </div>
+            
+            <!-- Short Answer 1 -->
+            <div class="answer-container" id="short1">
+                <div class="question-text">
+                    <strong>1. Why did Zitkala-Ša resist the cutting of her hair?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Zitkala-Ša resisted because long hair symbolized dignity and identity in her culture. Cutting it meant humiliation and loss of self-respect.
+                </div>
+            </div>
+            
+            <!-- Short Answer 2 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>2. How did the boarding school suppress native culture?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> The boarding school imposed Western customs, forced haircutting, and strict discipline to erase native identity and culture.
+                </div>
+            </div>
+            
+            <!-- Short Answer 3 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>3. What incident made Bama aware of caste discrimination?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Bama saw an upper-caste man carrying food with a string to avoid touching it, which revealed caste-based untouchability.
+                </div>
+            </div>
+            
+            <!-- Short Answer 4 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>4. How did Bama's brother guide her?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> He advised Bama to study hard and rise above discrimination through education and self-respect.
+                </div>
+            </div>
+            
+            <!-- Short Answer 5 -->
+            <div class="answer-container">
+                <div class="question-text">
+                    <strong>5. What common theme unites both narratives?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Both narratives show oppression of marginalized communities and stress the importance of resistance and dignity.
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 40px;" id="long">Long Answer Questions <span class="question-counter">3 Questions</span></h2>
+            
+            <!-- Long Answer 1 -->
+            <div class="answer-container long-answer">
+                <div class="question-text">
+                    <strong>1. Discuss the theme of identity and oppression in Memories of Childhood.</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> The chapter presents two personal accounts of childhood trauma caused by social injustice. Zitkala-Ša experiences racial oppression when her hair is cut, symbolizing loss of identity. Bama faces caste discrimination in everyday life. Both narratives reveal how dominant cultures suppress marginalized communities. However, they also emphasize resistance, awareness, and the power of education to reclaim dignity and identity.
+                </div>
+            </div>
+            
+            <!-- Long Answer 2 -->
+            <div class="answer-container long-answer">
+                <div class="question-text">
+                    <strong>2. Compare the experiences of Zitkala-Ša and Bama.</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Zitkala-Ša suffers racial discrimination in a colonial boarding school, while Bama faces caste-based oppression in Indian society. Though contexts differ, both experience humiliation and injustice. Their stories highlight similar struggles against social dominance and emphasize courage and self-realization.
+                </div>
+            </div>
+            
+            <!-- Long Answer 3 -->
+            <div class="answer-container long-answer">
+                <div class="question-text">
+                    <strong>3. How does education become a tool of empowerment in the chapter?</strong>
+                </div>
+                <button class="toggle-btn"><i class="fas fa-eye"></i> Show Answer</button>
+                <div class="answer">
+                    <strong>Answer:</strong> Education plays a vital role in empowering the oppressed. Bama's brother advises her to study hard to overcome discrimination. Awareness and learning help both writers understand injustice and fight it with dignity.
+                </div>
+            </div>
+            
+            <div class="question-shortcuts">
+                <span>Jump to:</span>
+                <button class="shortcut-btn" onclick="scrollToShort()">Short Answers</button>
+                <button class="shortcut-btn" onclick="scrollToLong()">Long Answers</button>
+                <button class="shortcut-btn" onclick="scrollToTop()">Back to Top ↑</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section contact-info">
+                <h3>Contact Information</h3>
+                <p><i class="fas fa-envelope"></i> Email: alaxrad60@gmail.com</p>
+                <p><i class="fas fa-phone-alt"></i> Phone: 63917 44080</p>
+                <a href="https://wa.me/6391744080" class="whatsapp-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Connect on WhatsApp
+                </a>
+            </div>
+            
+            <div class="footer-section footer-links">
+                <h3>Quick Navigation</h3>
+                <a href="#page1" class="page-link"><i class="fas fa-list-ol"></i> MCQ Questions</a>
+                <a href="#page2" class="page-link"><i class="fas fa-file-alt"></i> Case-Based & Very Short</a>
+                <a href="#page3" class="page-link"><i class="fas fa-pen-fancy"></i> Short & Long Answers</a>
+                <a href="#" id="homepage-link"><i class="fas fa-home"></i> Homepage</a>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 Class 12 English - Memories of Childhood Worksheet. For educational purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show selected page
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+                
+                // Scroll to top when changing pages
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            });
+        });
+        
+        // MCQ Functionality
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const container = this.closest('.mcq-container');
+                const resultDiv = container.querySelector('.result');
+                
+                // Remove all previous selections
+                container.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'wrong', 'locked');
+                });
+                
+                // Lock all options
+                container.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.add('locked');
+                });
+                
+                // Check if correct
+                if (this.getAttribute('data-correct') === 'true') {
+                    this.classList.add('correct');
+                    resultDiv.textContent = "✓ Correct! Well done.";
+                    resultDiv.className = "result correct-result";
+                    resultDiv.style.display = 'block';
+                } else {
+                    this.classList.add('wrong');
+                    
+                    // Find correct answer
+                    const correctOption = container.querySelector('.option[data-correct="true"]');
+                    correctOption.classList.add('correct');
+                    
+                    resultDiv.innerHTML = `✗ Incorrect. The correct answer is: <strong>${correctOption.textContent}</strong>`;
+                    resultDiv.className = "result wrong-result";
+                    resultDiv.style.display = 'block';
+                }
+            });
+        });
+        
+        // Show/Hide Answer Buttons for non-MCQ questions
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                if (answer.classList.contains('visible')) {
+                    answer.classList.remove('visible');
+                    icon.className = 'fas fa-eye';
+                    this.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                } else {
+                    answer.classList.add('visible');
+                    icon.className = 'fas fa-eye-slash';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                }
+            });
+        });
+        
+        // Footer links for page navigation
+        document.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('href').substring(1);
+                
+                // Update navigation buttons
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-page') === pageId) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // Show selected page
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(pageId).classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            });
+        });
+        
+        // Homepage link
+        document.getElementById('homepage-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('This would navigate to the homepage in a real application.');
+        });
+        
+        // Scroll functions for question shortcuts
+        function scrollToQuestion(num) {
+            const element = document.getElementById(`q${num}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add highlight animation
+                element.style.backgroundColor = '#f9f0ff';
+                setTimeout(() => {
+                    element.style.backgroundColor = '';
+                }, 1500);
+            }
+        }
+        
+        function scrollToCaseBased() {
+            const element = document.getElementById('case1');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function scrollToVeryShort() {
+            const element = document.getElementById('veryShort');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function scrollToShort() {
+            const element = document.getElementById('short1');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function scrollToLong() {
+            const element = document.getElementById('long');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
+</body>
+</html>

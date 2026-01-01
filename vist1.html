@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 English - The Third Level Q&A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f0ff 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(to right, #2c5f2d, #4a8c4e);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-info {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: #4a8c4e;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn:hover {
+            background: #2c5f2d;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-btn.active {
+            background: #e74c3c;
+        }
+        
+        .nav-buttons-bottom {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0 30px 0;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #2c5f2d;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: #e74c3c;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c5f2d;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background: #f8f9fa;
+            border-color: #a0aec0;
+        }
+        
+        .option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+            animation: pulse 0.5s;
+        }
+        
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #fde8e8;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #4a8c4e;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background: #d5f4e6;
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background: #fde8e8;
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            display: block;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .answer-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .answer-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn i {
+            margin-right: 8px;
+        }
+        
+        .answer-content {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+        
+        .answer-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        footer {
+            background: #2c5f2d;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            padding: 10px 15px;
+        }
+        
+        .contact-link {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .contact-link:hover {
+            color: #f1c40f;
+            text-decoration: underline;
+        }
+        
+        .whatsapp-link {
+            background: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-link:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .whatsapp-link i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons, .nav-buttons-bottom {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 90%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+            
+            .footer-section {
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px 15px;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Class 12 English – Flamingo</h1>
+            <div class="chapter-info">Chapter 1: The Third Level (Jack Finney) - Interactive Q&A</div>
+        </header>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+        
+        <!-- MCQ Section -->
+        <section id="mcq-section" class="section active">
+            <h2><i class="fas fa-question-circle"></i> Multiple Choice Questions (20 MCQs)</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-container">
+                <div class="question">1. Who is the author of The Third Level?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> H.G. Wells
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Jack Finney
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> O. Henry
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Ray Bradbury
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-container">
+                <div class="question">2. Who is the narrator of the story?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Louisa
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Sam
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Charley
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Jack
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-container">
+                <div class="question">3. What kind of story is The Third Level?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Historical
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Detective
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Science fiction
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Fantasy
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question-container">
+                <div class="question">4. Where does Charley discover the third level?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Airport
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Grand Central Station
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Metro station
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Museum
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question-container">
+                <div class="question">5. Which year does the third level belong to?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> 1850
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> 1870
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> 1894
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> 1910
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            <!-- Question 6 -->
+<div class="question-container">
+    <div class="question">6. What does Charley want to escape from?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Poverty
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> War
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Modern stress
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Loneliness
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 7 -->
+<div class="question-container">
+    <div class="question">7. What kind of currency was used in 1894?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Plastic money
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Silver coins
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Paper bills
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">D</span> Gold coins
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 8 -->
+<div class="question-container">
+    <div class="question">8. What profession did Charley have?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Doctor
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Lawyer
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Clerk
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Teacher
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 9 -->
+<div class="question-container">
+    <div class="question">9. Who was Louisa?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Charley's sister
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Charley's wife
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> His friend
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> His colleague
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 10 -->
+<div class="question-container">
+    <div class="question">10. Who was Sam Weiner?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Charley's boss
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> His psychiatrist
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> His friend
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Station master
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 11 -->
+<div class="question-container">
+    <div class="question">11. What did Sam think about the third level?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> It was real
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> A hallucination
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> A dream
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> A myth
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 12 -->
+<div class="question-container">
+    <div class="question">12. What hobby did Sam have?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Painting
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Stamp collecting
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Coin collecting
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Writing
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 13 -->
+<div class="question-container">
+    <div class="question">13. What evidence supports the existence of the third level?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Newspaper
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Letter
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Photograph
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Stamp
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 14 -->
+<div class="question-container">
+    <div class="question">14. From where was Sam's letter sent?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> New York
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Paris
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Galesburg
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Chicago
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 15 -->
+<div class="question-container">
+    <div class="question">15. What does Galesburg symbolize?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Wealth
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Adventure
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Peace and simplicity
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Loneliness
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+            <!-- Question 16 -->
+            <div class="question-container">
+                <div class="question">16. Charley bought old currency from</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Bank
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Museum
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Coin dealer
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Friend
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 17 -->
+            <div class="question-container">
+                <div class="question">17. The story highlights the theme of</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Love
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Escape from reality
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> War
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Power
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 18 -->
+            <div class="question-container">
+                <div class="question">18. Charley failed to buy tickets because</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Train was late
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Wrong platform
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Old currency not accepted
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Lost money
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 19 -->
+            <div class="question-container">
+                <div class="question">19. The third level represents</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Past reality
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Imagination
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Escape from stress
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Fear
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 20 -->
+            <div class="question-container">
+                <div class="question">20. The ending of the story is</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Sad
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">B</span> Clear
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">C</span> Mysterious
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Tragic
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </section>
+        
+        <!-- Case-Based Questions Section -->
+        <section id="case-based-section" class="section">
+            <h2><i class="fas fa-clipboard-list"></i> Case-Based Questions</h2>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 1:</strong> Charley finds himself in a strange old-fashioned station with gas lights and people wearing outdated clothes.</div>
+                <div class="question">What does this situation suggest about Charley's mental state?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    This situation suggests Charley's desire to escape the stress and anxiety of modern life. His imagination creates an alternate reality where life appears simple and peaceful.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 2:</strong> Sam sends a letter from Galesburg, Illinois, dated 1894.</div>
+                <div class="question">How does the letter affect the story's ending?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The letter adds mystery to the story by blurring the line between reality and imagination. It makes the reader question whether the third level truly exists or is only psychological.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Very Short Questions Section -->
+        <section id="very-short-section" class="section">
+            <h2><i class="fas fa-ellipsis-h"></i> Very Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Author of the story?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Jack Finney</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. Narrator's name?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Charley</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Place of third level?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Grand Central Station</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Symbol of escape?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Third level</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. Year of Galesburg?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">1894</div>
+            </div>
+        </section>
+        
+        <!-- Short Answer Questions Section -->
+        <section id="short-answer-section" class="section">
+            <h2><i class="fas fa-align-left"></i> Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Why did Charley want to escape to the third level?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Charley was frustrated with the stress, insecurity, and competition of modern life. He longed for a peaceful world where life was simpler and free from worries.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How does the third level reflect Charley's psychology?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The third level reflects Charley's subconscious desire to escape reality. It represents his attempt to find comfort in an imagined past to avoid present anxieties.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. What role does Sam play in the story?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Sam acts as a rational psychiatrist who explains the third level as a hallucination. Ironically, he later becomes part of Charley's imagined escape.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Why is Galesburg described as an ideal town?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Galesburg is described as peaceful, safe, and free from modern problems. It symbolizes a stress-free life with simplicity and contentment.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. How does the story blend reality and fantasy?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The story blends reality and fantasy by mixing real locations with imaginary experiences. This makes it difficult to distinguish between imagination and truth.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Long Answer Questions Section -->
+        <section id="long-answer-section" class="section">
+            <h2><i class="fas fa-align-justify"></i> Long Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Discuss the theme of escape in The Third Level.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The story explores humanity's desire to escape from stress and insecurity. Charley feels overwhelmed by modern life and imagines the third level as a refuge. Galesburg represents peace and simplicity. Jack Finney shows that imagination becomes a coping mechanism for people unable to face harsh realities.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. How does Jack Finney use time travel as a literary device?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Jack Finney uses time travel symbolically rather than scientifically. The third level connects the present with the past, reflecting Charley's mental escape. It emphasizes psychological conflict rather than physical movement through time.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Comment on the ending of The Third Level.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The ending is ambiguous and mysterious. Sam's letter from the past challenges logic and leaves readers unsure whether the third level truly exists. This uncertainty makes the story intriguing and thought-provoking.
+                </div>
+            </div>
+        </section>
+        
+        <div class="nav-buttons-bottom">
+            <button class="nav-btn" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <i class="fas fa-envelope"></i> Contact: 
+                <a href="mailto:alaxrad60@gmail.com" class="contact-link">alaxrad60@gmail.com</a>
+            </div>
+            <div class="footer-section">
+                <i class="fas fa-home"></i> 
+                <a href="#" class="contact-link">Homepage</a>
+            </div>
+            <div class="footer-section">
+                <a href="https://wa.me/6391744080" target="_blank" class="whatsapp-link">
+                    <i class="fab fa-whatsapp"></i> WhatsApp: 63917 44080
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation between sections
+        function navigateToSection(targetId) {
+            // Remove active class from all buttons and sections
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            
+            // Find and activate the correct button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-target') === targetId) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show corresponding section
+            document.getElementById(targetId).classList.add('active');
+            
+            // Reset all MCQ selections when switching sections
+            if (targetId !== 'mcq-section') {
+                resetMCQSelections();
+            }
+            
+            // Scroll to top for better UX
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Setup navigation buttons
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                navigateToSection(targetId);
+            });
+        });
+        
+        // MCQ answer selection logic
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionContainer = this.closest('.question-container');
+                const options = questionContainer.querySelectorAll('.option');
+                const feedback = questionContainer.querySelector('.feedback');
+                
+                // Remove selected class from all options in this question
+                options.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    this.classList.add('incorrect');
+                    
+                    // Find and highlight correct answer
+                    const correctOption = questionContainer.querySelector('.option[data-correct="true"]');
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                    }
+                    
+                    feedback.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect. The right answer is highlighted.';
+                    feedback.className = 'feedback incorrect';
+                }
+                
+                // Disable all options after selection
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                });
+            });
+        });
+        
+        // Show/Hide answer buttons for non-MCQ sections
+        document.querySelectorAll('.answer-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answerContent = this.nextElementSibling;
+                answerContent.classList.toggle('show');
+                
+                // Change button text and icon
+                const icon = this.querySelector('i');
+                if (answerContent.classList.contains('show')) {
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                } else {
+                    this.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                }
+            });
+        });
+        
+        // Function to reset MCQ selections
+        function resetMCQSelections() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.className = 'feedback';
+                feedback.innerHTML = '';
+            });
+        }
+        
+        // Initialize with MCQ section active
+        document.getElementById('mcq-section').classList.add('active');
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add page load animation
+        window.addEventListener('load', function() {
+            document.querySelector('header').style.animation = 'fadeIn 0.8s ease';
+        });
+    </script>
+</body>
+</html>

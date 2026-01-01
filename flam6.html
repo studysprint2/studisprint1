@@ -1,0 +1,1660 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poets and Pancakes - Interactive Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f0e6;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 40px;
+            background-image: linear-gradient(to bottom, #f5f0e6, #e8dfca);
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header with contact info */
+        .top-header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo h2 {
+            font-size: 1.8rem;
+            color: #ffd166;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .contact-item i {
+            color: #ffd166;
+        }
+        
+        .whatsapp-link {
+            background-color: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-link:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+        }
+        
+        /* Question Navigation */
+        .question-nav {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #2c3e50;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .question-nav h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4a6491, #2c3e50);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(135deg, #ff9a3c, #ff6f3c);
+            box-shadow: 0 4px 8px rgba(255, 106, 60, 0.3);
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.7s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><path d="M30,30 L70,70 M70,30 L30,70" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
+            opacity: 0.1;
+            background-size: 120px;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .subtitle {
+            color: #ffd166;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .quiz-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #4a6491;
+            transition: all 0.4s ease;
+            animation: cardAppear 0.6s ease;
+        }
+        
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .quiz-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8dfca;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+        
+        .mcq-question {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f7f3;
+            transition: all 0.3s ease;
+            border: 1px solid #e8dfca;
+            position: relative;
+            overflow: hidden;
+            animation: questionSlide 0.5s ease;
+        }
+        
+        @keyframes questionSlide {
+            from { opacity: 0; transform: translateX(-25px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .mcq-question::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #4a6491, #2c3e50);
+            opacity: 0.6;
+        }
+        
+        .mcq-question:hover {
+            background-color: #f2efe8;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid #d5c9b1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(74, 100, 145, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option:hover {
+            border-color: #4a6491;
+            background-color: #f9f7f3;
+        }
+        
+        .option.selected {
+            border-color: #2c3e50;
+            background-color: #f2efe8;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background-color: #d5f4e6;
+            animation: successGlow 0.8s ease;
+        }
+        
+        @keyframes successGlow {
+            0% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(39, 174, 96, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+        }
+        
+        .option.wrong {
+            border-color: #e74c3c;
+            background-color: #fde8e6;
+            animation: errorPulse 0.5s ease;
+        }
+        
+        @keyframes errorPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.98); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background-color: #e8dfca;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected .option-letter {
+            background-color: #2c3e50;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .option.correct .option-letter {
+            background-color: #27ae60;
+            color: white;
+            animation: letterBounce 0.5s ease;
+        }
+        
+        @keyframes letterBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .option.wrong .option-letter {
+            background-color: #e74c3c;
+            color: white;
+            animation: letterDrop 0.5s ease;
+        }
+        
+        @keyframes letterDrop {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            display: none;
+            animation: feedbackFade 0.5s ease;
+        }
+        
+        @keyframes feedbackFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feedback.correct-feedback {
+            background-color: #d5f4e6;
+            color: #155724;
+            border-left: 4px solid #27ae60;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback.wrong-feedback {
+            background-color: #fde8e6;
+            color: #721c24;
+            border-left: 4px solid #e74c3c;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .case-question, .vsq-question, .short-answer, .long-answer {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f7f3;
+            border: 1px solid #e8dfca;
+            animation: contentFade 0.8s ease;
+        }
+        
+        @keyframes contentFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .case-text, .question-content {
+            font-style: italic;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 3px solid #4a6491;
+        }
+        
+        .case-subquestion, .answer-item {
+            margin-bottom: 15px;
+        }
+        
+        .case-subquestion p, .answer-item p {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .show-answer-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 22px;
+            background-color: #4a6491;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .show-answer-btn::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .show-answer-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0, 0); opacity: 0.5; }
+            100% { transform: scale(20, 20); opacity: 0; }
+        }
+        
+        .show-answer-btn:hover {
+            background-color: #2c3e50;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .answer-content {
+            background-color: #f2efe8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid #4a6491;
+            display: none;
+            animation: answerExpand 0.6s ease;
+        }
+        
+        @keyframes answerExpand {
+            from { opacity: 0; max-height: 0; padding: 0 15px; }
+            to { opacity: 1; max-height: 500px; padding: 15px; }
+        }
+        
+        .answer-content.show {
+            display: block;
+        }
+        
+        .short-answer h3, .long-answer h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .short-answer h3 i, .long-answer h3 i {
+            margin-right: 10px;
+        }
+        
+        .score-summary {
+            text-align: center;
+            padding: 25px;
+            background-color: white;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #4a6491;
+            animation: summaryPulse 2s infinite alternate;
+        }
+        
+        @keyframes summaryPulse {
+            from { box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); }
+            to { box-shadow: 0 3px 20px rgba(74, 100, 145, 0.3); }
+        }
+        
+        .score-summary h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .score-value {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #4a6491;
+            margin: 10px 0;
+            animation: scoreFloat 3s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes scoreFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .reset-btn {
+            padding: 12px 30px;
+            background-color: #4a6491;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .reset-btn:hover {
+            background-color: #2c3e50;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            animation: fadeIn 1s ease;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .footer-link {
+            color: #ffd166;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .footer-contact {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #d1d8e0;
+        }
+        
+        .instructions {
+            background-color: #f9f7f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4a6491;
+            animation: instructionSlide 0.5s ease;
+        }
+        
+        @keyframes instructionSlide {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions h3 i {
+            margin-right: 8px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e8dfca;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #4a6491, #2c3e50);
+            width: 0%;
+            transition: width 0.7s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: progressShimmer 1.5s infinite;
+        }
+        
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .correct-counter {
+            display: inline-block;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+  padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            animation: counterPop 0.3s ease;
+        }
+        
+        @keyframes counterPop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .question-counter {
+            float: right;
+            background-color: #4a6491;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-all-btn {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            margin-right: 10px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-all-btn:hover {
+            background-color: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .toggle-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .section-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #4a6491, #2c3e50);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .film-decoration {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 209, 102, 0.3);
+            border-radius: 50%;
+            animation: filmRoll 20s linear infinite;
+        }
+        
+        @keyframes filmRoll {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, 50px) rotate(90deg); }
+            50% { transform: translate(50px, 100px) rotate(180deg); }
+            75% { transform: translate(-50px, 50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        .film-decoration:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+        
+        .film-decoration:nth-child(2) {
+            top: 25%;
+            right: 10%;
+            animation-delay: -5s;
+            animation-duration: 30s;
+        }
+        
+        .floating-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            animation: floatIcon 15s linear infinite;
+        }
+        
+        @keyframes floatIcon {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(200px, 100px) rotate(360deg); }
+        }
+        
+        .floating-icon:nth-child(1) {
+            top: 35%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+        
+        .floating-icon:nth-child(2) {
+            bottom: 30%;
+            right: 12%;
+            animation-delay: -7s;
+        }
+        
+        .studio-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.2);
+            animation: studioSway 5s ease-in-out infinite;
+        }
+        
+        @keyframes studioSway {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+        
+        .studio-icon:nth-child(1) {
+            top: 20%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+        
+        .studio-icon:nth-child(2) {
+            bottom: 20%;
+            right: 20%;
+            animation-delay: -2.5s;
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #4a6491, #2c3e50);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Header with Contact Info -->
+        <div class="top-header">
+            <div class="logo">
+                <h2><i class="fas fa-book-open"></i> Class 12 English Quiz</h2>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>alaxrad60@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-home"></i>
+                    <span>Homepage: Class 12 English Resources</span>
+                </div>
+                <a href="https://wa.me/6391744080" class="whatsapp-link" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Connect: 63917 44080</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Question Navigation -->
+        <div class="question-nav">
+            <h3><i class="fas fa-bars"></i> Quick Navigation</h3>
+            <div class="nav-buttons">
+                <button class="nav-btn active" data-target="mcq-section">
+                    <i class="fas fa-question-circle"></i> MCQ (20)
+                </button>
+                <button class="nav-btn" data-target="case-section">
+                    <i class="fas fa-file-alt"></i> Case Based (2)
+                </button>
+                <button class="nav-btn" data-target="vsq-section">
+                    <i class="fas fa-edit"></i> Very Short (5)
+                </button>
+                <button class="nav-btn" data-target="short-section">
+                    <i class="fas fa-align-left"></i> Short Answer (5)
+                </button>
+                <button class="nav-btn" data-target="long-section">
+                    <i class="fas fa-book"></i> Long Answer (3)
+                </button>
+                <button class="nav-btn" data-target="score-section">
+                    <i class="fas fa-chart-bar"></i> Score Summary
+                </button>
+            </div>
+        </div>
+             <header>
+            <h1>Poets and Pancakes - Interactive Quiz</h1>
+            <p>Test your understanding of Asokamitran's chapter "Poets and Pancakes" from Class 12 English Flamingo</p>
+            <p class="subtitle">Chapter 6: Behind the Scenes of Gemini Studios</p>
+            <div class="film-decoration"></div>
+            <div class="film-decoration"></div>
+            <div class="floating-icon"><i class="fas fa-film"></i></div>
+            <div class="floating-icon"><i class="fas fa-palette"></i></div>
+            <div class="studio-icon"><i class="fas fa-theater-masks"></i></div>
+            <div class="studio-icon"><i class="fas fa-mask"></i></div>
+        </header>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Instructions</h3>
+            <ul>
+                <li>For MCQs: Click on an option to select it. Immediate feedback will show if your answer is correct or incorrect.</li>
+                <li>For Case-Based, Very Short, Short and Long Questions: Click "Show Answer" buttons to reveal the answers.</li>
+                <li>Use "Show All Answers" and "Hide All Answers" buttons to toggle all answers at once.</li>
+                <li>Your MCQ score will update automatically as you answer questions.</li>
+                <li>Use the navigation buttons above to jump to different question sections.</li>
+            </ul>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+        </div>
+        
+        <!-- Part A: MCQs -->
+        <div class="quiz-section" id="mcq-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h2>PART A: MCQs (20 Questions) <span id="mcq-counter" class="correct-counter">0/20</span></h2>
+            </div>
+            
+            <div id="mcq-container">
+                <!-- MCQs will be inserted here by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Part B: Case-Based Questions -->
+        <div class="quiz-section" id="case-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h2>PART B: Case-Based Questions (2)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-case-answers">Show All Case Answers</button>
+                <button class="toggle-all-btn" id="hide-case-answers">Hide All Case Answers</button>
+            </div>
+            
+            <div id="case-container">
+                <div class="case-question">
+                    <div class="case-text">Case-Based Question 1: The make-up department of Gemini Studios was considered very powerful and often misused its authority.</div>
+                    <div class="case-subquestion">
+                        <p>What does this incident reveal about hierarchy in Gemini Studios?</p>
+                        <button class="show-answer-btn" data-target="case1-answer">Show Answer</button>
+                        <div class="answer-content" id="case1-answer">
+                            <p><strong>Answer:</strong> The incident reveals that Gemini Studios had a strict hierarchy where certain departments enjoyed excessive power. The make-up department dominated others, creating fear. This reflects workplace politics and misuse of authority in creative institutions.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-question">
+                    <div class="case-text">Case-Based Question 2: Stephen Spender delivered a lecture on communism, but most people could not understand him.</div>
+                    <div class="case-subquestion">
+                        <p>Why did his visit fail to create an impact?</p>
+                        <button class="show-answer-btn" data-target="case2-answer">Show Answer</button>
+                        <div class="answer-content" id="case2-answer">
+                            <p><strong>Answer:</strong> Spender's visit failed due to language barriers and lack of awareness among the audience. His complex ideas and unfamiliar accent confused listeners, showing the cultural gap between Indian studio workers and foreign intellectuals.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part C: Very Short Answer Questions -->
+        <div class="quiz-section" id="vsq-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h2>PART C: Very Short Answer Questions (5)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-vsq-answers">Show All VSQ Answers</button>
+                <button class="toggle-all-btn" id="hide-vsq-answers">Hide All VSQ Answers</button>
+            </div>
+            
+            <div id="vsq-container">
+                <div class="vsq-question">
+                    <div class="question-content">Author of the chapter?</div>
+                    <button class="show-answer-btn" data-target="vsq1-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq1-answer">
+                        <p><strong>Answer:</strong> Asokamitran</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Studio described?</div>
+                    <button class="show-answer-btn" data-target="vsq2-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq2-answer">
+                        <p><strong>Answer:</strong> Gemini Studios</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Pancake was a</div>
+                    <button class="show-answer-btn" data-target="vsq3-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq3-answer">
+                        <p><strong>Answer:</strong> Make-up brand</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Boss of Gemini Studios?</div>
+                    <button class="show-answer-btn" data-target="vsq4-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq4-answer">
+                        <p><strong>Answer:</strong> S.S. Vasan</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Stephen Spender was a</div>
+                    <button class="show-answer-btn" data-target="vsq5-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq5-answer">
+                        <p><strong>Answer:</strong> Poet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part D: Short Answer Questions -->
+        <div class="quiz-section" id="short-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-align-left"></i>
+                </div>
+                <h2>PART D: Short Answer Questions (5)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-short-answers">Show All Short Answers</button>
+                <button class="toggle-all-btn" id="hide-short-answers">Hide All Short Answers</button>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-1"></i> Why was Pancake make-up important in Gemini Studios?</h3>
+                <button class="show-answer-btn" data-target="short1-answer">Show Answer</button>
+                <div class="answer-content" id="short1-answer">
+                    <p><strong>Answer:</strong> Pancake make-up was used to hide the effect of harsh studio lights on actors' faces. It gave them a uniform appearance on screen. However, excessive use often caused skin problems, making actors uncomfortable during shooting.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-2"></i> Describe Subbu's personality.</h3>
+                <button class="show-answer-btn" data-target="short2-answer">Show Answer</button>
+                <div class="answer-content" id="short2-answer">
+                    <p><strong>Answer:</strong> Subbu was a creative and loyal assistant to the boss. He was intelligent, imaginative, and generous. Although some disliked him, he played a key role in helping the studio produce successful films with his innovative ideas.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-3"></i> How were writers treated in Gemini Studios?</h3>
+                <button class="show-answer-btn" data-target="short3-answer">Show Answer</button>
+                <div class="answer-content" id="short3-answer">
+                    <p><strong>Answer:</strong> Writers were poorly treated and ignored in Gemini Studios. They worked in a cramped dark room and received little recognition. Their creative contribution was undervalued compared to actors and technical staff.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-4"></i> Why was Stephen Spender misunderstood?</h3>
+                <button class="show-answer-btn" data-target="short4-answer">Show Answer</button>
+                <div class="answer-content" id="short4-answer">
+                    <p><strong>Answer:</strong> Stephen Spender spoke about communism in English, which most of the audience could not understand. Due to lack of knowledge and language issues, people wrongly assumed he was a communist sympathizer.</p>
+                </div>
+            </div>
+                  <div class="short-answer">
+                <h3><i class="fas fa-5"></i> What does the chapter reveal about studio life?</h3>
+                <button class="show-answer-btn" data-target="short5-answer">Show Answer</button>
+                <div class="answer-content" id="short5-answer">
+                    <p><strong>Answer:</strong> The chapter reveals the internal politics, hierarchy, and irony of studio life. It highlights how creativity coexisted with power struggles, misunderstandings, and neglect of intellectual contributors.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part E: Long Answer Questions -->
+        <div class="quiz-section" id="long-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2>PART E: Long Answer Questions (3)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-long-answers">Show All Long Answers</button>
+                <button class="toggle-all-btn" id="hide-long-answers">Hide All Long Answers</button>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-1"></i> Describe the working environment of Gemini Studios.</h3>
+                <button class="show-answer-btn" data-target="long1-answer">Show Answer</button>
+                <div class="answer-content" id="long1-answer">
+                    <p><strong>Answer:</strong> Gemini Studios had a hierarchical and political working environment. Certain departments like make-up enjoyed great power, while writers were neglected. Although creativity thrived, favoritism and misuse of authority were common. The studio was busy, glamorous on the surface, but internally flawed. Despite these issues, it played a significant role in shaping South Indian cinema.</p>
+                </div>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-2"></i> How does the chapter combine humor with criticism?</h3>
+                <button class="show-answer-btn" data-target="long2-answer">Show Answer</button>
+                <div class="answer-content" id="long2-answer">
+                    <p><strong>Answer:</strong> Asokamitran uses humor and satire to expose the flaws of the film industry. He describes exaggerated use of make-up, workplace politics, and misunderstandings in a light-hearted way. Beneath the humor lies a sharp criticism of hierarchy, neglect of writers, and blind imitation of foreign ideas.</p>
+                </div>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-3"></i> Explain the significance of the title Poets and Pancakes.</h3>
+                <button class="show-answer-btn" data-target="long3-answer">Show Answer</button>
+                <div class="answer-content" id="long3-answer">
+                    <p><strong>Answer:</strong> The title symbolizes the contrast between art and artificiality in the film world. 'Poets' represent creativity and intellect, while 'Pancakes' refer to superficial glamour. Together, they highlight the ironic coexistence of literature and make-up in cinema, emphasizing the absurdities of studio life.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Score Summary -->
+        <div class="score-summary" id="score-section">
+            <h3>Your MCQ Score</h3>
+            <p>Based on your answers for Multiple Choice Questions only</p>
+            <div class="score-value" id="score-value">0/20</div>
+            <p id="score-message">Start answering MCQs to see your score!</p>
+            <button class="reset-btn" id="reset-btn"><i class="fas fa-redo"></i> Reset MCQ Answers</button>
+        </div>
+        
+        <!-- Footer with Contact Info -->
+        <footer>
+            <div class="footer-content">
+                <h3>Class 12 English - Flamingo Interactive Quizzes</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-home"></i> Homepage
+                    </a>
+                    <a href="mailto:alaxrad60@gmail.com" class="footer-link">
+                        <i class="fas fa-envelope"></i> alaxrad60@gmail.com
+                    </a>
+                    <a href="https://wa.me/6391744080" class="footer-link" target="_blank">
+                        <i class="fab fa-whatsapp"></i> WhatsApp: 63917 44080
+                    </a>
+                </div>
+                <div class="footer-contact">
+                    <p>Created for educational purposes | Chapter 6: Poets and Pancakes</p>
+                    <p>© 2023 Class 12 English Resources | All study materials are for learning purposes</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Quiz data for Poets and Pancakes
+        const mcqData = [
+            {
+                question: "Who is the author of Poets and Pancakes?",
+                options: ["A. R.K. Narayan", "B. Asokamitran", "C. Mulk Raj Anand", "D. Raja Rao"],
+                correct: 1,
+                answerText: "B. Asokamitran"
+            },
+            {
+                question: "The chapter is about which film studio?",
+                options: ["A. Bombay Talkies", "B. Prabhat Studios", "C. Gemini Studios", "D. AVM Studios"],
+                correct: 2,
+                answerText: "C. Gemini Studios"
+            },
+            {
+                question: "Where was Gemini Studios located?",
+                options: ["A. Mumbai", "B. Kolkata", "C. Chennai", "D. Hyderabad"],
+                correct: 2,
+                answerText: "C. Chennai"
+            },
+            {
+                question: "Who was the boss of Gemini Studios?",
+                options: ["A. Asokamitran", "B. Subbu", "C. S.S. Vasan", "D. Gemini Ganesan"],
+                correct: 2,
+                answerText: "C. S.S. Vasan"
+            },
+            {
+                question: "What was 'Pancake'?",
+                options: ["A. A food item", "B. A character", "C. A brand of make-up", "D. A movie"],
+                correct: 2,
+                answerText: "C. A brand of make-up"
+            },
+            {
+                question: "Who used Pancake make-up the most?",
+                options: ["A. Writers", "B. Actors", "C. Technicians", "D. Directors"],
+                correct: 1,
+                answerText: "B. Actors"
+            },
+            {
+                question: "Who was Subbu?",
+                options: ["A. Actor", "B. Director", "C. Office boy", "D. Creative assistant"],
+                correct: 3,
+                answerText: "D. Creative assistant"
+            },
+            {
+                question: "Subbu was known for his",
+                options: ["A. Arrogance", "B. Creativity", "C. Silence", "D. Anger"],
+                correct: 1,
+                answerText: "B. Creativity"
+            },
+            {
+                question: "Who headed the make-up department?",
+                options: ["A. A poet", "B. A lawyer", "C. A Brahmin", "D. A clerk"],
+                correct: 2,
+                answerText: "C. A Brahmin"
+            },
+            {
+                question: "Why was the make-up department feared?",
+                options: ["A. It punished workers", "B. It controlled artists", "C. It wasted time", "D. It was powerful"],
+                correct: 3,
+                answerText: "D. It was powerful"
+            },
+            {
+                question: "What was the writers' room called?",
+                options: ["A. Creative hall", "B. Office", "C. Writers' den", "D. Dark room"],
+                correct: 3,
+                answerText: "D. Dark room"
+            },
+            {
+                question: "How were writers treated in Gemini Studios?",
+                options: ["A. With respect", "B. With fear", "C. With neglect", "D. With honor"],
+                correct: 2,
+                answerText: "C. With neglect"
+            },
+            {
+                question: "Who visited Gemini Studios from abroad?",
+                options: ["A. Charlie Chaplin", "B. George Bernard Shaw", "C. Stephen Spender", "D. T.S. Eliot"],
+                correct: 2,
+                answerText: "C. Stephen Spender"
+            },
+            {
+                question: "Stephen Spender was a",
+                options: ["A. Actor", "B. Poet", "C. Director", "D. Producer"],
+                correct: 1,
+                answerText: "B. Poet"
+            },
+            {
+                question: "Why did the audience not understand Spender's talk?",
+                options: ["A. Language barrier", "B. Poor sound", "C. Long speech", "D. No interest"],
+                correct: 0,
+                answerText: "A. Language barrier"
+            },
+            {
+                question: "The staff misunderstood Spender as",
+                options: ["A. A politician", "B. A journalist", "C. A communist", "D. A director"],
+                correct: 2,
+                answerText: "C. A communist"
+            },
+            {
+                question: "What was the theme of Spender's lecture?",
+                options: ["A. Politics", "B. Poetry", "C. English literature", "D. Communism"],
+                correct: 3,
+                answerText: "D. Communism"
+            },
+            {
+                question: "What kind of atmosphere existed in Gemini Studios?",
+                options: ["A. Friendly", "B. Creative and hierarchical", "C. Peaceful", "D. Casual"],
+                correct: 1,
+                answerText: "B. Creative and hierarchical"
+            },
+            {
+                question: "The title 'Poets and Pancakes' symbolizes",
+                options: ["A. Food and writers", "B. Make-up and poetry", "C. Cinema and literature", "D. Humor and irony"],
+                correct: 2,
+                answerText: "C. Cinema and literature"
+            },
+            {
+                question: "The chapter is written in a tone that is",
+                options: ["A. Serious", "B. Emotional", "C. Humorous and satirical", "D. Tragic"],
+                correct: 2,
+                answerText: "C. Humorous and satirical"
+            }
+        ];
+
+        // Track user answers for MCQs only
+        let userAnswers = {
+            mcq: Array(mcqData.length).fill(null)
+        };
+
+        // DOM Elements
+        const mcqContainer = document.getElementById('mcq-container');
+        const scoreValue = document.getElementById('score-value');
+        const scoreMessage = document.getElementById('score-message');
+        const resetBtn = document.getElementById('reset-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const mcqCounter = document.getElementById('mcq-counter');
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        // Initialize the quiz
+        function initQuiz() {
+            renderMCQs();
+            updateScore();
+            updateProgress();
+            
+            // Add event listener to reset button
+            resetBtn.addEventListener('click', resetMCQAnswers);
+            
+            // Add event listeners to show/hide answer buttons
+            setupAnswerButtons();
+            
+            // Add event listeners to navigation buttons
+            setupNavigationButtons();
+            
+            // Setup back to top button
+            setupBackToTop();
+        }
+
+        // Render MCQs
+        function renderMCQs() {
+            mcqContainer.innerHTML = '';
+            
+            mcqData.forEach((mcq, index) => {
+                const mcqElement = document.createElement('div');
+                mcqElement.className = 'mcq-question';
+                mcqElement.id = `mcq-${index}`;
+                
+                let optionsHTML = '';
+                mcq.options.forEach((option, optIndex) => {
+                    const letter = String.fromCharCode(65 + optIndex);
+                    let optionClass = 'option';
+                    if (userAnswers.mcq[index] === optIndex) {
+                        optionClass += ' selected';
+                        if (optIndex === mcq.correct) {
+                            optionClass += ' correct';
+                        } else {
+                            optionClass += ' wrong';
+                        }
+                    }
+                    
+                    optionsHTML += `
+                        <div class="${optionClass}" data-index="${optIndex}" data-question="${index}">
+                            <span class="option-letter">${letter}</span>
+                            <span class="option-text">${option}</span>
+                        </div>
+                    `;
+                });
+                
+                mcqElement.innerHTML = `
+                    <div class="question-text">${mcq.question} <span class="question-counter">${index + 1}/20</span></div>
+                    <div class="options">${optionsHTML}</div>
+                    ${userAnswers.mcq[index] !== null ? 
+                        `<div class="feedback ${userAnswers.mcq[index] === mcq.correct ? 'correct-feedback' : 'wrong-feedback'}">
+                            <i class="fas ${userAnswers.mcq[index] === mcq.correct ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                            ${userAnswers.mcq[index] === mcq.correct ? 
+                                'Correct!' : 
+                                `Incorrect. The correct answer is: ${mcq.answerText}`
+                            }
+                        </div>` : ''
+                    }
+                `;
+                
+                mcqContainer.appendChild(mcqElement);
+            });
+            
+            // Add event listeners to MCQ options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleMCQSelection);
+            });
+            
+            // Update MCQ counter
+            updateMCQCounter();
+        }
+
+        // Handle MCQ selection
+        function handleMCQSelection(event) {
+            const optionElement = event.currentTarget;
+            const questionIndex = parseInt(optionElement.getAttribute('data-question'));
+            const selectedIndex = parseInt(optionElement.getAttribute('data-index'));
+            
+            // Update user answer
+            userAnswers.mcq[questionIndex] = selectedIndex;
+            
+            // Re-render the MCQ section to show feedback
+            renderMCQs();
+            updateScore();
+            updateProgress();
+        }
+
+        // Setup show/hide answer buttons
+        function setupAnswerButtons() {
+            // Individual show answer buttons
+            document.querySelectorAll('.show-answer-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const answerContent = document.getElementById(targetId);
+                    
+                    if (answerContent.classList.contains('show')) {
+                        answerContent.classList.remove('show');
+                        this.textContent = 'Show Answer';
+                    } else {
+                        answerContent.classList.add('show');
+                        this.textContent = 'Hide Answer';
+                    }
+                });
+            });
+            
+            // Show all case answers
+            document.getElementById('toggle-case-answers').addEventListener('click', function() {
+                document.querySelectorAll('#case-container .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('#case-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all case answers
+            document.getElementById('hide-case-answers').addEventListener('click', function() {
+                document.querySelectorAll('#case-container .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('#case-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all VSQ answers
+            document.getElementById('toggle-vsq-answers').addEventListener('click', function() {
+                document.querySelectorAll('#vsq-container .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('#vsq-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all VSQ answers
+            document.getElementById('hide-vsq-answers').addEventListener('click', function() {
+                document.querySelectorAll('#vsq-container .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('#vsq-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all short answers
+            document.getElementById('toggle-short-answers').addEventListener('click', function() {
+                document.querySelectorAll('.short-answer .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('.short-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all short answers
+            document.getElementById('hide-short-answers').addEventListener('click', function() {
+                document.querySelectorAll('.short-answer .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.short-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all long answers
+            document.getElementById('toggle-long-answers').addEventListener('click', function() {
+                document.querySelectorAll('.long-answer .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('.long-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all long answers
+            document.getElementById('hide-long-answers').addEventListener('click', function() {
+                document.querySelectorAll('.long-answer .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.long-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+        }
+
+        // Setup navigation buttons
+        function setupNavigationButtons() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const sections = {
+                'mcq-section': document.getElementById('mcq-section'),
+                'case-section': document.getElementById('case-section'),
+                'vsq-section': document.getElementById('vsq-section'),
+                'short-section': document.getElementById('short-section'),
+                'long-section': document.getElementById('long-section'),
+                'score-section': document.getElementById('score-section')
+            };
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // Update active button
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Scroll to target section
+                    if (sections[targetId]) {
+                        sections[targetId].scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+// Setup back to top button
+        function setupBackToTop() {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Update score display
+        function updateScore() {
+            let totalQuestions = mcqData.length;
+            let correctAnswers = 0;
+            
+            // Count MCQ answers
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    if (userAnswers.mcq[index] === mcq.correct) {
+                        correctAnswers++;
+                    }
+                }
+            });
+            
+            // Update score display
+            scoreValue.textContent = `${correctAnswers}/${totalQuestions}`;
+            
+            // Update message based on score
+            if (correctAnswers === 0) {
+                scoreMessage.textContent = "Start answering MCQs to see your score!";
+                scoreValue.style.color = "#4a6491";
+            } else if (correctAnswers === totalQuestions) {
+                scoreMessage.textContent = "Perfect! You've mastered all MCQs about Poets and Pancakes!";
+                scoreValue.style.color = "#27ae60";
+            } else if (correctAnswers >= totalQuestions * 0.8) {
+                scoreMessage.textContent = "Excellent! You understand the chapter very well!";
+                scoreValue.style.color = "#4a6491";
+            } else if (correctAnswers >= totalQuestions * 0.6) {
+                scoreMessage.textContent = "Good job! You have a solid understanding of the chapter.";
+                scoreValue.style.color = "#4a6491";
+            } else if (correctAnswers >= totalQuestions * 0.4) {
+                scoreMessage.textContent = "Not bad, but you might want to review the chapter.";
+                scoreValue.style.color = "#2c3e50";
+            } else {
+                scoreMessage.textContent = "Keep trying! Review the chapter and try again.";
+                scoreValue.style.color = "#e74c3c";
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            let totalQuestions = mcqData.length;
+            let answeredQuestions = 0;
+            
+            // Count answered MCQs
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    answeredQuestions++;
+                }
+            });
+            
+            // Update progress bar width
+            const percentage = (answeredQuestions / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        // Update MCQ counter
+        function updateMCQCounter() {
+            let correctMCQs = 0;
+            let answeredMCQs = 0;
+            
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    answeredMCQs++;
+                    if (userAnswers.mcq[index] === mcq.correct) {
+                        correctMCQs++;
+                    }
+                }
+            });
+            
+            mcqCounter.textContent = `${correctMCQs}/${answeredMCQs}`;
+        }
+
+        // Reset MCQ answers only
+        function resetMCQAnswers() {
+            if (confirm("Are you sure you want to reset all MCQ answers? This cannot be undone.")) {
+                // Reset user answers
+                userAnswers.mcq = Array(mcqData.length).fill(null);
+                
+                // Re-render the MCQ section
+                renderMCQs();
+                updateScore();
+                updateProgress();
+                
+                // Reset score color
+                scoreValue.style.color = "#4a6491";
+            }
+        }
+
+        // Initialize the quiz when the page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>
+```

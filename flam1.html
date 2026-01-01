@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Last Lesson - Interactive Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #2ecc71;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.4s; }
+        .section:nth-child(4) { animation-delay: 0.6s; }
+        .section:nth-child(5) { animation-delay: 0.8s; }
+        .section:nth-child(6) { animation-delay: 1s; }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--secondary);
+        }
+
+        .mcq-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .mcq-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mcq-question {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 20px;
+            transition: var(--transition);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .mcq-question:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option:hover {
+            background-color: #f8f9fa;
+            border-color: var(--secondary);
+        }
+
+        .option.selected {
+            border-color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+
+        .option.wrong {
+            border-color: var(--accent);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        .option span {
+            font-weight: 500;
+        }
+
+        .answer-indicator {
+            display: none;
+            font-size: 1.2rem;
+        }
+
+        .correct .answer-indicator {
+            display: inline;
+            color: var(--success);
+        }
+
+        .wrong .answer-indicator {
+            display: inline;
+            color: var(--accent);
+        }
+
+        .locked {
+            pointer-events: none;
+        }
+
+        .case-box {
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .case-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .case-answer {
+            background-color: white;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px dashed var(--secondary);
+            display: none;
+        }
+
+        .case-answer.show {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .toggle-answer {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
+        .toggle-answer:hover {
+            background-color: #2980b9;
+        }
+
+        .answer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .answer-item {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            transition: var(--transition);
+            border-top: 3px solid var(--secondary);
+        }
+
+        .answer-item:hover {
+            transform: scale(1.03);
+        }
+
+        .long-answer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            border-left: 4px solid var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .correct-answer {
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .correct-answer.show {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-book-open"></i> The Last Lesson</h1>
+            <p class="subtitle">An interactive quiz based on Chapter 1 from Class 12 Flamingo textbook. Test your knowledge with MCQs, case-based questions, and detailed answers.</p>
+        </header>
+
+        <section class="section">
+            <h2><i class="fas fa-question-circle"></i> Multiple Choice Questions (20 MCQs)</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="score">0</div>
+                    <div>Score</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="answered">0</div>
+                    <div>Answered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">20</div>
+                    <div>Total Questions</div>
+                </div>
+            </div>
+            <div class="mcq-container" id="mcq-container">
+                <!-- MCQs will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <section class="section">
+            <h2><i class="fas fa-gavel"></i> Case-Based Questions</h2>
+            
+            <div class="case-box">
+                <div class="case-text">
+                    <p><strong>Case 1:</strong> Franz notices villagers sitting quietly on the back benches during the class. They look sad and serious.</p>
+                </div>
+                <p><strong>a) Why were villagers present in the classroom?</strong></p>
+                <button class="toggle-answer" data-target="case1a">Show/Hide Answer</button>
+                <div class="case-answer" id="case1a">
+                    They came to attend the last French lesson to show respect for their language and teacher M. Hamel.
+                </div>
+                
+                <p style="margin-top: 20px;"><strong>b) What did their presence symbolize?</strong></p>
+                <button class="toggle-answer" data-target="case1b">Show/Hide Answer</button>
+                <div class="case-answer" id="case1b">
+                    It symbolized regret for neglecting their language and respect for M. Hamel and French culture.
+                </div>
+            </div>
+
+            <div class="case-box">
+                <div class="case-text">
+                    <p><strong>Case 2:</strong> M. Hamel writes "Vive La France" on the blackboard and dismisses the class silently.</p>
+                </div>
+                <p><strong>a) Why was he emotional at that moment?</strong></p>
+                <button class="toggle-answer" data-target="case2a">Show/Hide Answer</button>
+                <div class="case-answer" id="case2a">
+                    It was his last lesson after 40 years of teaching French, as German would replace it from the next day.
+                </div>
+                
+                <p style="margin-top: 20px;"><strong>b) What does this act show?</strong></p>
+                <button class="toggle-answer" data-target="case2b">Show/Hide Answer</button>
+                <div class="case-answer" id="case2b">
+                    It shows deep patriotism and love for the French language, and serves as a final act of defiance against the Prussian order.
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2><i class="fas fa-align-left"></i> Very Short Answer Questions</h2>
+            <div class="answer-grid">
+                <div class="answer-item">
+                    <p><strong>Who was Franz's teacher?</strong></p>
+                    <p class="highlight">M. Hamel</p>
+                </div>
+                <div class="answer-item">
+                    <p><strong>Franz lived in which region?</strong></p>
+                    <p class="highlight">Alsace</p>
+                </div>
+                <div class="answer-item">
+                    <p><strong>How many years did M. Hamel teach?</strong></p>
+                    <p class="highlight">Forty years</p>
+                </div>
+                <div class="answer-item">
+                    <p><strong>Which language replaced French?</strong></p>
+                    <p class="highlight">German</p>
+                </div>
+                <div class="answer-item">
+                    <p><strong>What words were written on blackboard?</strong></p>
+                    <p class="highlight">Vive La France</p>
+                </div>
+                <div class="answer-item">
+                    <p><strong>Who wrote The Last Lesson?</strong></p>
+                    <p class="highlight">Alphonse Daudet</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2><i class="fas fa-file-alt"></i> Short Answer Questions</h2>
+            
+            <div class="long-answer">
+                <p><strong>1. Why was Franz scared while going to school?</strong></p>
+                <p>Franz was scared because he had not prepared his lesson on participles. He expected his teacher to scold or punish him. Moreover, he was already late for school, which added to his fear.</p>
+            </div>
+            
+            <div class="long-answer" style="margin-top: 20px; animation-delay: 0.5s;">
+                <p><strong>2. Why was the classroom different that day?</strong></p>
+                <p>The classroom was unusually quiet. Village elders were sitting on the back benches. M. Hamel wore special clothes. All this happened because it was the last French lesson before German became compulsory.</p>
+            </div>
+            
+            <div class="long-answer" style="margin-top: 20px; animation-delay: 1s;">
+                <p><strong>3. What order did the Prussian government pass?</strong></p>
+                <p>The Prussian government ordered that only German would be taught in schools of Alsace and Lorraine. French language teaching was stopped, which deeply hurt the people and teachers like M. Hamel.</p>
+            </div>
+            
+            <div class="long-answer" style="margin-top: 20px; animation-delay: 1.5s;">
+                <p><strong>4. How did Franz's feelings about French change?</strong></p>
+                <p>Initially Franz disliked French. But during the last lesson, he realized its beauty and importance. Losing the language made him regret not studying seriously earlier.</p>
+            </div>
+            
+            <div class="long-answer" style="margin-top: 20px; animation-delay: 2s;">
+                <p><strong>5. Why did M. Hamel blame himself and parents?</strong></p>
+                <p>M. Hamel blamed himself for giving holidays and parents for sending children to work instead of school. He felt everyone had neglected education and language when there was time.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2><i class="fas fa-file-contract"></i> Long Answer Questions</h2>
+            
+            <div class="long-answer">
+                <p><strong>1. Describe the role of M. Hamel as a teacher in the story.</strong></p>
+                <p>M. Hamel represents a devoted and patriotic teacher. He served the school for forty years with dedication. On his last day, instead of showing anger, he taught with patience and dignity. He made students realize the importance of their mother tongue and blamed himself and parents for neglecting education. His emotional farewell and writing "Vive La France" showed his deep love for French language and country. M. Hamel believed that language is the key to identity and freedom. Through his actions, the author shows how teachers shape cultural pride and national spirit.</p>
+            </div>
+            
+            <div class="long-answer" style="margin-top: 30px;">
+                <p><strong>2. How does The Last Lesson highlight the importance of language?</strong></p>
+                <p>The story highlights language as a symbol of identity, culture, and freedom. When French was banned, people realized its value. M. Hamel explained that language unites people and keeps them spiritually free even under foreign rule. Franz's regret shows how easily people ignore their heritage until it is taken away. The villagers' presence in class reflects collective guilt. The author emphasizes that preserving one's language is essential to preserve one's culture and national pride.</p>
+            </div>
+            
+            <div class="long-answer" style="margin-top: 30px;">
+                <p><strong>3. Explain Franz's transformation in the story.</strong></p>
+                <p>Franz starts as a careless student who dislikes school and avoids learning. He fears punishment for not preparing his lesson. However, when he learns that it is the last French lesson, his attitude changes completely. He becomes attentive and emotional. He realizes the beauty of the French language and regrets wasting time. By the end, Franz understands the importance of education, language, and patriotism. His transformation shows how loss creates awareness and maturity.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>The Last Lesson - Chapter 1, Class 12 Flamingo | Interactive Quiz Website</p>
+            <p>Designed for educational purposes &copy; 2023</p>
+        </footer>
+    </div>
+
+    <script>
+        // MCQ Data
+        const mcqData = [
+            {
+                question: "Who wrote The Last Lesson?",
+                options: ["Victor Hugo", "Alphonse Daudet", "Molière", "Emile Zola"],
+                correct: 1,
+                answer: "B. Alphonse Daudet"
+            },
+            {
+                question: "What was Franz afraid of while going to school?",
+                options: ["He had not done homework", "He was late", "He had lost his book", "He was sick"],
+                correct: 0,
+                answer: "A. He had not done homework"
+            },
+            {
+                question: "Which language was ordered to replace French in schools?",
+                options: ["English", "German", "Latin", "Spanish"],
+                correct: 1,
+                answer: "B. German"
+            },
+            {
+                question: "Franz lived in which region?",
+                options: ["Paris", "Berlin", "Alsace", "Rome"],
+                correct: 2,
+                answer: "C. Alsace"
+            },
+            {
+                question: "What unusual thing did Franz notice in the classroom?",
+                options: ["Empty benches", "Village elders sitting", "New books", "Closed windows"],
+                correct: 1,
+                answer: "B. Village elders sitting"
+            },
+            {
+                question: "Why were villagers present in the classroom?",
+                options: ["To attend a meeting", "To complain", "To show respect", "To attend the last lesson"],
+                correct: 3,
+                answer: "D. To attend the last lesson"
+            },
+            {
+                question: "What special clothes did M. Hamel wear?",
+                options: ["Black coat", "Blue coat, frilled shirt, black cap", "Grey suit", "White kurta"],
+                correct: 1,
+                answer: "B. Blue coat, frilled shirt, black cap"
+            },
+            {
+                question: "How long had M. Hamel taught at the school?",
+                options: ["20 years", "30 years", "40 years", "50 years"],
+                correct: 2,
+                answer: "C. 40 years"
+            },
+            {
+                question: "What words were written on the blackboard at the end?",
+                options: ["Long live France", "French forever", "Vive La France", "Love your language"],
+                correct: 2,
+                answer: "C. Vive La France"
+            },
+            {
+                question: "What bulletin-board notice disturbed the villagers?",
+                options: ["New tax notice", "War notice", "Order about language", "School holiday notice"],
+                correct: 2,
+                answer: "C. Order about language"
+            },
+            {
+                question: "Franz realized the importance of French when",
+                options: ["He failed", "It was taken away", "He passed", "He won a prize"],
+                correct: 1,
+                answer: "B. It was taken away"
+            },
+            {
+                question: "What emotion did Franz feel during the lesson?",
+                options: ["Anger", "Joy", "Regret", "Fear"],
+                correct: 2,
+                answer: "C. Regret"
+            },
+            {
+                question: "What was Franz's opinion about French language at the end?",
+                options: ["Easy", "Useless", "Most beautiful", "Boring"],
+                correct: 2,
+                answer: "C. Most beautiful"
+            },
+            {
+                question: "Why did M. Hamel blame parents?",
+                options: ["For sending children late", "For not valuing education", "For arguing", "For fees"],
+                correct: 1,
+                answer: "B. For not valuing education"
+            },
+            {
+                question: "What did M. Hamel compare language to?",
+                options: ["Treasure key", "Weapon", "Shield", "Crown"],
+                correct: 0,
+                answer: "A. Treasure key"
+            },
+            {
+                question: "Which country had defeated France?",
+                options: ["Italy", "England", "Prussia", "Russia"],
+                correct: 2,
+                answer: "C. Prussia"
+            },
+            {
+                question: "What did Franz expect punishment for?",
+                options: ["Being late", "Not learning participles", "Fighting", "Sleeping"],
+                correct: 1,
+                answer: "B. Not learning participles"
+            },
+            {
+                question: "Who occupied Alsace and Lorraine?",
+                options: ["French army", "German army", "British army", "Russian army"],
+                correct: 1,
+                answer: "B. German army"
+            },
+            {
+                question: "What did M. Hamel do at the end of the lesson?",
+                options: ["Left silently", "Cried", "Wrote on blackboard", "Closed book"],
+                correct: 2,
+                answer: "C. Wrote on blackboard"
+            },
+            {
+                question: "The theme of the story is",
+                options: ["Childhood", "Patriotism & language", "War strategy", "School life"],
+                correct: 1,
+                answer: "B. Patriotism & language"
+            }
+        ];
+
+        // Initialize variables
+        let score = 0;
+        let answered = 0;
+        const totalQuestions = mcqData.length;
+
+        // DOM Elements
+        const mcqContainer = document.getElementById('mcq-container');
+        const scoreElement = document.getElementById('score');
+        const answeredElement = document.getElementById('answered');
+
+        // Function to create MCQ elements
+        function createMCQElements() {
+            mcqData.forEach((item, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'mcq-question';
+                questionElement.dataset.index = index;
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.innerHTML = `<span>${index + 1}. ${item.question}</span>`;
+                
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'options';
+                
+                // Create option elements
+                item.options.forEach((option, optIndex) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.dataset.optionIndex = optIndex;
+                    
+                    const optionText = document.createElement('span');
+                    optionText.textContent = `${String.fromCharCode(65 + optIndex)}. ${option}`;
+                    
+                    const indicator = document.createElement('span');
+                    indicator.className = 'answer-indicator';
+                    indicator.innerHTML = optIndex === item.correct ? 
+                        '<i class="fas fa-check-circle"></i>' : 
+                        '<i class="fas fa-times-circle"></i>';
+                    
+                    optionElement.appendChild(optionText);
+                    optionElement.appendChild(indicator);
+                    
+                    // Add click event listener
+                    optionElement.addEventListener('click', () => handleOptionClick(index, optIndex, optionElement));
+                    
+                    optionsContainer.appendChild(optionElement);
+                });
+                
+                // Create correct answer display
+                const correctAnswerElement = document.createElement('div');
+                correctAnswerElement.className = 'correct-answer';
+                correctAnswerElement.textContent = `Correct Answer: ${item.answer}`;
+                
+                questionElement.appendChild(questionText);
+                questionElement.appendChild(optionsContainer);
+                questionElement.appendChild(correctAnswerElement);
+                
+                mcqContainer.appendChild(questionElement);
+            });
+        }
+
+        // Function to handle option click
+        function handleOptionClick(questionIndex, optionIndex, optionElement) {
+            const questionElement = optionElement.parentElement.parentElement;
+            const options = questionElement.querySelectorAll('.option');
+            const correctAnswerElement = questionElement.querySelector('.correct-answer');
+            const correctIndex = mcqData[questionIndex].correct;
+            
+            // If already answered, do nothing
+            if (questionElement.classList.contains('locked')) {
+                return;
+            }
+            
+            // Lock the question
+            questionElement.classList.add('locked');
+            
+            // Mark all options as locked
+            options.forEach(opt => opt.classList.add('locked'));
+            
+            // Show correct answer
+            correctAnswerElement.classList.add('show');
+            
+            // Mark selected option
+            optionElement.classList.add('selected');
+            
+            // Check if answer is correct
+            if (optionIndex === correctIndex) {
+                optionElement.classList.add('correct');
+                score++;
+                scoreElement.textContent = score;
+            } else {
+                optionElement.classList.add('wrong');
+                // Highlight correct option
+                options[correctIndex].classList.add('correct');
+            }
+            
+            // Update answered count
+            answered++;
+            answeredElement.textContent = answered;
+        }
+
+        // Function to toggle case answer visibility
+        function setupCaseAnswers() {
+            const toggleButtons = document.querySelectorAll('.toggle-answer');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    const answerElement = document.getElementById(targetId);
+                    answerElement.classList.toggle('show');
+                    
+                    // Change button text
+                    if (answerElement.classList.contains('show')) {
+                        button.textContent = 'Hide Answer';
+                    } else {
+                        button.textContent = 'Show/Hide Answer';
+                    }
+                });
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            createMCQElements();
+            setupCaseAnswers();
+            
+            // Animate answer items sequentially
+            const answerItems = document.querySelectorAll('.answer-item');
+            answerItems.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+                item.style.animation = 'slideUp 0.5s ease-out';
+                item.style.animationFillMode = 'both';
+            });
+        });
+    </script>
+</body>
+</html>
+```

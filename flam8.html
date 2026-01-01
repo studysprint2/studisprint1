@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 English - Going Places Q&A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-info {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: #4a6491;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn:hover {
+            background: #2c3e50;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-btn.active {
+            background: #e74c3c;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: #e74c3c;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background: #f8f9fa;
+            border-color: #a0aec0;
+        }
+        
+        .option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+            animation: pulse 0.5s;
+        }
+        
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #fde8e8;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #4a6491;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background: #d5f4e6;
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background: #fde8e8;
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            display: block;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .answer-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .answer-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn i {
+            margin-right: 8px;
+        }
+        
+        .answer-content {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+        
+        .answer-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 40px;
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            padding: 10px 15px;
+        }
+        
+        .contact-link {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .contact-link:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+        }
+        
+        .whatsapp-link {
+            background: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-link:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .whatsapp-link i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 90%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+            
+            .footer-section {
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px 15px;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Class 12 English – Flamingo</h1>
+            <div class="chapter-info">Chapter 8: Going Places - Interactive Q&A</div>
+        </header>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-target="mcq-section">MCQs (20 Questions)</button>
+            <button class="nav-btn" data-target="case-based-section">Case-Based Questions</button>
+            <button class="nav-btn" data-target="very-short-section">Very Short Questions</button>
+            <button class="nav-btn" data-target="short-answer-section">Short Answer Questions</button>
+            <button class="nav-btn" data-target="long-answer-section">Long Answer Questions</button>
+        </div>
+        
+        <!-- MCQ Section -->
+        <section id="mcq-section" class="section active">
+            <h2><i class="fas fa-question-circle"></i> Multiple Choice Questions (20 MCQs)</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-container">
+                <div class="question">1. Who is the author of Going Places?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> A.R. Fleming
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> A.R. Barton
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> A.R. Williams
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> A.R. Smith
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-container">
+                <div class="question">2. The story revolves around which theme?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">A</span> Friendship
+                    </div>
+                    <div class="option" data-correct="true">
+                        <span class="option-letter">B</span> Fantasy vs reality
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">C</span> Adventure
+                    </div>
+                    <div class="option" data-correct="false">
+                        <span class="option-letter">D</span> Romance
+                    </div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            <!-- Question 3 -->
+<div class="question-container">
+    <div class="question">3. Who is the protagonist of the story?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Jansie
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Sophie
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Geoff
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Danny Casey
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 4 -->
+<div class="question-container">
+    <div class="question">4. Sophie belongs to a</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Wealthy family
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Middle-class family
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Working-class family
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Business family
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 5 -->
+<div class="question-container">
+    <div class="question">5. What was Sophie's dream job?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Teacher
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Actress
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Fashion designer
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">D</span> Boutique owner
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 6 -->
+<div class="question-container">
+    <div class="question">6. Who is Sophie's closest friend?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Geoff
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> Jansie
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> Danny
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Father
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 7 -->
+<div class="question-container">
+    <div class="question">7. Geoff is Sophie's</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Friend
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Cousin
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Brother
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Neighbor
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 8 -->
+<div class="question-container">
+    <div class="question">8. Which sport does Danny Casey play?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> Cricket
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Hockey
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Football
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Tennis
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 9 -->
+<div class="question-container">
+    <div class="question">9. Danny Casey played for</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> United
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> Ireland
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> Manchester United
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> Liverpool
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 10 -->
+<div class="question-container">
+    <div class="question">10. Why did Sophie admire Danny Casey?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> His money
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">B</span> His popularity
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">C</span> His football skills
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> His kindness
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 11 -->
+<div class="question-container">
+    <div class="question">11. What lie did Sophie tell Jansie?</div>
+    <div class="options">
+        <div class="option" data-correct="false">
+            <span class="option-letter">A</span> She met a film star
+        </div>
+        <div class="option" data-correct="true">
+            <span class="option-letter">B</span> She met Danny Casey
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">C</span> She got a job
+        </div>
+        <div class="option" data-correct="false">
+            <span class="option-letter">D</span> She went abroad
+        </div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 12 -->
+<div class="question-container">
+    <div class="question">12. Why did Sophie invent stories?</div>
+    <div class="options">
+        <div class="option" data-correct="false"><span class="option-letter">A</span> To impress others</div>
+        <div class="option" data-correct="true"><span class="option-letter">B</span> To escape reality</div>
+        <div class="option" data-correct="false"><span class="option-letter">C</span> For fun</div>
+        <div class="option" data-correct="false"><span class="option-letter">D</span> Out of habit</div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 13 -->
+<div class="question-container">
+    <div class="question">13. Where did Sophie imagine meeting Danny Casey?</div>
+    <div class="options">
+        <div class="option" data-correct="false"><span class="option-letter">A</span> At home</div>
+        <div class="option" data-correct="false"><span class="option-letter">B</span> At school</div>
+        <div class="option" data-correct="false"><span class="option-letter">C</span> At a boutique</div>
+        <div class="option" data-correct="true"><span class="option-letter">D</span> At a canal</div>
+    </div>
+    <div class="feedback"></div>
+</div>
+
+<!-- Question 14 -->
+<div class="question-container">
+    <div class="question">14. What was Sophie's father's job?</div>
+    <div class="options">
+        <div class="option" data-correct="false"><span class="option-letter">A</span> Teacher</div>
+        <div class="option" data-correct="false"><span class="option-letter">B</span> Mechanic</div>
+        <div class="option" data-correct="true"><span class="option-letter">C</span> Factory worker</div>
+        <div class="option" data-correct="false"><span class="option-letter">D</span> Shopkeeper</div>
+    </div>
+    <div class="feedback"></div>
+</div>
+            <!-- Question 15 -->
+            <div class="question-container">
+                <div class="question">15. Jansie belonged to a</div>
+                <div class="options">
+                    <div class="option" data-correct="false"><span class="option-letter">A</span> Rich family</div>
+                    <div class="option" data-correct="false"><span class="option-letter">B</span> Middle class</div>
+                    <div class="option" data-correct="true"><span class="option-letter">C</span> Working class</div>
+                    <div class="option" data-correct="false"><span class="option-letter">D</span> Upper class</div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 16 -->
+            <div class="question-container">
+                <div class="question">16. Why did Jansie doubt Sophie's story?</div>
+                <div class="options">
+                    <div class="option" data-correct="false"><span class="option-letter">A</span> She disliked Sophie</div>
+                    <div class="option" data-correct="true"><span class="option-letter">B</span> She was practical</div>
+                    <div class="option" data-correct="false"><span class="option-letter">C</span> She knew Danny</div>
+                    <div class="option" data-correct="false"><span class="option-letter">D</span> She was jealous</div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 17 -->
+            <div class="question-container">
+                <div class="question">17. What did Sophie expect at the canal?</div>
+                <div class="options">
+                    <div class="option" data-correct="false"><span class="option-letter">A</span> Jansie</div>
+                    <div class="option" data-correct="false"><span class="option-letter">B</span> Geoff</div>
+                    <div class="option" data-correct="true"><span class="option-letter">C</span> Danny Casey</div>
+                    <div class="option" data-correct="false"><span class="option-letter">D</span> Her father</div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 18 -->
+            <div class="question-container">
+                <div class="question">18. What happened at the canal?</div>
+                <div class="options">
+                    <div class="option" data-correct="false"><span class="option-letter">A</span> Danny came</div>
+                    <div class="option" data-correct="true"><span class="option-letter">B</span> Sophie waited alone</div>
+                    <div class="option" data-correct="false"><span class="option-letter">C</span> Geoff arrived</div>
+                    <div class="option" data-correct="false"><span class="option-letter">D</span> Match was cancelled</div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 19 -->
+            <div class="question-container">
+                <div class="question">19. Sophie represents</div>
+                <div class="options">
+                    <div class="option" data-correct="false"><span class="option-letter">A</span> Reality</div>
+                    <div class="option" data-correct="true"><span class="option-letter">B</span> Dreams and imagination</div>
+                    <div class="option" data-correct="false"><span class="option-letter">C</span> Discipline</div>
+                    <div class="option" data-correct="false"><span class="option-letter">D</span> Maturity</div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+            
+            <!-- Question 20 -->
+            <div class="question-container">
+                <div class="question">20. The story ends on a note of</div>
+                <div class="options">
+                    <div class="option" data-correct="false"><span class="option-letter">A</span> Success</div>
+                    <div class="option" data-correct="false"><span class="option-letter">B</span> Happiness</div>
+                    <div class="option" data-correct="true"><span class="option-letter">C</span> Sadness and disillusionment</div>
+                    <div class="option" data-correct="false"><span class="option-letter">D</span> Victory</div>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </section>
+        
+        <!-- Case-Based Questions Section -->
+        <section id="case-based-section" class="section">
+            <h2><i class="fas fa-clipboard-list"></i> Case-Based Questions</h2>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 1:</strong> Sophie often imagines a glamorous future far removed from her present life.</div>
+                <div class="question">What does this reveal about Sophie's character?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    This reveals Sophie's imaginative and dreamy nature. She uses fantasy to escape her harsh reality. Her dreams show ambition but also a lack of practical understanding of her social and economic limitations.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question"><strong>Case 2:</strong> Sophie waits by the canal hoping to meet Danny Casey.</div>
+                <div class="question">Why is this scene important?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    This scene highlights the contrast between fantasy and reality. Sophie's disappointment symbolizes the collapse of her dreams and her inability to accept the truth, marking a moment of emotional realization.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Very Short Questions Section -->
+        <section id="very-short-section" class="section">
+            <h2><i class="fas fa-ellipsis-h"></i> Very Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Author of the story?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">A.R. Barton</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. Sophie's friend?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Jansie</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. Sophie's brother?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Geoff</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Danny Casey was a</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Footballer</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. Main theme?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">Fantasy vs reality</div>
+            </div>
+        </section>
+        
+        <!-- Short Answer Questions Section -->
+        <section id="short-answer-section" class="section">
+            <h2><i class="fas fa-align-left"></i> Short Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Why did Sophie dream of owning a boutique?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Sophie dreamt of owning a boutique to escape her poor working-class life. She desired glamour, success, and social recognition. Her dreams reflected her dissatisfaction with her present condition and her wish for a better future.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. Why was Jansie more realistic than Sophie?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Jansie was practical and aware of her social limits. She understood that working-class girls had limited opportunities. Unlike Sophie, she accepted reality and discouraged unrealistic dreams.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. How did Sophie's family background affect her dreams?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Sophie came from a working-class family with limited resources. This made her dreams unrealistic. Her desire to escape poverty pushed her into fantasy rather than motivating her to plan realistically.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. Describe Sophie's relationship with Geoff.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Sophie admired Geoff because he was quiet and mysterious. She believed he would understand her dreams. Geoff's silence made Sophie imagine him as a bridge to a more glamorous world.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. What is the significance of Danny Casey in the story?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Danny Casey symbolizes Sophie's fantasies and aspirations. He represents success, glamour, and escape from reality. Sophie's imaginary meeting with him highlights her emotional vulnerability.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Long Answer Questions Section -->
+        <section id="long-answer-section" class="section">
+            <h2><i class="fas fa-align-justify"></i> Long Answer Questions</h2>
+            
+            <div class="question-container">
+                <div class="question">1. Describe Sophie's character in Going Places.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    Sophie is a young working-class girl full of dreams and imagination. She is ambitious but unrealistic, often escaping reality through fantasies. Her inability to accept her social limitations leads her to create imaginary stories. Though imaginative, she lacks practicality. Sophie represents youth trapped between ambition and reality.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. Explain the theme of fantasy versus reality in the story.</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The story highlights the contrast between Sophie's imagined world and her real life. Her fantasies offer temporary escape but ultimately lead to disappointment. Reality intrudes when her dreams collapse, emphasizing the dangers of living in illusion without practical effort.
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. What message does Going Places convey?</div>
+                <button class="answer-btn"><i class="fas fa-eye"></i> Show/Hide Answer</button>
+                <div class="answer-content">
+                    The story conveys that dreams without realistic planning can lead to disillusionment. While ambition is important, one must recognize social realities and work hard toward achievable goals. Escaping into fantasy cannot replace real effort.
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <i class="fas fa-envelope"></i> Contact: 
+                <a href="mailto:alaxrad60@gmail.co" class="contact-link">alaxrad60@gmail.co</a>
+            </div>
+            <div class="footer-section">
+                <i class="fas fa-home"></i> 
+                <a href="#" class="contact-link">Homepage</a>
+            </div>
+            <div class="footer-section">
+                <a href="https://wa.me/6391744080" target="_blank" class="whatsapp-link">
+                    <i class="fab fa-whatsapp"></i> WhatsApp: 63917 44080
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation between sections
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and sections
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Show corresponding section
+                const targetId = button.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                
+                // Reset all MCQ selections when switching sections
+                if (targetId !== 'mcq-section') {
+                    resetMCQSelections();
+                }
+            });
+        });
+        
+        // MCQ answer selection logic
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionContainer = this.closest('.question-container');
+                const options = questionContainer.querySelectorAll('.option');
+                const feedback = questionContainer.querySelector('.feedback');
+                
+                // Remove selected class from all options in this question
+                options.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Check if answer is correct
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Correct! Well done.';
+                    feedback.className = 'feedback correct';
+                } else {
+                    this.classList.add('incorrect');
+                    
+                    // Find and highlight correct answer
+                    const correctOption = questionContainer.querySelector('.option[data-correct="true"]');
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                    }
+                    
+                    feedback.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect. The right answer is highlighted.';
+                    feedback.className = 'feedback incorrect';
+                }
+                
+                // Disable all options after selection
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                });
+            });
+        });
+        
+        // Show/Hide answer buttons for non-MCQ sections
+        document.querySelectorAll('.answer-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const answerContent = this.nextElementSibling;
+                answerContent.classList.toggle('show');
+                
+                // Change button text and icon
+                const icon = this.querySelector('i');
+                if (answerContent.classList.contains('show')) {
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                } else {
+                    this.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                }
+            });
+        });
+        
+        // Function to reset MCQ selections
+        function resetMCQSelections() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.className = 'feedback';
+                feedback.innerHTML = '';
+            });
+        }
+        
+        // Auto-scroll to top when changing sections (for better UX)
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Initialize with MCQ section active
+        document.getElementById('mcq-section').classList.add('active');
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

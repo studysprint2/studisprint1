@@ -1,0 +1,1422 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indigo - Interactive Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 40px;
+            background-image: linear-gradient(to bottom, #f0f4f8, #e1e8f0);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #303f9f, #5c6bc0);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 Q35,30 50,50 T80,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><circle cx="50" cy="50" r="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
+            opacity: 0.1;
+            background-size: 120px;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .subtitle {
+            color: #bbdefb;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .quiz-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #303f9f;
+            transition: all 0.4s ease;
+            animation: cardAppear 0.6s ease;
+        }
+        
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .quiz-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(48, 63, 159, 0.15);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            color: #303f9f;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eaf6;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+        
+        .mcq-question {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f5f7ff;
+            transition: all 0.3s ease;
+            border: 1px solid #e8eaf6;
+            position: relative;
+            overflow: hidden;
+            animation: questionSlide 0.5s ease;
+        }
+        
+        @keyframes questionSlide {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .mcq-question::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #303f9f, #5c6bc0);
+            opacity: 0.6;
+        }
+        
+        .mcq-question:hover {
+            background-color: #edf0ff;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #1a237e;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid #c5cae9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(48, 63, 159, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option:hover {
+            border-color: #303f9f;
+            background-color: #f5f7ff;
+        }
+        
+        .option.selected {
+            border-color: #1a237e;
+            background-color: #e8eaf6;
+        }
+        
+        .option.correct {
+            border-color: #388e3c;
+            background-color: #e8f5e9;
+            animation: successWave 0.8s ease;
+        }
+        
+        @keyframes successWave {
+            0% { transform: translateY(0); }
+            20% { transform: translateY(-5px); }
+            40% { transform: translateY(0); }
+            60% { transform: translateY(-3px); }
+            80% { transform: translateY(0); }
+            100% { transform: translateY(0); }
+        }
+        
+        .option.wrong {
+            border-color: #d32f2f;
+            background-color: #ffebee;
+            animation: errorShake 0.5s ease;
+        }
+        
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background-color: #e8eaf6;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected .option-letter {
+            background-color: #303f9f;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .option.correct .option-letter {
+            background-color: #388e3c;
+            color: white;
+            animation: letterPop 0.5s ease;
+        }
+        
+        @keyframes letterPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1.1); }
+        }
+        
+        .option.wrong .option-letter {
+            background-color: #d32f2f;
+            color: white;
+            animation: letterWobble 0.5s ease;
+        }
+        
+        @keyframes letterWobble {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            display: none;
+            animation: feedbackSlide 0.5s ease;
+        }
+        
+        @keyframes feedbackSlide {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feedback.correct-feedback {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+            border-left: 4px solid #388e3c;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback.wrong-feedback {
+            background-color: #ffebee;
+            color: #b71c1c;
+            border-left: 4px solid #d32f2f;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .case-question, .vsq-question, .short-answer, .long-answer {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9ff;
+            border: 1px solid #e8eaf6;
+            animation: contentAppear 0.8s ease;
+        }
+        
+        @keyframes contentAppear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .case-text, .question-content {
+            font-style: italic;
+            color: #1a237e;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 3px solid #5c6bc0;
+        }
+        
+        .case-subquestion, .answer-item {
+            margin-bottom: 15px;
+        }
+        
+        .case-subquestion p, .answer-item p {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a237e;
+        }
+        
+        .show-answer-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 22px;
+            background-color: #303f9f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(48, 63, 159, 0.2);
+        }
+        
+        .show-answer-btn::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .show-answer-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0, 0); opacity: 0.5; }
+            100% { transform: scale(20, 20); opacity: 0; }
+        }
+        
+        .show-answer-btn:hover {
+            background-color: #1a237e;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(48, 63, 159, 0.3);
+        }
+        
+        .answer-content {
+            background-color: #f0f4ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid #5c6bc0;
+            display: none;
+            animation: answerReveal 0.6s ease;
+        }
+        
+        @keyframes answerReveal {
+            from { opacity: 0; max-height: 0; padding: 0 15px; }
+            to { opacity: 1; max-height: 500px; padding: 15px; }
+        }
+        
+        .answer-content.show {
+            display: block;
+        }
+        
+        .short-answer h3, .long-answer h3 {
+            color: #303f9f;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .short-answer h3 i, .long-answer h3 i {
+            margin-right: 10px;
+        }
+        
+        .score-summary {
+            text-align: center;
+            padding: 25px;
+            background-color: white;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #303f9f;
+            animation: scoreGlow 2s infinite alternate;
+        }
+        
+        @keyframes scoreGlow {
+            from { box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); }
+            to { box-shadow: 0 3px 20px rgba(48, 63, 159, 0.3); }
+        }
+        
+        .score-summary h3 {
+            color: #303f9f;
+            margin-bottom: 15px;
+        }
+        
+        .score-value {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #303f9f;
+            margin: 10px 0;
+            animation: scorePulse 3s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes scorePulse {
+            0%, 100% { transform: scale(1); color: #303f9f; }
+            50% { transform: scale(1.1); color: #5c6bc0; }
+        }
+        
+        .reset-btn {
+            padding: 12px 30px;
+            background-color: #303f9f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(48, 63, 159, 0.2);
+        }
+        
+        .reset-btn:hover {
+            background-color: #1a237e;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(48, 63, 159, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            color: #666;
+            border-top: 1px solid #c5cae9;
+            font-size: 0.9rem;
+        }
+        
+        .instructions {
+            background-color: #f5f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #303f9f;
+            animation: instructionSlide 0.5s ease;
+        }
+        
+        @keyframes instructionSlide {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .instructions h3 {
+            color: #303f9f;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions h3 i {
+            margin-right: 8px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #c5cae9;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #303f9f, #5c6bc0);
+            width: 0%;
+            transition: width 0.7s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+            animation: progressShimmer 1.5s infinite;
+        }
+        
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .correct-counter {
+            display: inline-block;
+            background: linear-gradient(135deg, #388e3c, #43a047);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            animation: counterPop 0.3s ease;
+        }
+        
+        @keyframes counterPop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .question-counter {
+            float: right;
+            background-color: #303f9f;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-all-btn {
+            background-color: #5c6bc0;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            margin-right: 10px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-all-btn:hover {
+            background-color: #3949ab;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .toggle-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .section-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #303f9f, #5c6bc0);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .indigo-decoration {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: rgba(92, 107, 192, 0.3);
+            border-radius: 50%;
+            animation: floatIndigo 15s linear infinite;
+        }
+        
+        @keyframes floatIndigo {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(80px, 40px) rotate(120deg); }
+            66% { transform: translate(40px, 80px) rotate(240deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        .indigo-decoration:nth-child(1) {
+            top: 15%;
+            left: 8%;
+            animation-delay: 0s;
+            animation-duration: 20s;
+        }
+        
+        .indigo-decoration:nth-child(2) {
+            top: 25%;
+            right: 12%;
+            animation-delay: -5s;
+            animation-duration: 25s;
+        }
+        
+        .indigo-decoration:nth-child(3) {
+            bottom: 20%;
+            left: 10%;
+            animation-delay: -10s;
+            animation-duration: 30s;
+        }
+        
+        .indigo-decoration:nth-child(4) {
+            bottom: 30%;
+            right: 15%;
+            animation-delay: -15s;
+            animation-duration: 35s;
+        }
+        
+        .floating-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            animation: floatIcon 18s linear infinite;
+        }
+        
+        @keyframes floatIcon {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(150px, 80px) rotate(360deg); }
+        }
+        
+        .floating-icon:nth-child(1) {
+            top: 40%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .floating-icon:nth-child(2) {
+            top: 70%;
+            right: 8%;
+            animation-delay: -9s;
+        }
+        
+        .plant-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.2);
+            animation: plantSway 4s ease-in-out infinite;
+        }
+        
+        @keyframes plantSway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        .plant-icon:nth-child(1) {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .plant-icon:nth-child(2) {
+            bottom: 25%;
+            right: 25%;
+            animation-delay: -2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Indigo - Interactive Quiz</h1>
+            <p>Test your understanding of Louis Fischer's chapter "Indigo" from Class 12 English Flamingo</p>
+            <p class="subtitle">Chapter 5: Gandhi's First Civil Disobedience in India</p>
+            <div class="indigo-decoration"></div>
+            <div class="indigo-decoration"></div>
+            <div class="indigo-decoration"></div>
+            <div class="indigo-decoration"></div>
+            <div class="floating-icon"><i class="fas fa-hand-peace"></i></div>
+            <div class="floating-icon"><i class="fas fa-scale-balanced"></i></div>
+            <div class="plant-icon"><i class="fas fa-seedling"></i></div>
+            <div class="plant-icon"><i class="fas fa-seedling"></i></div>
+        </header>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Instructions</h3>
+            <ul>
+                <li>For MCQs: Click on an option to select it. Immediate feedback will show if your answer is correct or incorrect.</li>
+                <li>For Case-Based, Very Short, Short and Long Questions: Click "Show Answer" buttons to reveal the answers.</li>
+                <li>Use "Show All Answers" and "Hide All Answers" buttons to toggle all answers at once.</li>
+                <li>Your MCQ score will update automatically as you answer questions.</li>
+            </ul>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+        </div>
+        
+        <!-- Part A: MCQs -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h2>PART A: MCQs (20 Questions) <span id="mcq-counter" class="correct-counter">0/20</span></h2>
+            </div>
+            
+            <div id="mcq-container">
+                <!-- MCQs will be inserted here by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Part B: Case-Based Questions -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h2>PART B: Case-Based Questions (2)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-case-answers">Show All Case Answers</button>
+                <button class="toggle-all-btn" id="hide-case-answers">Hide All Case Answers</button>
+            </div>
+            
+            <div id="case-container">
+                <div class="case-question">
+                    <div class="case-text">Case-Based Question 1: Rajkumar Shukla insisted that Gandhi visit Champaran to see the plight of indigo farmers.</div>
+                    <div class="case-subquestion">
+                        <p>What does Rajkumar Shukla's role reveal about the peasants?</p>
+                        <button class="show-answer-btn" data-target="case1-answer">Show Answer</button>
+                        <div class="answer-content" id="case1-answer">
+                            <p><strong>Answer:</strong> Rajkumar Shukla represents the determination and suffering of the peasants. Though poor and uneducated, he showed courage by approaching Gandhi. His persistence proves that awareness and courage can initiate social change.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-question">
+                    <div class="case-text">Case-Based Question 2: Gandhi was ordered to leave Champaran but refused to obey.</div>
+                    <div class="case-subquestion">
+                        <p>Why was Gandhi's refusal significant?</p>
+                        <button class="show-answer-btn" data-target="case2-answer">Show Answer</button>
+                        <div class="answer-content" id="case2-answer">
+                            <p><strong>Answer:</strong> Gandhi's refusal marked the beginning of civil disobedience in India. He showed that unjust laws should be challenged peacefully. This act empowered peasants and demonstrated moral courage against colonial authority.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part C: Very Short Answer Questions -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h2>PART C: Very Short Answer Questions (5)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-vsq-answers">Show All VSQ Answers</button>
+                <button class="toggle-all-btn" id="hide-vsq-answers">Hide All VSQ Answers</button>
+            </div>
+            
+            <div id="vsq-container">
+                <div class="vsq-question">
+                    <div class="question-content">Author of Indigo?</div>
+                    <button class="show-answer-btn" data-target="vsq1-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq1-answer">
+                        <p><strong>Answer:</strong> Louis Fischer</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Main leader in Champaran?</div>
+                    <button class="show-answer-btn" data-target="vsq2-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq2-answer">
+                        <p><strong>Answer:</strong> Mahatma Gandhi</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Tinkathia system related to?</div>
+                    <button class="show-answer-btn" data-target="vsq3-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq3-answer">
+                        <p><strong>Answer:</strong> Indigo farming</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Place of movement?</div>
+                    <button class="show-answer-btn" data-target="vsq4-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq4-answer">
+                        <p><strong>Answer:</strong> Champaran</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Crop forced on peasants?</div>
+                    <button class="show-answer-btn" data-target="vsq5-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq5-answer">
+                        <p><strong>Answer:</strong> Indigo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part D: Short Answer Questions -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-align-left"></i>
+                </div>
+                <h2>PART D: Short Answer Questions (5)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-short-answers">Show All Short Answers</button>
+                <button class="toggle-all-btn" id="hide-short-answers">Hide All Short Answers</button>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-1"></i> Why did Gandhi visit Champaran?</h3>
+                <button class="show-answer-btn" data-target="short1-answer">Show Answer</button>
+                <div class="answer-content" id="short1-answer">
+                    <p><strong>Answer:</strong> Gandhi visited Champaran at the request of Rajkumar Shukla to investigate the problems of indigo farmers. British planters forced peasants to grow indigo under the exploitative Tinkathia system, causing immense hardship.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-2"></i> What was the Tinkathia system?</h3>
+                <button class="show-answer-btn" data-target="short2-answer">Show Answer</button>
+                <div class="answer-content" id="short2-answer">
+                    <p><strong>Answer:</strong> The Tinkathia system forced peasants to grow indigo on three-twentieths of their land and sell it at low prices to British planters. This system led to poverty, exploitation, and suffering among farmers.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-3"></i> How did Gandhi react to the official order?</h3>
+                <button class="show-answer-btn" data-target="short3-answer">Show Answer</button>
+                <div class="answer-content" id="short3-answer">
+                    <p><strong>Answer:</strong> Gandhi calmly refused to leave Champaran despite official orders. He accepted arrest but did not obey unjust authority, showing moral courage and commitment to justice.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-4"></i> Why was the refund of 25% important?</h3>
+                <button class="show-answer-btn" data-target="short4-answer">Show Answer</button>
+                <div class="answer-content" id="short4-answer">
+                    <p><strong>Answer:</strong> The 25% refund was significant not for money but as a moral victory. It showed that the British planters were wrong and peasants had the right to justice.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-5"></i> What role did lawyers play?</h3>
+                <button class="show-answer-btn" data-target="short5-answer">Show Answer</button>
+                <div class="answer-content" id="short5-answer">
+                    <p><strong>Answer:</strong> Lawyers supported Gandhi and initially charged high fees. Later, inspired by Gandhi, they decided to serve peasants selflessly and focus on social justice instead of profit.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part E: Long Answer Questions -->
+        <div class="quiz-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2>PART E: Long Answer Questions (3)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-long-answers">Show All Long Answers</button>
+                <button class="toggle-all-btn" id="hide-long-answers">Hide All Long Answers</button>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-1"></i> Describe Gandhi's role in the Champaran movement.</h3>
+                <button class="show-answer-btn" data-target="long1-answer">Show Answer</button>
+                <div class="answer-content" id="long1-answer">
+                    <p><strong>Answer:</strong> Gandhi played a crucial role in the Champaran movement by leading a peaceful struggle against the exploitation of indigo farmers. He listened to peasants, defied unjust orders, and used non-violence as a tool of resistance. By forming an inquiry committee, he exposed the cruelty of the Tinkathia system. His calm leadership empowered peasants and made them fearless. The movement marked Gandhi's first successful civil disobedience in India and laid the foundation for future freedom struggles.</p>
+                </div>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-2"></i> How did the Champaran episode become a landmark in India's freedom struggle?</h3>
+                <button class="show-answer-btn" data-target="long2-answer">Show Answer</button>
+                <div class="answer-content" id="long2-answer">
+                    <p><strong>Answer:</strong> The Champaran episode was significant because it showed the effectiveness of non-violent resistance. Gandhi proved that ordinary peasants could challenge colonial power through truth and courage. It awakened political consciousness among farmers and demonstrated that freedom begins with self-confidence and fearlessness. This movement inspired future mass struggles against British rule.</p>
+                </div>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-3"></i> Explain the main theme of Indigo.</h3>
+                <button class="show-answer-btn" data-target="long3-answer">Show Answer</button>
+                <div class="answer-content" id="long3-answer">
+                    <p><strong>Answer:</strong> Indigo highlights the injustice faced by Indian peasants under British rule and the power of peaceful resistance. It shows how exploitation, fear, and poverty trapped farmers. Gandhi's intervention brought awareness, courage, and justice. The chapter emphasizes moral strength, leadership, and the idea that true freedom lies in overcoming fear and injustice.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Score Summary -->
+        <div class="score-summary">
+            <h3>Your MCQ Score</h3>
+            <p>Based on your answers for Multiple Choice Questions only</p>
+            <div class="score-value" id="score-value">0/20</div>
+            <p id="score-message">Start answering MCQs to see your score!</p>
+            <button class="reset-btn" id="reset-btn"><i class="fas fa-redo"></i> Reset MCQ Answers</button>
+        </div>
+        
+        <footer>
+            <p>Interactive Quiz based on "Indigo" by Louis Fischer from Class 12 English Flamingo</p>
+            <p>Educational Resource for Literature Students</p>
+        </footer>
+    </div>
+
+    <script>
+        // Quiz data for Indigo
+        const mcqData = [
+            {
+                question: "1. Who is the author of Indigo?",
+                options: ["A. Jawaharlal Nehru", "B. Mahatma Gandhi", "C. Louis Fischer", "D. Rajendra Prasad"],
+                correct: 2,
+                answerText: "C. Louis Fischer"
+            },
+            {
+                question: "2. Where is Champaran located?",
+                options: ["A. Uttar Pradesh", "B. Bihar", "C. Gujarat", "D. Bengal"],
+                correct: 1,
+                answerText: "B. Bihar"
+            },
+            {
+                question: "3. Why did Gandhi go to Champaran?",
+                options: ["A. Political meeting", "B. Personal visit", "C. To help indigo farmers", "D. To campaign elections"],
+                correct: 2,
+                answerText: "C. To help indigo farmers"
+            },
+            {
+                question: "4. What was the 'Tinkathia system'?",
+                options: ["A. Rent system", "B. Tax system", "C. Forced indigo cultivation on 3/20 land", "D. Loan system"],
+                correct: 2,
+                answerText: "C. Forced indigo cultivation on 3/20 land"
+            },
+            {
+                question: "5. Who was Rajkumar Shukla?",
+                options: ["A. Lawyer", "B. Indigo planter", "C. Peasant", "D. Journalist"],
+                correct: 2,
+                answerText: "C. Peasant"
+            },
+            {
+                question: "6. Rajkumar Shukla was from",
+                options: ["A. Motihari", "B. Champaran", "C. Patna", "D. Ahmedabad"],
+                correct: 1,
+                answerText: "B. Champaran"
+            },
+            {
+                question: "7. Why were the British planters angry?",
+                options: ["A. Indigo demand fell", "B. Gandhi interfered", "C. Peasants protested", "D. Court orders"],
+                correct: 1,
+                answerText: "B. Gandhi interfered"
+            },
+            {
+                question: "8. What did Gandhi advise the peasants?",
+                options: ["A. Violence", "B. Silence", "C. Legal fight", "D. Obedience"],
+                correct: 2,
+                answerText: "C. Legal fight"
+            },
+            {
+                question: "9. What did Gandhi refuse to do?",
+                options: ["A. Leave Champaran", "B. Go to court", "C. Talk to peasants", "D. Meet officials"],
+                correct: 0,
+                answerText: "A. Leave Champaran"
+            },
+            {
+                question: "10. What was Gandhi's first civil disobedience in India?",
+                options: ["A. Dandi March", "B. Quit India", "C. Champaran movement", "D. Non-cooperation"],
+                correct: 2,
+                answerText: "C. Champaran movement"
+            },
+            {
+                question: "11. Who ordered Gandhi to leave Champaran?",
+                options: ["A. District officer", "B. British planter", "C. Governor", "D. Police officer"],
+                correct: 0,
+                answerText: "A. District officer"
+            },
+            {
+                question: "12. What was the result of the inquiry committee?",
+                options: ["A. Planters punished", "B. Peasants got justice", "C. Gandhi jailed", "D. No result"],
+                correct: 1,
+                answerText: "B. Peasants got justice"
+            },
+            {
+                question: "13. How much refund did planters agree to pay?",
+                options: ["A. 25%", "B. 50%", "C. 75%", "D. 100%"],
+                correct: 0,
+                answerText: "A. 25%"
+            },
+            {
+                question: "14. Why was 25% refund significant?",
+                options: ["A. Large amount", "B. Financial gain", "C. Moral victory", "D. Legal requirement"],
+                correct: 2,
+                answerText: "C. Moral victory"
+            },
+            {
+                question: "15. What did Gandhi believe true freedom meant?",
+                options: ["A. Political power", "B. Economic gain", "C. Fearlessness", "D. Violence"],
+                correct: 2,
+                answerText: "C. Fearlessness"
+            },
+            {
+                question: "16. Who supported Gandhi in Champaran?",
+                options: ["A. Lawyers", "B. Peasants", "C. Students", "D. All of these"],
+                correct: 3,
+                answerText: "D. All of these"
+            },
+            {
+                question: "17. What lesson did lawyers learn from Gandhi?",
+                options: ["A. Earn money", "B. Serve peasants", "C. Obey British", "D. Leave law"],
+                correct: 1,
+                answerText: "B. Serve peasants"
+            },
+            {
+                question: "18. What crop were peasants forced to grow?",
+                options: ["A. Wheat", "B. Rice", "C. Indigo", "D. Cotton"],
+                correct: 2,
+                answerText: "C. Indigo"
+            },
+            {
+                question: "19. Gandhi's leadership showed",
+                options: ["A. Anger", "B. Violence", "C. Moral courage", "D. Weakness"],
+                correct: 2,
+                answerText: "C. Moral courage"
+            },
+            {
+                question: "20. The main theme of Indigo is",
+                options: ["A. Farming", "B. British rule", "C. Injustice and resistance", "D. History"],
+                correct: 2,
+                answerText: "C. Injustice and resistance"
+            }
+        ];
+
+        // Track user answers for MCQs only
+        let userAnswers = {
+            mcq: Array(mcqData.length).fill(null)
+        };
+
+        // DOM Elements
+        const mcqContainer = document.getElementById('mcq-container');
+        const scoreValue = document.getElementById('score-value');
+        const scoreMessage = document.getElementById('score-message');
+        const resetBtn = document.getElementById('reset-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const mcqCounter = document.getElementById('mcq-counter');
+
+        // Initialize the quiz
+        function initQuiz() {
+            renderMCQs();
+            updateScore();
+            updateProgress();
+            
+            // Add event listener to reset button
+            resetBtn.addEventListener('click', resetMCQAnswers);
+            
+            // Add event listeners to show/hide answer buttons
+            setupAnswerButtons();
+        }
+
+        // Render MCQs
+        function renderMCQs() {
+            mcqContainer.innerHTML = '';
+            
+            mcqData.forEach((mcq, index) => {
+                const mcqElement = document.createElement('div');
+                mcqElement.className = 'mcq-question';
+                mcqElement.id = `mcq-${index}`;
+                
+                let optionsHTML = '';
+                mcq.options.forEach((option, optIndex) => {
+                    const letter = String.fromCharCode(65 + optIndex);
+                    let optionClass = 'option';
+                    if (userAnswers.mcq[index] === optIndex) {
+                        optionClass += ' selected';
+                        if (optIndex === mcq.correct) {
+                            optionClass += ' correct';
+                        } else {
+                            optionClass += ' wrong';
+                        }
+                    }
+                    
+                    optionsHTML += `
+                        <div class="${optionClass}" data-index="${optIndex}" data-question="${index}">
+                            <span class="option-letter">${letter}</span>
+                            <span class="option-text">${option}</span>
+                        </div>
+                    `;
+                });
+                
+                mcqElement.innerHTML = `
+                    <div class="question-text">${mcq.question} <span class="question-counter">${index + 1}/20</span></div>
+                    <div class="options">${optionsHTML}</div>
+                    ${userAnswers.mcq[index] !== null ? 
+                        `<div class="feedback ${userAnswers.mcq[index] === mcq.correct ? 'correct-feedback' : 'wrong-feedback'}">
+                            <i class="fas ${userAnswers.mcq[index] === mcq.correct ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                            ${userAnswers.mcq[index] === mcq.correct ? 
+                                'Correct!' : 
+                                `Incorrect. The correct answer is: ${mcq.answerText}`
+                            }
+                        </div>` : ''
+                    }
+                `;
+                
+                mcqContainer.appendChild(mcqElement);
+            });
+            
+            // Add event listeners to MCQ options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleMCQSelection);
+            });
+            
+            // Update MCQ counter
+            updateMCQCounter();
+        }
+
+        // Handle MCQ selection
+        function handleMCQSelection(event) {
+            const optionElement = event.currentTarget;
+            const questionIndex = parseInt(optionElement.getAttribute('data-question'));
+            const selectedIndex = parseInt(optionElement.getAttribute('data-index'));
+            
+            // Update user answer
+            userAnswers.mcq[questionIndex] = selectedIndex;
+            
+            // Re-render the MCQ section to show feedback
+            renderMCQs();
+            updateScore();
+            updateProgress();
+        }
+
+        // Setup show/hide answer buttons
+        function setupAnswerButtons() {
+            // Individual show answer buttons
+            document.querySelectorAll('.show-answer-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const answerContent = document.getElementById(targetId);
+                    
+                    if (answerContent.classList.contains('show')) {
+                        answerContent.classList.remove('show');
+                        this.textContent = 'Show Answer';
+                    } else {
+                        answerContent.classList.add('show');
+                        this.textContent = 'Hide Answer';
+                    }
+                });
+            });
+            
+            // Show all case answers
+            document.getElementById('toggle-case-answers').addEventListener('click', function() {
+                document.querySelectorAll('#case-container .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('#case-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all case answers
+            document.getElementById('hide-case-answers').addEventListener('click', function() {
+                document.querySelectorAll('#case-container .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('#case-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all VSQ answers
+            document.getElementById('toggle-vsq-answers').addEventListener('click', function() {
+                document.querySelectorAll('#vsq-container .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('#vsq-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all VSQ answers
+            document.getElementById('hide-vsq-answers').addEventListener('click', function() {
+                document.querySelectorAll('#vsq-container .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('#vsq-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all short answers
+            document.getElementById('toggle-short-answers').addEventListener('click', function() {
+                document.querySelectorAll('.short-answer .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('.short-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all short answers
+            document.getElementById('hide-short-answers').addEventListener('click', function() {
+                document.querySelectorAll('.short-answer .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.short-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all long answers
+            document.getElementById('toggle-long-answers').addEventListener('click', function() {
+                document.querySelectorAll('.long-answer .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('.long-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all long answers
+            document.getElementById('hide-long-answers').addEventListener('click', function() {
+                document.querySelectorAll('.long-answer .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.long-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+        }
+
+        // Update score display
+        function updateScore() {
+            let totalQuestions = mcqData.length;
+            let correctAnswers = 0;
+            
+            // Count MCQ answers
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    if (userAnswers.mcq[index] === mcq.correct) {
+                        correctAnswers++;
+                    }
+                }
+            });
+            
+            // Update score display
+            scoreValue.textContent = `${correctAnswers}/${totalQuestions}`;
+            
+            // Update message based on score
+            if (correctAnswers === 0) {
+                scoreMessage.textContent = "Start answering MCQs to see your score!";
+                scoreValue.style.color = "#303f9f";
+            } else if (correctAnswers === totalQuestions) {
+                scoreMessage.textContent = "Perfect! You've mastered all MCQs about Indigo!";
+                scoreValue.style.color = "#388e3c";
+            } else if (correctAnswers >= totalQuestions * 0.8) {
+                scoreMessage.textContent = "Excellent! You understand the Champaran movement very well!";
+                scoreValue.style.color = "#303f9f";
+            } else if (correctAnswers >= totalQuestions * 0.6) {
+                scoreMessage.textContent = "Good job! You have a solid understanding of the chapter.";
+                scoreValue.style.color = "#303f9f";
+            } else if (correctAnswers >= totalQuestions * 0.4) {
+                scoreMessage.textContent = "Not bad, but you might want to review the chapter.";
+                scoreValue.style.color = "#5c6bc0";
+            } else {
+                scoreMessage.textContent = "Keep trying! Review the chapter and try again.";
+                scoreValue.style.color = "#d32f2f";
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            let totalQuestions = mcqData.length;
+            let answeredQuestions = 0;
+            
+            // Count answered MCQs
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    answeredQuestions++;
+                }
+            });
+            
+            // Update progress bar width
+            const percentage = (answeredQuestions / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        // Update MCQ counter
+        function updateMCQCounter() {
+            let correctMCQs = 0;
+            let answeredMCQs = 0;
+            
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    answeredMCQs++;
+                    if (userAnswers.mcq[index] === mcq.correct) {
+                        correctMCQs++;
+                    }
+                }
+            });
+            
+            mcqCounter.textContent = `${correctMCQs}/${answeredMCQs}`;
+        }
+
+        // Reset MCQ answers only
+        function resetMCQAnswers() {
+            if (confirm("Are you sure you want to reset all MCQ answers? This cannot be undone.")) {
+                // Reset user answers
+                userAnswers.mcq = Array(mcqData.length).fill(null);
+                
+                // Re-render the MCQ section
+                renderMCQs();
+                updateScore();
+                updateProgress();
+                
+                // Reset score color
+                scoreValue.style.color = "#303f9f";
+            }
+        }
+
+        // Initialize the quiz when the page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>
+```
+
+Key Changes and New Features:
+
+New Color Scheme:
+
+· Indigo/Blue Theme reflecting the indigo crop and peaceful resistance theme
+· Primary colors: #303f9f (dark indigo), #5c6bc0 (medium blue), #c5cae9 (light blue)
+· Background: #f0f4f8 (light blue tint)
+· Accent colors: #388e3c (success green), #d32f2f (error red)
+
+New Animations:
+
+1. Card Appear: Sections appear with scale and slide animation
+2. Question Slide: MCQ questions slide in from left
+3. Success Wave: Correct answers have a wave-like bounce animation
+4. Error Shake: Incorrect answers shake horizontally
+5. Letter Pop: Correct option letters pop and scale
+6. Letter Wobble: Wrong option letters wobble side to side
+7. Score Pulse: Score value pulses and changes color
+8. Answer Reveal: Answers reveal with height transition
+9. Progress Shimmer: Progress bar has shimmering light effect
+10. Counter Pop: Correct counter pops in with bounce
+11. Score Glow: Score section glows gently
+12. Float Indigo: Floating indigo dots in header
+13. Float Icon: Peace and justice icons floating
+14. Plant Sway: Indigo plant icons sway gently
+
+Visual Enhancements:
+
+1. Enhanced Section Icons: Blue gradient circular icons
+2. Animated Background Elements: Floating indigo dots and plant icons
+3. Ripple Effect: Button clicks create ripple animation
+4. Hover Effects: Options have sliding highlight effect
+5. Smooth Transitions: All animations are smooth and polished
+6. Gradients: Use of gradients for visual depth
+7. Box Shadows: Enhanced shadows for depth perception
+8. Themed Icons: Peace hand, balance scale, and seedling icons
+
+Functionality:
+
+1. Interactive MCQs Only with enhanced feedback animations
+2. Show/Hide Answers for all other question types
+3. Bulk Show/Hide Controls for each section
+4. Progress Tracking with animated progress bar
+5. Score Counter with animations
+6. Reset Functionality for MCQs only
+
+The quiz maintains the same structure and content but with a completely refreshed visual appearance and enhanced animations that better suit the theme of "Indigo" - a story about Gandhi's first civil disobedience, the indigo farmers' struggle, and the power of peaceful resistance.

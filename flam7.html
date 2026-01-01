@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Interview - Interactive Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 40px;
+            background-image: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header with contact info */
+        .top-header {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo h2 {
+            font-size: 1.8rem;
+            color: #ffd166;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .contact-item i {
+            color: #ffd166;
+        }
+        
+        .whatsapp-link {
+            background-color: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-link:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+        }
+        
+        /* Question Navigation */
+        .question-nav {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #6a11cb;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .question-nav h3 {
+            color: #6a11cb;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(135deg, #ff9a3c, #ff6f3c);
+            box-shadow: 0 4px 8px rgba(255, 106, 60, 0.3);
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.7s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M30,50 Q50,30 70,50 T90,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><circle cx="50" cy="50" r="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
+            opacity: 0.1;
+            background-size: 120px;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .subtitle {
+            color: #ffd166;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .quiz-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #6a11cb;
+            transition: all 0.4s ease;
+            animation: cardAppear 0.6s ease;
+        }
+        
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .quiz-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.15);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            color: #6a11cb;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0c3fc;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+        
+        .mcq-question {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9ff;
+            transition: all 0.3s ease;
+            border: 1px solid #e0c3fc;
+            position: relative;
+            overflow: hidden;
+            animation: questionSlide 0.5s ease;
+        }
+        
+        @keyframes questionSlide {
+            from { opacity: 0; transform: translateX(-25px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .mcq-question::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #6a11cb, #2575fc);
+            opacity: 0.6;
+        }
+        
+        .mcq-question:hover {
+            background-color: #f0f2ff;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #5a0cb3;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid #d1c4e9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(106, 17, 203, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option:hover {
+            border-color: #6a11cb;
+            background-color: #f8f9ff;
+        }
+        
+        .option.selected {
+            border-color: #5a0cb3;
+            background-color: #f0f2ff;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background-color: #d5f4e6;
+            animation: successWave 0.8s ease;
+        }
+        
+        @keyframes successWave {
+            0% { transform: translateY(0); }
+            20% { transform: translateY(-5px); }
+            40% { transform: translateY(0); }
+            60% { transform: translateY(-3px); }
+            80% { transform: translateY(0); }
+            100% { transform: translateY(0); }
+        }
+        
+        .option.wrong {
+            border-color: #e74c3c;
+            background-color: #fde8e6;
+            animation: errorShake 0.5s ease;
+        }
+        
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background-color: #e0c3fc;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected .option-letter {
+            background-color: #6a11cb;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .option.correct .option-letter {
+            background-color: #27ae60;
+            color: white;
+            animation: letterBounce 0.5s ease;
+        }
+        
+        @keyframes letterBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.2); }
+        }
+        
+        .option.wrong .option-letter {
+            background-color: #e74c3c;
+            color: white;
+            animation: letterDrop 0.5s ease;
+        }
+        
+        @keyframes letterDrop {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            display: none;
+            animation: feedbackFade 0.5s ease;
+        }
+        
+        @keyframes feedbackFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feedback.correct-feedback {
+            background-color: #d5f4e6;
+            color: #155724;
+            border-left: 4px solid #27ae60;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback.wrong-feedback {
+            background-color: #fde8e6;
+            color: #721c24;
+            border-left: 4px solid #e74c3c;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback i {
+            margin-right: 8px;
+        }
+        
+        .case-question, .vsq-question, .short-answer, .long-answer {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9ff;
+            border: 1px solid #e0c3fc;
+            animation: contentFade 0.8s ease;
+        }
+        
+        @keyframes contentFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .case-text, .question-content {
+            font-style: italic;
+            color: #5a0cb3;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 3px solid #6a11cb;
+        }
+        
+        .case-subquestion, .answer-item {
+            margin-bottom: 15px;
+        }
+        
+        .case-subquestion p, .answer-item p {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #5a0cb3;
+        }
+        
+        .show-answer-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 22px;
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(106, 17, 203, 0.2);
+        }
+        
+        .show-answer-btn::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .show-answer-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0, 0); opacity: 0.5; }
+            100% { transform: scale(20, 20); opacity: 0; }
+        }
+        
+        .show-answer-btn:hover {
+            background-color: #5a0cb3;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(106, 17, 203, 0.3);
+        }
+        
+        .answer-content {
+            background-color: #f0f2ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid #6a11cb;
+            display: none;
+            animation: answerExpand 0.6s ease;
+        }
+        
+        @keyframes answerExpand {
+            from { opacity: 0; max-height: 0; padding: 0 15px; }
+            to { opacity: 1; max-height: 500px; padding: 15px; }
+        }
+        
+        .answer-content.show {
+            display: block;
+        }
+        
+        .short-answer h3, .long-answer h3 {
+            color: #6a11cb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .short-answer h3 i, .long-answer h3 i {
+            margin-right: 10px;
+        }
+        
+        .score-summary {
+            text-align: center;
+            padding: 25px;
+            background-color: white;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #6a11cb;
+            animation: summaryPulse 2s infinite alternate;
+        }
+        
+        @keyframes summaryPulse {
+            from { box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); }
+            to { box-shadow: 0 3px 20px rgba(106, 17, 203, 0.3); }
+        }
+        
+        .score-summary h3 {
+            color: #6a11cb;
+            margin-bottom: 15px;
+        }
+        
+        .score-value {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #6a11cb;
+            margin: 10px 0;
+            animation: scoreFloat 3s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes scoreFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .reset-btn {
+            padding: 12px 30px;
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(106, 17, 203, 0.2);
+        }
+        
+        .reset-btn:hover {
+            background-color: #5a0cb3;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(106, 17, 203, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            animation: fadeIn 1s ease;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .footer-link {
+            color: #ffd166;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .footer-contact {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #d1d8e0;
+        }
+        
+        .instructions {
+            background-color: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #6a11cb;
+            animation: instructionSlide 0.5s ease;
+        }
+        
+        @keyframes instructionSlide {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .instructions h3 {
+            color: #6a11cb;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions h3 i {
+            margin-right: 8px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0c3fc;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            width: 0%;
+            transition: width 0.7s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: progressShimmer 1.5s infinite;
+        }
+        
+      @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .correct-counter {
+            display: inline-block;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            animation: counterPop 0.3s ease;
+        }
+        
+        @keyframes counterPop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .question-counter {
+            float: right;
+            background-color: #6a11cb;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-all-btn {
+            background-color: #5a0cb3;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            margin-right: 10px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-all-btn:hover {
+            background-color: #4a0aa3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .toggle-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .section-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .interview-decoration {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 209, 102, 0.3);
+            border-radius: 50%;
+            animation: interviewFloat 20s linear infinite;
+        }
+        
+        @keyframes interviewFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, 50px) rotate(90deg); }
+            50% { transform: translate(50px, 100px) rotate(180deg); }
+            75% { transform: translate(-50px, 50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        .interview-decoration:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+        
+        .interview-decoration:nth-child(2) {
+            top: 25%;
+            right: 10%;
+            animation-delay: -5s;
+            animation-duration: 30s;
+        }
+        
+        .floating-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            animation: floatIcon 15s linear infinite;
+        }
+        
+        @keyframes floatIcon {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(200px, 100px) rotate(360deg); }
+        }
+        
+        .floating-icon:nth-child(1) {
+            top: 35%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+        
+        .floating-icon:nth-child(2) {
+            bottom: 30%;
+            right: 12%;
+            animation-delay: -7s;
+        }
+        
+        .book-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.2);
+            animation: bookSway 5s ease-in-out infinite;
+        }
+        
+        @keyframes bookSway {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+        
+        .book-icon:nth-child(1) {
+            top: 20%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+        
+        .book-icon:nth-child(2) {
+            bottom: 20%;
+            right: 20%;
+            animation-delay: -2.5s;
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Header with Contact Info -->
+        <div class="top-header">
+            <div class="logo">
+                <h2><i class="fas fa-book-open"></i> Class 12 English Quiz</h2>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>alaxrad60@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-home"></i>
+                    <span>Homepage: Class 12 English Resources</span>
+                </div>
+                <a href="https://wa.me/6391744080" class="whatsapp-link" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Connect: 63917 44080</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Question Navigation -->
+        <div class="question-nav">
+            <h3><i class="fas fa-bars"></i> Quick Navigation</h3>
+            <div class="nav-buttons">
+                <button class="nav-btn active" data-target="mcq-section">
+                    <i class="fas fa-question-circle"></i> MCQ (20)
+                </button>
+                <button class="nav-btn" data-target="case-section">
+                    <i class="fas fa-file-alt"></i> Case Based (2)
+                </button>
+                <button class="nav-btn" data-target="vsq-section">
+                    <i class="fas fa-edit"></i> Very Short (5)
+                </button>
+                <button class="nav-btn" data-target="short-section">
+                    <i class="fas fa-align-left"></i> Short Answer (5)
+                </button>
+                <button class="nav-btn" data-target="long-section">
+                    <i class="fas fa-book"></i> Long Answer (3)
+                </button>
+                <button class="nav-btn" data-target="score-section">
+                    <i class="fas fa-chart-bar"></i> Score Summary
+                </button>
+            </div>
+        </div>
+         <header>
+            <h1>The Interview - Interactive Quiz</h1>
+            <p>Test your understanding of "The Interview" from Class 12 English Flamingo</p>
+            <p class="subtitle">Chapter 7: Insights into Interviews and Umberto Eco</p>
+            <div class="interview-decoration"></div>
+            <div class="interview-decoration"></div>
+            <div class="floating-icon"><i class="fas fa-microphone"></i></div>
+            <div class="floating-icon"><i class="fas fa-pen-fancy"></i></div>
+            <div class="book-icon"><i class="fas fa-book"></i></div>
+            <div class="book-icon"><i class="fas fa-feather-alt"></i></div>
+        </header>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Instructions</h3>
+            <ul>
+                <li>For MCQs: Click on an option to select it. Immediate feedback will show if your answer is correct or incorrect.</li>
+                <li>For Case-Based, Very Short, Short and Long Questions: Click "Show Answer" buttons to reveal the answers.</li>
+                <li>Use "Show All Answers" and "Hide All Answers" buttons to toggle all answers at once.</li>
+                <li>Your MCQ score will update automatically as you answer questions.</li>
+                <li>Use the navigation buttons above to jump to different question sections.</li>
+            </ul>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+        </div>
+        
+        <!-- Part A: MCQs -->
+        <div class="quiz-section" id="mcq-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h2>PART A: MCQs (20 Questions) <span id="mcq-counter" class="correct-counter">0/20</span></h2>
+            </div>
+            
+            <div id="mcq-container">
+                <!-- MCQs will be inserted here by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Part B: Case-Based Questions -->
+        <div class="quiz-section" id="case-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h2>PART B: Case-Based Questions (2)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-case-answers">Show All Case Answers</button>
+                <button class="toggle-all-btn" id="hide-case-answers">Hide All Case Answers</button>
+            </div>
+                  <div id="case-container">
+                <div class="case-question">
+                    <div class="case-text">Case-Based Question 1: Some writers consider interviews harmful as they believe interviews distort their personality.</div>
+                    <div class="case-subquestion">
+                        <p>Why do some writers dislike interviews?</p>
+                        <button class="show-answer-btn" data-target="case1-answer">Show Answer</button>
+                        <div class="answer-content" id="case1-answer">
+                            <p><strong>Answer:</strong> Some writers dislike interviews because they feel interviews intrude into their private lives. They believe interviews misrepresent their ideas and reduce their complex personalities to simple statements.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-question">
+                    <div class="case-text">Case-Based Question 2: Umberto Eco explains that he writes novels during empty spaces in his life.</div>
+                    <div class="case-subquestion">
+                        <p>What does this reveal about Eco's personality?</p>
+                        <button class="show-answer-btn" data-target="case2-answer">Show Answer</button>
+                        <div class="answer-content" id="case2-answer">
+                            <p><strong>Answer:</strong> This shows Eco's disciplined and creative nature. He efficiently uses small breaks in time, called interstices, to write novels, proving his ability to balance academic work and creativity.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part C: Very Short Answer Questions -->
+        <div class="quiz-section" id="vsq-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h2>PART C: Very Short Answer Questions (5)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-vsq-answers">Show All VSQ Answers</button>
+                <button class="toggle-all-btn" id="hide-vsq-answers">Hide All VSQ Answers</button>
+            </div>
+            
+            <div id="vsq-container">
+                <div class="vsq-question">
+                    <div class="question-content">Author of Part I?</div>
+                    <button class="show-answer-btn" data-target="vsq1-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq1-answer">
+                        <p><strong>Answer:</strong> Christopher Silvester</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Interviewed writer?</div>
+                    <button class="show-answer-btn" data-target="vsq2-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq2-answer">
+                        <p><strong>Answer:</strong> Umberto Eco</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Eco's famous novel?</div>
+                    <button class="show-answer-btn" data-target="vsq3-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq3-answer">
+                        <p><strong>Answer:</strong> The Name of the Rose</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Eco's subject?</div>
+                    <button class="show-answer-btn" data-target="vsq4-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq4-answer">
+                        <p><strong>Answer:</strong> Semiotics</p>
+                    </div>
+                </div>
+                
+                <div class="vsq-question">
+                    <div class="question-content">Interstices mean</div>
+                    <button class="show-answer-btn" data-target="vsq5-answer">Show Answer</button>
+                    <div class="answer-content" id="vsq5-answer">
+                        <p><strong>Answer:</strong> Empty spaces</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part D: Short Answer Questions -->
+        <div class="quiz-section" id="short-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-align-left"></i>
+                </div>
+                <h2>PART D: Short Answer Questions (5)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-short-answers">Show All Short Answers</button>
+                <button class="toggle-all-btn" id="hide-short-answers">Hide All Short Answers</button>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-1"></i> Why are interviews popular?</h3>
+                <button class="show-answer-btn" data-target="short1-answer">Show Answer</button>
+                <div class="answer-content" id="short1-answer">
+                    <p><strong>Answer:</strong> Interviews are popular because they provide readers insight into the lives, thoughts, and personalities of famous people. They reveal experiences, beliefs, and struggles that are not usually found in formal biographies.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-2"></i> Why did Rudyard Kipling dislike interviews?</h3>
+                <button class="show-answer-btn" data-target="short2-answer">Show Answer</button>
+                <div class="answer-content" id="short2-answer">
+                    <p><strong>Answer:</strong> Rudyard Kipling disliked interviews because he felt they invaded his privacy. He believed interviews distorted the writer's true personality and reduced creativity by focusing too much on personal life.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-3"></i> How does Eco manage time for writing novels?</h3>
+                <button class="show-answer-btn" data-target="short3-answer">Show Answer</button>
+                <div class="answer-content" id="short3-answer">
+                    <p><strong>Answer:</strong> Eco manages time by using interstices—small gaps between activities. Instead of waiting for long free periods, he writes during these short breaks, showing his effective time management.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-4"></i> What is the significance of The Name of the Rose?</h3>
+                <button class="show-answer-btn" data-target="short4-answer">Show Answer</button>
+                <div class="answer-content" id="short4-answer">
+                    <p><strong>Answer:</strong> The Name of the Rose is significant because it combines intellectual depth with detective fiction. It made Eco famous worldwide and proved that serious academic ideas can be presented through popular literature.</p>
+                </div>
+            </div>
+            
+            <div class="short-answer">
+                <h3><i class="fas fa-5"></i> What is semiotics?</h3>
+                <button class="show-answer-btn" data-target="short5-answer">Show Answer</button>
+                <div class="answer-content" id="short5-answer">
+                    <p><strong>Answer:</strong> Semiotics is the study of signs and symbols and their meanings. Eco specialized in this field, which influenced both his academic work and his novels.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Part E: Long Answer Questions -->
+        <div class="quiz-section" id="long-section">
+            <div class="section-title">
+                <div class="section-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2>PART E: Long Answer Questions (3)</h2>
+            </div>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-all-btn" id="toggle-long-answers">Show All Long Answers</button>
+                <button class="toggle-all-btn" id="hide-long-answers">Hide All Long Answers</button>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-1"></i> Discuss the advantages and disadvantages of interviews.</h3>
+                <button class="show-answer-btn" data-target="long1-answer">Show Answer</button>
+                <div class="answer-content" id="long1-answer">
+                    <p><strong>Answer:</strong> Interviews offer valuable insight into the lives and minds of famous personalities. They help readers understand personal struggles, beliefs, and achievements. However, some writers feel interviews invade privacy and misrepresent their thoughts. Interviews can oversimplify complex ideas and reduce individuality. Thus, while interviews are informative, they must be handled sensitively to respect personal boundaries.</p>
+                </div>
+            </div>
+            <div class="long-answer">
+                <h3><i class="fas fa-2"></i> Describe Umberto Eco's views on writing novels.</h3>
+                <button class="show-answer-btn" data-target="long2-answer">Show Answer</button>
+                <div class="answer-content" id="long2-answer">
+                    <p><strong>Answer:</strong> Umberto Eco believed in disciplined creativity. He wrote novels during interstices, or empty spaces, in his busy academic life. He did not wait for perfect conditions but used time effectively. This approach allowed him to balance teaching, research, and creative writing successfully.</p>
+                </div>
+            </div>
+            
+            <div class="long-answer">
+                <h3><i class="fas fa-3"></i> How does The Interview present different views on interviews?</h3>
+                <button class="show-answer-btn" data-target="long3-answer">Show Answer</button>
+                <div class="answer-content" id="long3-answer">
+                    <p><strong>Answer:</strong> The chapter presents contrasting opinions on interviews. While some see interviews as informative and enlightening, others consider them intrusive and harmful. By including writers like Kipling and Eco, the chapter shows both criticism and acceptance, allowing readers to form balanced views.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Score Summary -->
+        <div class="score-summary" id="score-section">
+            <h3>Your MCQ Score</h3>
+            <p>Based on your answers for Multiple Choice Questions only</p>
+            <div class="score-value" id="score-value">0/20</div>
+            <p id="score-message">Start answering MCQs to see your score!</p>
+            <button class="reset-btn" id="reset-btn"><i class="fas fa-redo"></i> Reset MCQ Answers</button>
+        </div>
+        
+        <!-- Footer with Contact Info -->
+        <footer>
+            <div class="footer-content">
+                <h3>Class 12 English - Flamingo Interactive Quizzes</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-home"></i> Homepage
+                    </a>
+                    <a href="mailto:alaxrad60@gmail.com" class="footer-link">
+                        <i class="fas fa-envelope"></i> alaxrad60@gmail.com
+                    </a>
+                    <a href="https://wa.me/6391744080" class="footer-link" target="_blank">
+                        <i class="fab fa-whatsapp"></i> WhatsApp: 63917 44080
+                    </a>
+                </div>
+                <div class="footer-contact">
+                    <p>Created for educational purposes | Chapter 7: The Interview</p>
+                    <p>© 2023 Class 12 English Resources | All study materials are for learning purposes</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Quiz data for The Interview
+        const mcqData = [
+            {
+                question: "Who wrote The Interview (Part I)?",
+                options: ["A. Umberto Eco", "B. Christopher Silvester", "C. Mukund Padmanabhan", "D. H.G. Wells"],
+                correct: 1,
+                answerText: "B. Christopher Silvester"
+            },
+            {
+                question: "Part II of The Interview is an interview of",
+                options: ["A. Pablo Neruda", "B. Gabriel Garcia Marquez", "C. Umberto Eco", "D. Jorge Luis Borges"],
+                correct: 2,
+                answerText: "C. Umberto Eco"
+            },
+            {
+                question: "Who interviewed Umberto Eco?",
+                options: ["A. Christopher Silvester", "B. Mukund Padmanabhan", "C. V.S. Naipaul", "D. Asokamitran"],
+                correct: 1,
+                answerText: "B. Mukund Padmanabhan"
+            },
+            {
+                question: "Umberto Eco was a famous",
+                options: ["A. Journalist", "B. Historian", "C. Philosopher and novelist", "D. Poet"],
+                correct: 2,
+                answerText: "C. Philosopher and novelist"
+            },
+            {
+                question: "Eco's novel The Name of the Rose is a",
+                options: ["A. Love story", "B. Detective novel", "C. Biography", "D. Poem"],
+                correct: 1,
+                answerText: "B. Detective novel"
+            },
+            {
+                question: "According to some writers, interviews are",
+                options: ["A. Helpful", "B. Destructive", "C. Creative", "D. Entertaining"],
+                correct: 1,
+                answerText: "B. Destructive"
+            },
+            {
+                question: "Who called interviews an 'assault'?",
+                options: ["A. H.G. Wells", "B. V.S. Naipaul", "C. Rudyard Kipling", "D. Mark Twain"],
+                correct: 2,
+                answerText: "C. Rudyard Kipling"
+            },
+            {
+                question: "What does Eco call empty spaces in life?",
+                options: ["A. Silence", "B. Gaps", "C. Interstices", "D. Pauses"],
+                correct: 2,
+                answerText: "C. Interstices"
+            },
+            {
+                question: "Eco used interstices for",
+                options: ["A. Sleeping", "B. Teaching", "C. Writing novels", "D. Reading"],
+                correct: 2,
+                answerText: "C. Writing novels"
+            },
+            {
+                question: "Eco was a professor at",
+                options: ["A. Oxford", "B. Harvard", "C. Bologna University", "D. Cambridge"],
+                correct: 2,
+                answerText: "C. Bologna University"
+            },
+            {
+                question: "What genre does Eco's work belong to?",
+                options: ["A. Fantasy", "B. Academic and fiction", "C. Romance", "D. Horror"],
+                correct: 1,
+                answerText: "B. Academic and fiction"
+            },
+            {
+                question: "Who disliked interviews strongly?",
+                options: ["A. Kipling", "B. Naipaul", "C. Eco", "D. Silvester"],
+                correct: 0,
+                answerText: "A. Kipling"
+            },
+            {
+                question: "The Interview discusses interviews as a form of",
+                options: ["A. Literature", "B. Art", "C. Communication", "D. Criticism"],
+                correct: 2,
+                answerText: "C. Communication"
+            },
+            {
+                question: "Why do people read interviews?",
+                options: ["A. Entertainment", "B. Insight into personalities", "C. Time pass", "D. Exams"],
+                correct: 1,
+                answerText: "B. Insight into personalities"
+            },
+            {
+                question: "Eco wrote novels mainly in",
+                options: ["A. Free time", "B. Holidays", "C. Interstices", "D. Night"],
+                correct: 2,
+                answerText: "C. Interstices"
+            },
+            {
+                question: "Eco's academic field was",
+                options: ["A. Physics", "B. Semiotics", "C. Psychology", "D. Economics"],
+                correct: 1,
+                answerText: "B. Semiotics"
+            },
+            {
+                question: "Semiotics is the study of",
+                options: ["A. Science", "B. Literature", "C. Signs and symbols", "D. Society"],
+                correct: 2,
+                answerText: "C. Signs and symbols"
+            },
+            {
+                question: "Which writer hated being interviewed?",
+                options: ["A. Shaw", "B. Kipling", "C. Eco", "D. Eliot"],
+                correct: 1,
+                answerText: "B. Kipling"
+            },
+            {
+                question: "The Interview gives insight into",
+                options: ["A. Politics", "B. History", "C. Writers' lives", "D. Cinema"],
+                correct: 2,
+                answerText: "C. Writers' lives"
+            },
+            {
+                question: "Tone of the chapter is",
+                options: ["A. Emotional", "B. Critical and informative", "C. Tragic", "D. Humorous"],
+                correct: 1,
+                answerText: "B. Critical and informative"
+            }
+        ];
+
+        // Track user answers for MCQs only
+        let userAnswers = {
+            mcq: Array(mcqData.length).fill(null)
+        };
+            // DOM Elements
+        const mcqContainer = document.getElementById('mcq-container');
+        const scoreValue = document.getElementById('score-value');
+        const scoreMessage = document.getElementById('score-message');
+        const resetBtn = document.getElementById('reset-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const mcqCounter = document.getElementById('mcq-counter');
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        // Initialize the quiz
+        function initQuiz() {
+            renderMCQs();
+            updateScore();
+            updateProgress();
+            
+            // Add event listener to reset button
+            resetBtn.addEventListener('click', resetMCQAnswers);
+            
+            // Add event listeners to show/hide answer buttons
+            setupAnswerButtons();
+            
+            // Add event listeners to navigation buttons
+            setupNavigationButtons();
+            
+            // Setup back to top button
+            setupBackToTop();
+        }
+
+        // Render MCQs
+        function renderMCQs() {
+            mcqContainer.innerHTML = '';
+            
+            mcqData.forEach((mcq, index) => {
+                const mcqElement = document.createElement('div');
+                mcqElement.className = 'mcq-question';
+                mcqElement.id = `mcq-${index}`;
+                
+                let optionsHTML = '';
+                mcq.options.forEach((option, optIndex) => {
+                    const letter = String.fromCharCode(65 + optIndex);
+                    let optionClass = 'option';
+                    if (userAnswers.mcq[index] === optIndex) {
+                        optionClass += ' selected';
+                        if (optIndex === mcq.correct) {
+                            optionClass += ' correct';
+                        } else {
+                            optionClass += ' wrong';
+                        }
+                    }
+                    
+                    optionsHTML += `
+                        <div class="${optionClass}" data-index="${optIndex}" data-question="${index}">
+                            <span class="option-letter">${letter}</span>
+                            <span class="option-text">${option}</span>
+                        </div>
+                    `;
+                });
+                
+                mcqElement.innerHTML = `
+                    <div class="question-text">${mcq.question} <span class="question-counter">${index + 1}/20</span></div>
+                    <div class="options">${optionsHTML}</div>
+                    ${userAnswers.mcq[index] !== null ? 
+                        `<div class="feedback ${userAnswers.mcq[index] === mcq.correct ? 'correct-feedback' : 'wrong-feedback'}">
+                            <i class="fas ${userAnswers.mcq[index] === mcq.correct ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                            ${userAnswers.mcq[index] === mcq.correct ? 
+                                'Correct!' : 
+                                `Incorrect. The correct answer is: ${mcq.answerText}`
+                            }
+                        </div>` : ''
+                    }
+                `;
+                
+                mcqContainer.appendChild(mcqElement);
+            });
+            
+            // Add event listeners to MCQ options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleMCQSelection);
+            });
+            
+            // Update MCQ counter
+            updateMCQCounter();
+        }
+
+        // Handle MCQ selection
+        function handleMCQSelection(event) {
+            const optionElement = event.currentTarget;
+            const questionIndex = parseInt(optionElement.getAttribute('data-question'));
+            const selectedIndex = parseInt(optionElement.getAttribute('data-index'));
+            
+            // Update user answer
+            userAnswers.mcq[questionIndex] = selectedIndex;
+            
+            // Re-render the MCQ section to show feedback
+            renderMCQs();
+            updateScore();
+            updateProgress();
+        }
+
+        // Setup show/hide answer buttons
+        function setupAnswerButtons() {
+            // Individual show answer buttons
+            document.querySelectorAll('.show-answer-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const answerContent = document.getElementById(targetId);
+                    
+                    if (answerContent.classList.contains('show')) {
+                        answerContent.classList.remove('show');
+                        this.textContent = 'Show Answer';
+                    } else {
+                        answerContent.classList.add('show');
+                        this.textContent = 'Hide Answer';
+                    }
+                });
+            });
+            
+            // Show all case answers
+            document.getElementById('toggle-case-answers').addEventListener('click', function() {
+                document.querySelectorAll('#case-container .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('#case-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all case answers
+            document.getElementById('hide-case-answers').addEventListener('click', function() {
+                document.querySelectorAll('#case-container .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('#case-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all VSQ answers
+            document.getElementById('toggle-vsq-answers').addEventListener('click', function() {
+                document.querySelectorAll('#vsq-container .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('#vsq-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all VSQ answers
+            document.getElementById('hide-vsq-answers').addEventListener('click', function() {
+                document.querySelectorAll('#vsq-container .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('#vsq-container .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all short answers
+            document.getElementById('toggle-short-answers').addEventListener('click', function() {
+                document.querySelectorAll('.short-answer .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('.short-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all short answers
+            document.getElementById('hide-short-answers').addEventListener('click', function() {
+                document.querySelectorAll('.short-answer .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.short-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+            
+            // Show all long answers
+            document.getElementById('toggle-long-answers').addEventListener('click', function() {
+                document.querySelectorAll('.long-answer .answer-content').forEach(el => {
+                    el.classList.add('show');
+                });
+                document.querySelectorAll('.long-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Hide Answer';
+                });
+            });
+            
+            // Hide all long answers
+            document.getElementById('hide-long-answers').addEventListener('click', function() {
+                document.querySelectorAll('.long-answer .answer-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.long-answer .show-answer-btn').forEach(btn => {
+                    btn.textContent = 'Show Answer';
+                });
+            });
+        }
+
+        // Setup navigation buttons
+        function setupNavigationButtons() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const sections = {
+                'mcq-section': document.getElementById('mcq-section'),
+                'case-section': document.getElementById('case-section'),
+                'vsq-section': document.getElementById('vsq-section'),
+                'short-section': document.getElementById('short-section'),
+                'long-section': document.getElementById('long-section'),
+                'score-section': document.getElementById('score-section')
+            };
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // Update active button
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Scroll to target section
+                    if (sections[targetId]) {
+                        sections[targetId].scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Setup back to top button
+        function setupBackToTop() {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Update score display
+        function updateScore() {
+            let totalQuestions = mcqData.length;
+            let correctAnswers = 0;
+            
+            // Count MCQ answers
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    if (userAnswers.mcq[index] === mcq.correct) {
+                        correctAnswers++;
+                    }
+                }
+            });
+            
+            // Update score display
+            scoreValue.textContent = `${correctAnswers}/${totalQuestions}`;
+            
+            // Update message based on score
+            if (correctAnswers === 0) {
+                scoreMessage.textContent = "Start answering MCQs to see your score!";
+                scoreValue.style.color = "#6a11cb";
+            } else if (correctAnswers === totalQuestions) {
+                scoreMessage.textContent = "Perfect! You've mastered all MCQs about The Interview!";
+                scoreValue.style.color = "#27ae60";
+            } else if (correctAnswers >= totalQuestions * 0.8) {
+                scoreMessage.textContent = "Excellent! You understand the chapter very well!";
+                scoreValue.style.color = "#6a11cb";
+            } else if (correctAnswers >= totalQuestions * 0.6) {
+                scoreMessage.textContent = "Good job! You have a solid understanding of the chapter.";
+                scoreValue.style.color = "#6a11cb";
+            } else if (correctAnswers >= totalQuestions * 0.4) {
+                scoreMessage.textContent = "Not bad, but you might want to review the chapter.";
+                scoreValue.style.color = "#5a0cb3";
+            } else {
+                scoreMessage.textContent = "Keep trying! Review the chapter and try again.";
+                scoreValue.style.color = "#e74c3c";
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            let totalQuestions = mcqData.length;
+            let answeredQuestions = 0;
+            
+            // Count answered MCQs
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    answeredQuestions++;
+                }
+            });
+            
+            // Update progress bar width
+            const percentage = (answeredQuestions / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        // Update MCQ counter
+        function updateMCQCounter() {
+            let correctMCQs = 0;
+            let answeredMCQs = 0;
+            
+            mcqData.forEach((mcq, index) => {
+                if (userAnswers.mcq[index] !== null) {
+                    answeredMCQs++;
+                    if (userAnswers.mcq[index] === mcq.correct) {
+                        correctMCQs++;
+                    }
+                }
+            });
+            
+            mcqCounter.textContent = `${correctMCQs}/${answeredMCQs}`;
+        }
+
+        // Reset MCQ answers only
+        function resetMCQAnswers() {
+            if (confirm("Are you sure you want to reset all MCQ answers? This cannot be undone.")) {
+                // Reset user answers
+                userAnswers.mcq = Array(mcqData.length).fill(null);
+                
+                // Re-render the MCQ section
+                renderMCQs();
+                updateScore();
+                updateProgress();
+                
+                // Reset score color
+                scoreValue.style.color = "#6a11cb";
+            }
+        }
+
+        // Initialize the quiz when the page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>
+```
